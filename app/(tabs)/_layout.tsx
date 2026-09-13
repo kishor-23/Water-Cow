@@ -17,7 +17,7 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.tabBarActive,
         tabBarInactiveTintColor: colors.tabBarInactive,
-        sceneContainerStyle: { backgroundColor: colors.background },
+        sceneStyle: { backgroundColor: colors.background },
         tabBarStyle: [
           styles.tabBar, 
           { 
