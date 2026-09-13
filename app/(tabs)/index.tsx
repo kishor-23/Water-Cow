@@ -81,7 +81,12 @@ export default function HomeScreen() {
 
             {/* Cow Mascot (Sipping Water) */}
             <View style={styles.cowContainer}>
-              <CowReminderAnimated initialPose="sipping" hidePoseSelector={true} />
+              <CowReminderAnimated
+                initialPose="sipping"
+                hidePoseSelector={true}
+                hideTapHint={true}
+                size={120}
+              />
             </View>
           </View>
 

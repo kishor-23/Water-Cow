@@ -32,6 +32,8 @@ interface CowReminderAnimatedProps {
   onSoundTriggered?: () => void;
   initialPose?: ReminderCowPose;
   hidePoseSelector?: boolean;
+  hideTapHint?: boolean;
+  size?: number;
 }
 
 export function CowReminderAnimated({
@@ -40,6 +42,8 @@ export function CowReminderAnimated({
   onSoundTriggered,
   initialPose = 'bell',
   hidePoseSelector = false,
+  hideTapHint = false,
+  size = 180,
 }: CowReminderAnimatedProps) {
   const { colors, isDark } = useTheme();
 
@@ -268,6 +272,9 @@ export function CowReminderAnimated({
     outputRange: ['15deg', '0deg', '-12deg'],
   });
 
+  const svgWidth = size;
+  const svgHeight = Math.round((size * 170) / 180);
+
   return (
     <View style={styles.container}>
       {/* Pose Selector Pills */}
@@ -326,7 +333,7 @@ export function CowReminderAnimated({
             },
           ]}
         >
-          <Svg width={180} height={170} viewBox="0 0 180 170">
+          <Svg width={svgWidth} height={svgHeight} viewBox="0 0 180 170">
             {/* Ground Shadow */}
             <Ellipse cx={90} cy={155} rx={50} ry={12} fill="rgba(0,0,0,0.12)" />
 
@@ -438,9 +445,11 @@ export function CowReminderAnimated({
       </TouchableOpacity>
 
       {/* Tap Hint */}
-      <Text style={[styles.tapHint, { color: colors.textTertiary }]}>
-        Tap the cow to test moo / reminder audio 🐮
-      </Text>
+      {!hideTapHint && (
+        <Text style={[styles.tapHint, { color: colors.textTertiary }]}>
+          Tap the cow to test moo / reminder audio 🐮
+        </Text>
+      )}
     </View>
   );
 }
