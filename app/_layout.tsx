@@ -2,6 +2,7 @@
  * Root Layout — Font loading, providers, and launch screen.
  */
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -21,15 +22,15 @@ import { CustomLaunchScreen } from '../components/ui/CustomLaunchScreen';
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function AppContent() {
-  const { isDark } = useTheme();
+  const { isDark, colors } = useTheme();
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         <Stack.Screen name="(tabs)" />
       </Stack>
-    </>
+    </View>
   );
 }
 

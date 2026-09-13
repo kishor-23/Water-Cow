@@ -17,6 +17,7 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.tabBarActive,
         tabBarInactiveTintColor: colors.tabBarInactive,
+        sceneContainerStyle: { backgroundColor: colors.background },
         tabBarStyle: [
           styles.tabBar, 
           { 
@@ -80,6 +81,7 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     borderTopWidth: 1,
+    borderBottomWidth: 0,
     height: Platform.OS === 'ios' ? 84 : 64,
     paddingTop: Platform.OS === 'ios' ? 8 : 0,
     paddingBottom: Platform.OS === 'ios' ? 24 : 0,
