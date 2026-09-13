@@ -9,6 +9,7 @@ import {
   Alert,
   TextInput,
   Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -163,21 +164,27 @@ export default function RemindersScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
       >
-        {/* Header */}
-        <Text style={styles.title}>Reminders</Text>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Header */}
+          <Text style={styles.title}>Reminders</Text>
 
-        {/* Animated Interactive Cow Mascot */}
-        <View style={styles.cowSection}>
-          <CowReminderAnimated
-            enabled={settings.enabled}
-            intervalMinutes={settings.intervalMinutes}
-          />
-        </View>
+          {/* Animated Interactive Cow Mascot */}
+          <View style={styles.cowSection}>
+            <CowReminderAnimated
+              enabled={settings.enabled}
+              intervalMinutes={settings.intervalMinutes}
+              enableSoundOnTap={true}
+            />
+          </View>
 
         {/* Smart Reminders Toggle */}
         <TouchableOpacity
@@ -479,6 +486,7 @@ export default function RemindersScreen() {
           </>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

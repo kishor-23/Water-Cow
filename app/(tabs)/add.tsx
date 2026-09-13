@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
@@ -20,7 +22,7 @@ import Animated, {
   withDelay,
   runOnJS,
 } from 'react-native-reanimated';
-import { CowAnimated } from '../../components/cow/CowAnimated';
+import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { PillButton } from '../../components/ui/PillButton';
 import { Card } from '../../components/ui/Card';
 import { useHydration } from '../../context/HydrationContext';
@@ -103,102 +105,113 @@ export default function AddWaterScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
       >
-        {/* Header */}
-        <Text style={styles.title}>How much did you drink?</Text>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Header */}
+          <Text style={styles.title}>How much did you drink?</Text>
 
-        {/* Cow Illustration */}
-        <View style={styles.cowSection}>
-          <CowAnimated
-            mood={showDrinkingAnimation ? 'goalComplete' : cowMood}
-            size={140}
-            showMessage={false}
-          />
-        </View>
-
-        {/* Success Feedback */}
-        {state.showSuccess && (
-          <Animated.View style={[styles.successBadge, successAnimatedStyle]}>
-            <Text style={styles.successText}>
-              +{formatWater(displayAmount)} added! 💧
-            </Text>
-          </Animated.View>
-        )}
-
-        {/* Amount Display */}
-        <View style={styles.amountDisplay}>
-          <Text style={styles.amountValue}>{displayAmount}</Text>
-          <Text style={styles.amountUnit}>ml</Text>
-        </View>
-
-        {/* Quick Amounts */}
-        <Card style={styles.amountsCard}>
-          <Text style={styles.sectionLabel}>Quick amounts</Text>
-          <View style={styles.pillGrid}>
-            {QUICK_AMOUNTS.map((amount) => (
-              <PillButton
-                key={amount}
-                label={`${amount} ml`}
-                selected={!isCustom && selectedAmount === amount}
-                onPress={() => handleSelectAmount(amount)}
-                size="md"
-              />
-            ))}
-            <PillButton
-              label="Custom"
-              selected={isCustom}
-              onPress={handleCustom}
-              size="md"
+          {/* Cow Illustration */}
+          <View style={styles.cowSection}>
+            <CowReminderAnimated
+              initialPose={showDrinkingAnimation ? 'cheering' : 'sipping'}
+              hidePoseSelector={true}
+              hideTapHint={true}
+              size={130}
             />
           </View>
 
-          {/* Custom Input */}
-          {isCustom && (
-            <View style={styles.customInputRow}>
-              <TextInput
-                style={styles.customInput}
-                value={customValue}
-                onChangeText={setCustomValue}
-                placeholder="Enter amount"
-                placeholderTextColor={colors.textTertiary}
-                keyboardType="numeric"
-                autoFocus
-                maxLength={4}
-              />
-              <Text style={styles.customUnit}>ml</Text>
-            </View>
+          {/* Success Feedback */}
+          {state.showSuccess && (
+            <Animated.View style={[styles.successBadge, successAnimatedStyle]}>
+              <Text style={styles.successText}>
+                +{formatWater(displayAmount)} added! 💧
+              </Text>
+            </Animated.View>
           )}
-        </Card>
 
-        {/* Add Button */}
-        <Animated.View style={buttonAnimatedStyle}>
-          <TouchableOpacity
-            style={[
-              styles.addButton,
-              displayAmount <= 0 && styles.addButtonDisabled,
-            ]}
-            onPress={handleAddWater}
-            activeOpacity={0.85}
-            disabled={displayAmount <= 0}
-          >
-            <Text style={styles.addButtonText}>
-              Add {formatWater(displayAmount)}
+          {/* Amount Display */}
+          <View style={styles.amountDisplay}>
+            <Text style={styles.amountValue}>{displayAmount}</Text>
+            <Text style={styles.amountUnit}>ml</Text>
+          </View>
+
+          {/* Quick Amounts */}
+          <Card style={styles.amountsCard}>
+            <Text style={styles.sectionLabel}>Quick amounts</Text>
+            <View style={styles.pillGrid}>
+              {QUICK_AMOUNTS.map((amount) => (
+                <PillButton
+                  key={amount}
+                  label={`${amount} ml`}
+                  selected={!isCustom && selectedAmount === amount}
+                  onPress={() => handleSelectAmount(amount)}
+                  size="md"
+                />
+              ))}
+              <PillButton
+                label="Custom"
+                selected={isCustom}
+                onPress={handleCustom}
+                size="md"
+              />
+            </View>
+
+            {/* Custom Input */}
+            {isCustom && (
+              <View style={styles.customInputRow}>
+                <TextInput
+                  style={styles.customInput}
+                  value={customValue}
+                  onChangeText={setCustomValue}
+                  placeholder="Enter amount"
+                  placeholderTextColor={colors.textTertiary}
+                  keyboardType="number-pad"
+                  cursorColor={colors.primary}
+                  selectionColor={colors.primary}
+                  autoFocus
+                  maxLength={4}
+                  returnKeyType="done"
+                  onSubmitEditing={handleAddWater}
+                />
+                <Text style={styles.customUnit}>ml</Text>
+              </View>
+            )}
+          </Card>
+
+          {/* Add Button */}
+          <Animated.View style={buttonAnimatedStyle}>
+            <TouchableOpacity
+              style={[
+                styles.addButton,
+                displayAmount <= 0 && styles.addButtonDisabled,
+              ]}
+              onPress={handleAddWater}
+              activeOpacity={0.85}
+              disabled={displayAmount <= 0}
+            >
+              <Text style={styles.addButtonText}>
+                Add {formatWater(displayAmount)}
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+
+          {/* Today's total */}
+          <View style={styles.todayTotal}>
+            <Text style={styles.todayLabel}>Today's total</Text>
+            <Text style={styles.todayValue}>
+              {formatWater(state.totalConsumed)} / {formatWater(state.profile.dailyGoal)}
             </Text>
-          </TouchableOpacity>
-        </Animated.View>
-
-        {/* Today's total */}
-        <View style={styles.todayTotal}>
-          <Text style={styles.todayLabel}>Today's total</Text>
-          <Text style={styles.todayValue}>
-            {formatWater(state.totalConsumed)} / {formatWater(state.profile.dailyGoal)}
-          </Text>
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -297,6 +310,8 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontSize: Typography.size.xl,
     color: colors.textPrimary,
     backgroundColor: colors.surfaceBlue,
+    borderWidth: 1.5,
+    borderColor: colors.primary,
     borderRadius: BorderRadius.md,
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.md,

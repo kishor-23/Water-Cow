@@ -183,7 +183,7 @@ export async function loadReminderSettings(): Promise<ReminderSettings> {
 // --- Profile ---
 
 export const DEFAULT_PROFILE: UserProfile = {
-  name: 'Kishor',
+  name: 'Buddy',
   unit: 'ml',
   dailyGoal: 2000,
 };
@@ -195,7 +195,13 @@ export async function saveProfile(profile: UserProfile): Promise<void> {
 export async function loadProfile(): Promise<UserProfile> {
   try {
     const data = await AsyncStorage.getItem(KEYS.PROFILE);
-    return data ? { ...DEFAULT_PROFILE, ...JSON.parse(data) } : DEFAULT_PROFILE;
+    if (!data) return DEFAULT_PROFILE;
+    const parsed = JSON.parse(data);
+    return {
+      ...DEFAULT_PROFILE,
+      ...parsed,
+      name: parsed.name && parsed.name.trim() ? parsed.name.trim() : 'Buddy',
+    };
   } catch (e) {
     console.warn('Failed to load profile:', e);
     return DEFAULT_PROFILE;

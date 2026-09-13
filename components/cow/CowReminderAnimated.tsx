@@ -34,6 +34,10 @@ interface CowReminderAnimatedProps {
   hidePoseSelector?: boolean;
   hideTapHint?: boolean;
   size?: number;
+  enableSoundOnTap?: boolean;
+  enableSpeechBubble?: boolean;
+  shortSpeech?: boolean;
+  customQuotes?: string[];
 }
 
 export function CowReminderAnimated({
@@ -44,6 +48,10 @@ export function CowReminderAnimated({
   hidePoseSelector = false,
   hideTapHint = false,
   size = 180,
+  enableSoundOnTap = false,
+  enableSpeechBubble = false,
+  shortSpeech = false,
+  customQuotes,
 }: CowReminderAnimatedProps) {
   const { colors, isDark } = useTheme();
 
@@ -51,6 +59,10 @@ export function CowReminderAnimated({
   const [pose, setPose] = useState<ReminderCowPose>(initialPose);
   const [speechText, setSpeechText] = useState<string>('');
   const [showSpeech, setShowSpeech] = useState(false);
+
+  useEffect(() => {
+    setPose(initialPose);
+  }, [initialPose]);
 
   // Animated values
   const idleBob = useRef(new Animated.Value(0)).current;
@@ -230,30 +242,50 @@ export function CowReminderAnimated({
       }),
     ]).start();
 
-    // 2. Play cute sound
-    try {
-      const soundFile = pose === 'bell'
-        ? require('../../assets/sounds/cow_bell.mp3')
-        : require('../../assets/sounds/cow_moo.mp3');
-      const player = createAudioPlayer(soundFile);
-      player.play();
-      if (onSoundTriggered) onSoundTriggered();
-    } catch (e) {
-      console.warn('Audio play error:', e);
+    // 2. Play cute sound (only if sound on tap is explicitly enabled, e.g. Notification/Reminders screen)
+    if (enableSoundOnTap) {
+      try {
+        const soundFile = pose === 'bell'
+          ? require('../../assets/sounds/cow_bell.mp3')
+          : require('../../assets/sounds/cow_moo.mp3');
+        const player = createAudioPlayer(soundFile);
+        player.play();
+        if (onSoundTriggered) onSoundTriggered();
+      } catch (e) {
+        console.warn('Audio play error:', e);
+      }
     }
 
-    // 3. Speech quotes
-    const speechQuotes = [
-      `🔔 Moo! I'll remind you every ${intervalMinutes} min!`,
-      "💧 Drink up! Hydrated cows make happy moos!",
-      "⏰ Ring ring! Time for fresh water!",
-      "🥛 Glug glug... staying healthy and refreshed!",
-      "✨ You're doing amazing! Keep drinking water!",
-    ];
-    const quote = speechQuotes[Math.floor(Math.random() * speechQuotes.length)];
-    setSpeechText(quote);
-    setShowSpeech(true);
-    setTimeout(() => setShowSpeech(false), 3500);
+    // 3. Speech quotes (only if speech bubble is explicitly enabled)
+    if (enableSpeechBubble) {
+      const defaultShortQuotes = [
+        "Hi! 👋",
+        "Moo! 🐄",
+        "Hello! ✨",
+        "Drink up! 💧",
+        "Glug glug! 🥛",
+        "Stay cool! 😎",
+        "Hydrate! 🌊",
+        "Yay! 🎉",
+      ];
+      const defaultLongQuotes = [
+        `🔔 Moo! I'll remind you every ${intervalMinutes} min!`,
+        "💧 Drink up! Hydrated cows make happy moos!",
+        "⏰ Ring ring! Time for fresh water!",
+        "🥛 Glug glug... staying healthy and refreshed!",
+        "✨ You're doing amazing! Keep drinking water!",
+      ];
+      const quotes = customQuotes && customQuotes.length > 0
+        ? customQuotes
+        : shortSpeech
+          ? defaultShortQuotes
+          : defaultLongQuotes;
+
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      setSpeechText(quote);
+      setShowSpeech(true);
+      setTimeout(() => setShowSpeech(false), shortSpeech ? 2000 : 3500);
+    }
   };
 
   // Interpolations
@@ -313,7 +345,7 @@ export function CowReminderAnimated({
       )}
 
       {/* Animated Speech Bubble */}
-      {showSpeech && (
+      {enableSpeechBubble && showSpeech && (
         <View style={[styles.speechBubble, { backgroundColor: colors.surface, borderColor: colors.primary }]}>
           <Text style={[styles.speechText, { color: colors.textPrimary }]}>{speechText}</Text>
           <View style={[styles.speechTail, { borderTopColor: colors.primary }]} />

@@ -1,7 +1,7 @@
 /**
  * Home Screen — Dashboard with greeting, progress ring, cow mascot, and stats.
  */
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -44,7 +44,7 @@ export default function HomeScreen() {
   }, [lastDrinkTime, reminderSettings.intervalMinutes]);
 
   const greeting = getGreeting();
-  const percentText = `${Math.round(progress * 100)}%`;
+  const displayName = profile.name && profile.name.trim() ? profile.name : 'Buddy';
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -55,8 +55,11 @@ export default function HomeScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-          <View>
-            <Text style={styles.greeting}>{greeting}, {profile.name} 👋</Text>
+          <TouchableOpacity
+            onPress={() => router.push('/settings')}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.greeting}>{greeting}, {displayName} 👋</Text>
             <Text style={styles.date}>
               {new Date().toLocaleDateString('en-US', {
                 weekday: 'long',
@@ -64,7 +67,7 @@ export default function HomeScreen() {
                 day: 'numeric',
               })}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Progress Section */}
@@ -86,6 +89,8 @@ export default function HomeScreen() {
                 hidePoseSelector={true}
                 hideTapHint={true}
                 size={120}
+                enableSpeechBubble={true}
+                shortSpeech={true}
               />
             </View>
           </View>

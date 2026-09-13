@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,15 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useHydration } from '../../context/HydrationContext';
 import { Card } from '../../components/ui/Card';
 import { PillButton } from '../../components/ui/PillButton';
-import { CowAnimated } from '../../components/cow/CowAnimated';
+import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { exportBackupFile, importBackupFile } from '../../utils/backup';
 import { HomeScreenWidgetModal } from '../../components/ui/HomeScreenWidgetModal';
@@ -28,6 +30,10 @@ export default function SettingsScreen() {
   const [showWidgetModal, setShowWidgetModal] = useState(false);
   const [name, setName] = useState(profile.name);
   const [editingName, setEditingName] = useState(false);
+
+  useEffect(() => {
+    setName(profile.name);
+  }, [profile.name]);
 
   // Backup & Import state
   const [isExporting, setIsExporting] = useState(false);
@@ -70,72 +76,87 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
       >
-        {/* Header */}
-        <Text style={styles.title}>Settings</Text>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* Header */}
+          <Text style={styles.title}>Settings</Text>
 
-        {/* Cow */}
-        <View style={styles.cowSection}>
-          <CowAnimated mood={cowMood} size={100} showMessage={false} />
-        </View>
-
-        {/* Daily Goal */}
-        <Card style={styles.sectionCard}>
-          <View style={styles.sectionHeader}>
-            <Feather name="target" size={18} color={colors.primary} />
-            <Text style={styles.sectionTitle}>Daily Goal</Text>
+          {/* Cow */}
+          <View style={styles.cowSection}>
+            <CowReminderAnimated
+              initialPose="sipping"
+              hidePoseSelector={true}
+              hideTapHint={true}
+              size={100}
+            />
           </View>
 
-          <View style={styles.currentGoal}>
-            <Text style={styles.goalValue}>
-              {(profile.dailyGoal / 1000).toFixed(1)}
-            </Text>
-            <Text style={styles.goalUnit}>L</Text>
-          </View>
+          {/* Daily Goal */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="target" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Daily Goal</Text>
+            </View>
 
-          <Text style={styles.sectionLabel}>Choose your daily target</Text>
-          <View style={styles.pillRow}>
-            {GOAL_PRESETS.map((goal) => (
-              <PillButton
-                key={goal}
-                label={`${(goal / 1000).toFixed(1)} L`}
-                selected={profile.dailyGoal === goal}
-                onPress={() => setGoal(goal)}
-                size="md"
-              />
-            ))}
-          </View>
-        </Card>
+            <View style={styles.currentGoal}>
+              <Text style={styles.goalValue}>
+                {(profile.dailyGoal / 1000).toFixed(1)}
+              </Text>
+              <Text style={styles.goalUnit}>L</Text>
+            </View>
 
-        {/* Profile */}
-        <Card style={styles.sectionCard}>
-          <View style={styles.sectionHeader}>
-            <Feather name="user" size={18} color={colors.primary} />
-            <Text style={styles.sectionTitle}>Profile</Text>
-          </View>
-
-          {/* Name */}
-          <View style={styles.settingRow}>
-            <Text style={styles.settingLabel}>Name</Text>
-            {editingName ? (
-              <View style={styles.nameEditRow}>
-                <TextInput
-                  style={styles.nameInput}
-                  value={name}
-                  onChangeText={setName}
-                  onSubmitEditing={handleNameSave}
-                  autoFocus
-                  maxLength={20}
+            <Text style={styles.sectionLabel}>Choose your daily target</Text>
+            <View style={styles.pillRow}>
+              {GOAL_PRESETS.map((goal) => (
+                <PillButton
+                  key={goal}
+                  label={`${(goal / 1000).toFixed(1)} L`}
+                  selected={profile.dailyGoal === goal}
+                  onPress={() => setGoal(goal)}
+                  size="md"
                 />
-                <TouchableOpacity onPress={handleNameSave}>
-                  <Feather name="check" size={18} color={colors.primary} />
-                </TouchableOpacity>
-              </View>
-            ) : (
+              ))}
+            </View>
+          </Card>
+
+          {/* Profile */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="user" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Profile</Text>
+            </View>
+
+            {/* Name */}
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>Name</Text>
+              {editingName ? (
+                <View style={styles.nameEditRow}>
+                  <TextInput
+                    style={styles.nameInput}
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="Enter name"
+                    placeholderTextColor={colors.textTertiary}
+                    cursorColor={colors.primary}
+                    selectionColor={colors.primary}
+                    onSubmitEditing={handleNameSave}
+                    returnKeyType="done"
+                    autoFocus
+                    maxLength={20}
+                  />
+                  <TouchableOpacity onPress={handleNameSave}>
+                    <Feather name="check" size={18} color={colors.primary} />
+                  </TouchableOpacity>
+                </View>
+              ) : (
               <TouchableOpacity
                 style={styles.settingValueRow}
                 onPress={() => setEditingName(true)}
@@ -315,10 +336,10 @@ export default function SettingsScreen() {
             <Text style={styles.appTagline}>
               Simple hydration tracking.{'\n'}A little moo to remind you.
             </Text>
-            <Text style={styles.appVersion}>Version 1.0.0</Text>
           </View>
         </Card>
       </ScrollView>
+      </KeyboardAvoidingView>
 
       {/* Android Home Screen Widget Modal */}
       <HomeScreenWidgetModal
@@ -449,6 +470,8 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontSize: Typography.size.md,
     color: colors.textPrimary,
     backgroundColor: colors.surfaceBlue,
+    borderWidth: 1.5,
+    borderColor: colors.primary,
     borderRadius: BorderRadius.sm,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.xs + 2,
