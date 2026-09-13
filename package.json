@@ -38,7 +38,8 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "clean": "powershell -Command \"Get-ChildItem node_modules,android -Recurse -Include 'build','.cxx' -Directory -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force\""
   },
   "private": true
 }
