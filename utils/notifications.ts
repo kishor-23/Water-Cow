@@ -40,7 +40,7 @@ const URGENT_MESSAGES = [
  * programmatically. The only way to apply new settings is to create a NEW
  * channel with a different ID. That's why we use a version suffix.
  */
-const CHANNEL_VERSION = 'v5';
+const CHANNEL_VERSION = 'v6';
 
 /** All old channel IDs that should be cleaned up. */
 const OLD_CHANNEL_IDS = [
@@ -60,6 +60,9 @@ const OLD_CHANNEL_IDS = [
   'water_reminders_moo_v4',
   'water_reminders_bell_v4',
   'water_reminders_default_v4',
+  'water_reminders_moo_v5',
+  'water_reminders_bell_v5',
+  'water_reminders_default_v5',
 ];
 
 /**
@@ -160,9 +163,37 @@ function getChannelId(sound: string): string {
  * matters for iOS. We still set it for cross-platform consistency.
  */
 function getSoundValue(sound: string): string | boolean {
-  if (sound === 'cow_moo') return 'cow_moo.mp3';
-  if (sound === 'cow_bell') return 'cow_bell.mp3';
+  if (sound === 'cow_moo') return Platform.OS === 'android' ? 'cow_moo' : 'cow_moo.mp3';
+  if (sound === 'cow_bell') return Platform.OS === 'android' ? 'cow_bell' : 'cow_bell.mp3';
   return true; // system default
+}
+
+/**
+ * Send an immediate test notification with the chosen sound.
+ */
+export async function sendTestNotification(sound: string): Promise<void> {
+  if (Platform.OS === 'web') return;
+
+  try {
+    const hasPermission = await requestNotificationPermissions();
+    if (!hasPermission) return;
+
+    const channelId = getChannelId(sound);
+    const soundFile = getSoundValue(sound);
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Water Cow 🐄💧',
+        body: sound === 'cow_bell' ? 'Ring ring! 🔔 Cow Bell reminder test!' : 'Moo! 🐄 Time to drink water test!',
+        data: { type: 'test' },
+        sound: soundFile,
+        ...(Platform.OS === 'android' && { channelId }),
+      },
+      trigger: null, // deliver immediately
+    });
+  } catch (error) {
+    console.warn('Failed to send test notification:', error);
+  }
 }
 
 /**

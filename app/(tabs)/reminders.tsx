@@ -19,7 +19,7 @@ import { PillButton } from '../../components/ui/PillButton';
 import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import type { ReminderSettings } from '../../utils/storage';
-import { requestNotificationPermissions } from '../../utils/notifications';
+import { requestNotificationPermissions, sendTestNotification } from '../../utils/notifications';
 
 const INTERVALS = [
   { label: '30 min', value: 30 },
@@ -465,6 +465,16 @@ export default function RemindersScreen() {
                   )}
                 </TouchableOpacity>
               ))}
+
+              {/* Immediate Test Notification Button */}
+              <TouchableOpacity
+                style={styles.testNotifyBtn}
+                onPress={() => sendTestNotification(settings.sound)}
+                activeOpacity={0.8}
+              >
+                <Feather name="bell" size={16} color={colors.primary} />
+                <Text style={styles.testNotifyText}>Test Notification Sound 🔔</Text>
+              </TouchableOpacity>
             </Card>
           </>
         )}
@@ -706,5 +716,23 @@ const getStyles = (colors: any) => StyleSheet.create({
   quickChipText: {
     fontFamily: Typography.fontFamily.bold,
     fontSize: Typography.size.xs,
+  },
+  testNotifyBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.sm,
+    backgroundColor: colors.surfaceBlue,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    borderRadius: BorderRadius.md,
+    marginTop: Spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  testNotifyText: {
+    fontFamily: Typography.fontFamily.semiBold,
+    fontSize: Typography.size.sm,
+    color: colors.primary,
   },
 });
