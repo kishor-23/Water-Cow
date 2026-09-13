@@ -40,7 +40,7 @@ const URGENT_MESSAGES = [
  * programmatically. The only way to apply new settings is to create a NEW
  * channel with a different ID. That's why we use a version suffix.
  */
-const CHANNEL_VERSION = 'v6';
+const CHANNEL_VERSION = 'v7';
 
 /** All old channel IDs that should be cleaned up. */
 const OLD_CHANNEL_IDS = [
@@ -63,6 +63,9 @@ const OLD_CHANNEL_IDS = [
   'water_reminders_moo_v5',
   'water_reminders_bell_v5',
   'water_reminders_default_v5',
+  'water_reminders_moo_v6',
+  'water_reminders_bell_v6',
+  'water_reminders_default_v6',
 ];
 
 /**
