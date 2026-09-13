@@ -1,0 +1,64 @@
+{
+  "expo": {
+    "name": "Water Cow",
+    "slug": "water-cow",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "watercow",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.watercow.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E8F4FD",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "com.watercow.app",
+      "permissions": [
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#E8F4FD",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "sounds": [
+            "./assets/sounds/cow_moo.mp3",
+            "./assets/sounds/cow_bell.mp3"
+          ]
+        }
+      ],
+      "expo-sharing",
+      "expo-audio",
+      "expo-asset"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bb4c1b4f-90c5-4d5a-9065-35ac27d3f359"
+      }
+    }
+  }
+}
