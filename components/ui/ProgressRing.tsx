@@ -88,7 +88,14 @@ export function ProgressRing({
 
       {/* Center text */}
       <View style={styles.textContainer}>
-        <Text style={[styles.consumed, { color: colors.textPrimary }]}>{consumed}</Text>
+        <Text
+          style={[styles.consumed, { color: colors.textPrimary }]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
+        >
+          {consumed}
+        </Text>
         <Text style={[styles.divider, { color: colors.textTertiary }]}>/ {goal}</Text>
       </View>
     </View>
@@ -103,14 +110,20 @@ const styles = StyleSheet.create({
   textContainer: {
     position: 'absolute',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
   },
   consumed: {
     fontFamily: Typography.fontFamily.bold,
     fontSize: Typography.size.xxl,
+    includeFontPadding: false,
+    textAlign: 'center',
   },
   divider: {
     fontFamily: Typography.fontFamily.regular,
     fontSize: Typography.size.md,
     marginTop: 2,
+    includeFontPadding: false,
+    textAlign: 'center',
   },
 });

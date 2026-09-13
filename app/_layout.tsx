@@ -42,20 +42,14 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    const hide = async () => {
-      try {
-        await SplashScreen.hideAsync();
-      } catch (e) {}
-    };
-
     if (fontsLoaded || fontError) {
-      hide();
+      SplashScreen.hideAsync().catch(() => {});
     }
-
-    // Safety fallback: ensure splash screen is hidden and app is visible within 1.5s
-    const timeout = setTimeout(hide, 1500);
-    return () => clearTimeout(timeout);
   }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   return (
     <ThemeProvider>

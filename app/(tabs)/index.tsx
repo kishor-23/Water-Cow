@@ -216,12 +216,14 @@ const getStyles = (colors: any) => StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
   },
   moodText: {
     fontFamily: Typography.fontFamily.medium,
     fontSize: Typography.size.sm,
     color: colors.textSecondary,
     textAlign: 'center',
+    flexWrap: 'wrap',
   },
 
   // Stats
@@ -249,6 +251,7 @@ const getStyles = (colors: any) => StyleSheet.create({
   nextDrinkInfo: {
     flex: 1,
     marginLeft: Spacing.md,
+    marginRight: Spacing.xs,
   },
   nextDrinkLabel: {
     fontFamily: Typography.fontFamily.regular,
@@ -264,6 +267,8 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontFamily: Typography.fontFamily.medium,
     fontSize: Typography.size.sm,
     color: colors.primary,
+    flexShrink: 0,
+    textAlign: 'right',
   },
 
   // Quick Add
@@ -292,6 +297,7 @@ const getStyles = (colors: any) => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.md,
     gap: 4,
   },
   customAddText: {
