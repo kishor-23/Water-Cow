@@ -52,7 +52,7 @@ react {
 
 // Copy custom sound files from assets/sounds to res/raw during build
 task copyCustomSounds(type: Copy) {
-    from "src/main/assets/sounds"
+    from "../../assets/sounds"
     into "src/main/res/raw"
     include "cow_moo.mp3", "cow_bell.mp3"
 }

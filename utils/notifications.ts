@@ -40,7 +40,7 @@ const URGENT_MESSAGES = [
  * programmatically. The only way to apply new settings is to create a NEW
  * channel with a different ID. That's why we use a version suffix.
  */
-const CHANNEL_VERSION = 'v7';
+const CHANNEL_VERSION = 'v8';
 
 /** All old channel IDs that should be cleaned up. */
 const OLD_CHANNEL_IDS = [
@@ -66,6 +66,9 @@ const OLD_CHANNEL_IDS = [
   'water_reminders_moo_v6',
   'water_reminders_bell_v6',
   'water_reminders_default_v6',
+  'water_reminders_moo_v7',
+  'water_reminders_bell_v7',
+  'water_reminders_default_v7',
 ];
 
 /**
@@ -120,7 +123,7 @@ export async function requestNotificationPermissions(): Promise<boolean> {
         vibrationPattern: [0, 250, 250, 250],
         lightColor: '#4A9FD8',
         enableVibrate: true,
-      }).catch((e) => console.warn('Failed to set moo channel:', e));
+      }).catch((e: any) => console.warn('Failed to set moo channel:', e));
 
       await Notifications.setNotificationChannelAsync(`water_reminders_bell_${CHANNEL_VERSION}`, {
         name: 'Water Reminders (Cow Bell)',
@@ -133,7 +136,7 @@ export async function requestNotificationPermissions(): Promise<boolean> {
         vibrationPattern: [0, 250, 250, 250],
         lightColor: '#4A9FD8',
         enableVibrate: true,
-      }).catch((e) => console.warn('Failed to set bell channel:', e));
+      }).catch((e: any) => console.warn('Failed to set bell channel:', e));
 
       await Notifications.setNotificationChannelAsync(`water_reminders_default_${CHANNEL_VERSION}`, {
         name: 'Water Reminders (Default)',
@@ -141,7 +144,7 @@ export async function requestNotificationPermissions(): Promise<boolean> {
         vibrationPattern: [0, 250, 250, 250],
         lightColor: '#4A9FD8',
         enableVibrate: true,
-      }).catch((e) => console.warn('Failed to set default channel:', e));
+      }).catch((e: any) => console.warn('Failed to set default channel:', e));
     }
 
     return true;
@@ -192,7 +195,7 @@ export async function sendTestNotification(sound: string): Promise<void> {
         sound: soundFile,
         ...(Platform.OS === 'android' && { channelId }),
       },
-      trigger: null, // deliver immediately
+      trigger: Platform.OS === 'android' ? ({ channelId } as any) : null,
     });
   } catch (error) {
     console.warn('Failed to send test notification:', error);
@@ -257,8 +260,9 @@ export async function scheduleReminders(settings: ReminderSettings): Promise<voi
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.DATE,
           date: nextReminder,
+          ...(Platform.OS === 'android' && { channelId }),
         },
-      }).catch((e) => console.warn('Failed to schedule notification:', e));
+      }).catch((e: any) => console.warn('Failed to schedule notification:', e));
 
       nextReminder = new Date(
         nextReminder.getTime() + settings.intervalMinutes * 60 * 1000
