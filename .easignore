@@ -1,0 +1,25 @@
+# .easignore - Files excluded from EAS Build upload archive
+
+# IDE and OS
+.idea/
+.vscode/
+.DS_Store
+*.pem
+
+# Local build outputs and caches
+.expo/
+dist/
+web-build/
+android/.gradle
+android/app/build
+android/build
+
+# Local SDKs and large binary downloads
+jdk-17/
+jdk-17.zip
+android-sdk/
+*.zip
+*.tar.gz
+
+# Node modules
+node_modules/
