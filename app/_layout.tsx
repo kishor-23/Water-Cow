@@ -1,7 +1,7 @@
 /**
- * Root Layout — Font loading, providers, and splash screen.
+ * Root Layout — Font loading, providers, and launch screen.
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -15,8 +15,9 @@ import {
 } from '@expo-google-fonts/inter';
 import { HydrationProvider } from '../context/HydrationContext';
 import { ThemeProvider, useTheme } from '../constants/theme';
+import { CustomLaunchScreen } from '../components/ui/CustomLaunchScreen';
 
-// Prevent the splash screen from auto-hiding
+// Prevent the native splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function AppContent() {
@@ -33,6 +34,7 @@ function AppContent() {
 }
 
 export default function RootLayout() {
+  const [showLaunchScreen, setShowLaunchScreen] = useState(true);
   const [fontsLoaded, fontError] = useFonts({
     Inter_300Light,
     Inter_400Regular,
@@ -55,8 +57,12 @@ export default function RootLayout() {
     <ThemeProvider>
       <HydrationProvider>
         <AppContent />
+        {showLaunchScreen && (
+          <CustomLaunchScreen onFinish={() => setShowLaunchScreen(false)} />
+        )}
       </HydrationProvider>
     </ThemeProvider>
   );
 }
+
 
