@@ -4,7 +4,7 @@
     "slug": "water-cow",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/waterCowWithGlass.png",
+    "icon": "./assets/favicon.png",
     "userInterfaceStyle": "automatic",
     "scheme": "watercow",
     "ios": {
@@ -14,9 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E8F4FD",
-        "foregroundImage": "./assets/waterCowWithGlass.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/favicon.png"
       },
       "package": "com.watercow.app",
       "permissions": [
@@ -27,7 +25,7 @@
       ]
     },
     "web": {
-      "favicon": "./assets/waterCowWithGlass.png",
+      "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -37,7 +35,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#E8F4FD",
-          "image": "./assets/waterCowWithGlass.png",
+          "image": "./assets/favicon.png",
           "imageWidth": 240
         }
       ],

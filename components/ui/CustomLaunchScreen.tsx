@@ -106,7 +106,7 @@ export function CustomLaunchScreen({ onFinish }: CustomLaunchScreenProps) {
       <Animated.View style={[styles.contentCard, mascotAnimatedStyle]}>
         <View style={styles.imageWrapper}>
           <Image
-            source={require('../../assets/waterCowWithGlass.png')}
+            source={require('../../assets/favicon.png')}
             style={styles.mascotImage}
             resizeMode="contain"
           />
