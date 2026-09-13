@@ -23,18 +23,15 @@ export function CustomLaunchScreen({ onFinish }: CustomLaunchScreenProps) {
 
   // Animation values
   const floatY = useSharedValue(0);
-  const scale = useSharedValue(0.85);
-  const opacity = useSharedValue(0);
+  const scale = useSharedValue(1);
+  const opacity = useSharedValue(1);
   const glowScale = useSharedValue(0.9);
   const progressWidth = useSharedValue(0);
 
   useEffect(() => {
-    // Entrance fade-in and scale up
-    opacity.value = withTiming(1, { duration: 600 });
-    scale.value = withTiming(1, {
-      duration: 700,
-      easing: Easing.out(Easing.back(1.5)),
-    });
+    // Instant visibility (no fade-in delay)
+    opacity.value = 1;
+    scale.value = 1;
 
     // Gentle vertical floating loop
     floatY.value = withRepeat(
@@ -56,10 +53,10 @@ export function CustomLaunchScreen({ onFinish }: CustomLaunchScreenProps) {
       true
     );
 
-    // Progress bar fill to 100% over 1.4s
+    // Fast progress bar fill to 100% over 600ms
     progressWidth.value = withTiming(
       1,
-      { duration: 1400, easing: Easing.out(Easing.quad) },
+      { duration: 600, easing: Easing.out(Easing.quad) },
       (finished) => {
         if (finished && onFinish) {
           runOnJS(onFinish)();
