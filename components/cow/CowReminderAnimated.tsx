@@ -30,17 +30,21 @@ interface CowReminderAnimatedProps {
   enabled?: boolean;
   intervalMinutes?: number;
   onSoundTriggered?: () => void;
+  initialPose?: ReminderCowPose;
+  hidePoseSelector?: boolean;
 }
 
 export function CowReminderAnimated({
   enabled = true,
   intervalMinutes = 45,
   onSoundTriggered,
+  initialPose = 'bell',
+  hidePoseSelector = false,
 }: CowReminderAnimatedProps) {
   const { colors, isDark } = useTheme();
 
   // Active animation pose
-  const [pose, setPose] = useState<ReminderCowPose>('bell');
+  const [pose, setPose] = useState<ReminderCowPose>(initialPose);
   const [speechText, setSpeechText] = useState<string>('');
   const [showSpeech, setShowSpeech] = useState(false);
 
@@ -267,37 +271,39 @@ export function CowReminderAnimated({
   return (
     <View style={styles.container}>
       {/* Pose Selector Pills */}
-      <View style={[styles.poseSelector, { backgroundColor: colors.surfaceBlue }]}>
-        <TouchableOpacity
-          style={[styles.poseBtn, pose === 'bell' && [styles.poseBtnActive, { backgroundColor: colors.primary }]]}
-          onPress={() => setPose('bell')}
-          activeOpacity={0.8}
-        >
-          <Text style={[styles.poseBtnText, { color: pose === 'bell' ? colors.textOnPrimary : colors.textSecondary }]}>
-            🔔 Bell Alarm
-          </Text>
-        </TouchableOpacity>
+      {!hidePoseSelector && (
+        <View style={[styles.poseSelector, { backgroundColor: colors.surfaceBlue }]}>
+          <TouchableOpacity
+            style={[styles.poseBtn, pose === 'bell' && [styles.poseBtnActive, { backgroundColor: colors.primary }]]}
+            onPress={() => setPose('bell')}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.poseBtnText, { color: pose === 'bell' ? colors.textOnPrimary : colors.textSecondary }]}>
+              🔔 Bell Alarm
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.poseBtn, pose === 'sipping' && [styles.poseBtnActive, { backgroundColor: colors.primary }]]}
-          onPress={() => setPose('sipping')}
-          activeOpacity={0.8}
-        >
-          <Text style={[styles.poseBtnText, { color: pose === 'sipping' ? colors.textOnPrimary : colors.textSecondary }]}>
-            🥛 Sipping
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.poseBtn, pose === 'sipping' && [styles.poseBtnActive, { backgroundColor: colors.primary }]]}
+            onPress={() => setPose('sipping')}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.poseBtnText, { color: pose === 'sipping' ? colors.textOnPrimary : colors.textSecondary }]}>
+              🥛 Sipping
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.poseBtn, pose === 'cheering' && [styles.poseBtnActive, { backgroundColor: colors.primary }]]}
-          onPress={() => setPose('cheering')}
-          activeOpacity={0.8}
-        >
-          <Text style={[styles.poseBtnText, { color: pose === 'cheering' ? colors.textOnPrimary : colors.textSecondary }]}>
-            🎉 Cheering
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={[styles.poseBtn, pose === 'cheering' && [styles.poseBtnActive, { backgroundColor: colors.primary }]]}
+            onPress={() => setPose('cheering')}
+            activeOpacity={0.8}
+          >
+            <Text style={[styles.poseBtnText, { color: pose === 'cheering' ? colors.textOnPrimary : colors.textSecondary }]}>
+              🎉 Cheering
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Animated Speech Bubble */}
       {showSpeech && (

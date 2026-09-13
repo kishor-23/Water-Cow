@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useHydration } from '../../context/HydrationContext';
-import { CowAnimated } from '../../components/cow/CowAnimated';
+import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { ProgressRing } from '../../components/ui/ProgressRing';
 import { StatsCard } from '../../components/ui/StatsCard';
 import { Card } from '../../components/ui/Card';
@@ -79,9 +79,9 @@ export default function HomeScreen() {
               goal={`${formatLiters(profile.dailyGoal)} L`}
             />
 
-            {/* Cow Mascot */}
+            {/* Cow Mascot (Sipping Water) */}
             <View style={styles.cowContainer}>
-              <CowAnimated mood={cowMood} size={120} showMessage={false} />
+              <CowReminderAnimated initialPose="sipping" hidePoseSelector={true} />
             </View>
           </View>
 
