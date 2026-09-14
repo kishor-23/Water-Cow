@@ -23,3 +23,8 @@ android-sdk/
 
 # Node modules
 node_modules/
+
+# Auxiliary websites (documentation & download landing pages)
+documentation-site/
+download-site/
+
