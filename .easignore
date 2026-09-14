@@ -1,7 +1,11 @@
 # .easignore - Files excluded from EAS Build upload archive
 
 # IDE, OS, and Git repository
+.git
 .git/
+.git/**
+**/.git
+**/.git/**
 .idea/
 .vscode/
 .DS_Store
@@ -63,11 +67,15 @@ node_modules/**
 **/node_modules/
 **/node_modules/**
 
-# Auxiliary websites (documentation & download landing pages)
+# Auxiliary websites and scratch files
 documentation-site
 documentation-site/
 documentation-site/**
 download-site
 download-site/
 download-site/**
+scratch
+scratch/
+scratch/**
+
 

@@ -608,15 +608,24 @@
     }
 
     .qr-box {
-      width: 110px;
-      height: 110px;
-      background: var(--deep);
+      width: 120px;
+      height: 120px;
+      background: #FFFFFF;
       border-radius: 18px;
+      padding: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      color: #fff;
+      box-shadow: 0 8px 24px rgba(18, 41, 77, 0.12);
+      border: 1px solid var(--line);
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
     }
 
     @media (max-width: 600px) {
@@ -692,7 +701,7 @@
         <img src="assets/favicon.png" alt="Water Cow Logo">
         Water Cow
       </a>
-      <a class="nav-cta" href="#download">Download APK</a>
+      <a class="nav-cta" href="https://expo.dev/artifacts/eas/QdGL1j3zi4GqaDo3rmPsaKRx55-AMMTzZQrHv4znO3c.apk" download="water-cow.apk">Download APK</a>
     </div>
   </nav>
 
@@ -713,7 +722,7 @@
         <h1>Drink water.<br>Get a <span class="accent">moo.</span></h1>
         <p class="lede">Drink when you need to. Know how much is left. Gentle reminders — just a cow who cares. 🐄💧</p>
         <div class="hero-ctas">
-          <a class="btn-primary" href="#download">
+          <a class="btn-primary" href="https://expo.dev/artifacts/eas/QdGL1j3zi4GqaDo3rmPsaKRx55-AMMTzZQrHv4znO3c.apk" download="water-cow.apk">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14" />
             </svg>
@@ -829,15 +838,11 @@
       </p>
 
       <div class="download-panel">
-        <div class="qr-box">
-          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="14" y="14" width="3" height="3" />
-            <rect x="18" y="14" width="3" height="3" />
-            <rect x="14" y="18" width="7" height="3" />
-          </svg>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div class="qr-box" title="Scan to download APK on mobile phone">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fexpo.dev%2Fartifacts%2Feas%2FQdGL1j3zi4GqaDo3rmPsaKRx55-AMMTzZQrHv4znO3c.apk" alt="Scan QR Code to download Water Cow APK">
+          </div>
+          <span style="font-size: 11px; font-weight: 700; color: var(--water-dark); letter-spacing: 0.05em; text-transform: uppercase;">Scan with Phone 📱</span>
         </div>
 
         <div style="text-align: left; flex: 1;">
@@ -846,7 +851,7 @@
             File: <code style="background: #fff; padding: 2px 8px; border-radius: 6px;">water-cow.apk</code> · 15 MB ·
             Android 8.0+
           </p>
-          <a class="btn-primary" href="water-cow.apk" download="water-cow.apk" style="padding: 14px 24px; font-size: 16px;">
+          <a class="btn-primary" href="https://expo.dev/artifacts/eas/QdGL1j3zi4GqaDo3rmPsaKRx55-AMMTzZQrHv4znO3c.apk" download="water-cow.apk" style="padding: 14px 24px; font-size: 16px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14" />
             </svg>
@@ -867,7 +872,7 @@
         </div>
         <div class="foot-links">
           <a href="#features">Features</a>
-          <a href="#download">Download APK</a>
+          <a href="https://expo.dev/artifacts/eas/QdGL1j3zi4GqaDo3rmPsaKRx55-AMMTzZQrHv4znO3c.apk" download="water-cow.apk">Download APK</a>
         </div>
         <div style="font-size: 13px; color: var(--deep-soft);">
           © 2026 Water Cow · Built for Android
