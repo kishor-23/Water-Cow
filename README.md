@@ -2,7 +2,7 @@
 
 Water Cow is a feature-packed React Native & Expo mobile application for tracking daily water intake, managing reminders, displaying custom notification sounds, and syncing hydration progress with an Android home screen widget.
 
-![Water Cow Mascot](assets/icon.png)
+![Water Cow Mascot](assets/favicon.png)
 
 ## Key Features
 
