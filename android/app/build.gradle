@@ -97,8 +97,8 @@ android {
         abi {
             reset()
             enable true
-            universalApk true
-            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            universalApk false
+            include "arm64-v8a", "armeabi-v7a"
         }
     }
     signingConfigs {
