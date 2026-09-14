@@ -8,31 +8,66 @@
 *.pem
 
 # Local build outputs and caches (wildcards match root & subdirectories)
+.expo
 .expo/
+.expo/**
+dist
 dist/
+dist/**
+web-build
 web-build/
-**/build/
-**/.gradle/
-**/.cxx/
-**/.kotlin/
-build/
+web-build/**
+.gradle
 .gradle/
+.gradle/**
+android/.gradle
+android/.gradle/
+android/.gradle/**
+**/build
+**/build/
+**/build/**
+**/.gradle
+**/.gradle/
+**/.gradle/**
+**/.cxx
+**/.cxx/
+**/.cxx/**
+**/.kotlin
+**/.kotlin/
+**/.kotlin/**
+build
+build/
+build/**
+.cxx
 .cxx/
+.cxx/**
 
 # Local SDKs and large binary downloads
+jdk-17
 jdk-17/
+jdk-17/**
 jdk-17.zip
+android-sdk
 android-sdk/
+android-sdk/**
 *.zip
 *.tar.gz
 *.apk
 *.aab
 
 # Node modules
+node_modules
 node_modules/
+node_modules/**
+**/node_modules
 **/node_modules/
+**/node_modules/**
 
 # Auxiliary websites (documentation & download landing pages)
+documentation-site
 documentation-site/
+documentation-site/**
+download-site
 download-site/
+download-site/**
 
