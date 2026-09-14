@@ -58,11 +58,12 @@ export default function HomeScreen() {
   const displayName = profile.name && profile.name.trim() ? profile.name : 'Buddy';
 
   const MASCOT_QUOTES = [
-    "A healthier you makes a happier moo! 💖",
-    "Drink water, stay fresh, feel awesome! 💧",
-    "Glug glug! Every drop counts! 🥛",
-    "Hydration power-up in progress! ✨",
-    "Moo! Small sips lead to big health! 💙",
+    "Oii! 🐮",
+    "Howdy! 🤠",
+    "Hi! 👋",
+    "Moo! 🥛",
+    "Sip! 💧",
+    "Yo! ✨",
   ];
 
   const [quoteIndex, setQuoteIndex] = React.useState(0);

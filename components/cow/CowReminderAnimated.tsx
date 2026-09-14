@@ -260,21 +260,19 @@ export function CowReminderAnimated({
     // 3. Speech quotes (speech bubble on tap)
     if (enableSpeechBubble) {
       const defaultShortQuotes = [
-        "Moo! Stay hydrated! 🐄💧",
-        "Ring ding! Time for water! 🔔",
-        "Glug glug glug! 🥛",
-        "Hydration power-up! ✨",
-        "You're doing great! 💙",
-        "Drink up, friend! 🌊",
-        "Refreshing! 🧊",
-        "Mooo! Happy hydration! 🐄",
+        "Oii! 🐮",
+        "Howdy! 🤠",
+        "Hi! 👋",
+        "Moo! 🥛",
+        "Sip! 💧",
+        "Yo! ✨",
       ];
       const defaultLongQuotes = [
-        `🔔 Moo! I'll remind you every ${intervalMinutes} min!`,
-        "💧 Drink up! Hydrated cows make happy moos!",
-        "⏰ Ring ring! Time for fresh water!",
-        "🥛 Glug glug... staying healthy and refreshed!",
-        "✨ You're doing amazing! Keep drinking water!",
+        "Oii! 🐮",
+        "Howdy! 🤠",
+        "Hi! 👋",
+        "Moo! 🥛",
+        "Sip! 💧",
       ];
       const quotes = customQuotes && customQuotes.length > 0
         ? customQuotes
@@ -509,18 +507,20 @@ const styles = StyleSheet.create({
 
   // Speech Bubble
   speechBubble: {
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
-    borderRadius: BorderRadius.lg,
+    paddingHorizontal: Spacing.sm,
+    paddingVertical: 4,
+    borderRadius: BorderRadius.md,
     borderWidth: 1.5,
-    marginBottom: Spacing.xs,
+    marginBottom: 4,
     alignItems: 'center',
+    alignSelf: 'center',
+    maxWidth: 130,
     position: 'relative',
     ...Shadows.sm,
   },
   speechText: {
     fontFamily: Typography.fontFamily.bold,
-    fontSize: Typography.size.xs,
+    fontSize: 11,
     textAlign: 'center',
   },
   speechTail: {
