@@ -89,6 +89,7 @@ export default function HomeScreen() {
                 hidePoseSelector={true}
                 hideTapHint={true}
                 size={120}
+                enableSoundOnTap={true}
                 enableSpeechBubble={true}
                 shortSpeech={true}
               />

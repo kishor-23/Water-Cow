@@ -9,13 +9,13 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useHydration } from '../../context/HydrationContext';
 import { Card } from '../../components/ui/Card';
 import { PillButton } from '../../components/ui/PillButton';
-import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { exportBackupFile, importBackupFile } from '../../utils/backup';
 import { HomeScreenWidgetModal } from '../../components/ui/HomeScreenWidgetModal';
@@ -89,13 +89,12 @@ export default function SettingsScreen() {
           {/* Header */}
           <Text style={styles.title}>Settings</Text>
 
-          {/* Cow */}
-          <View style={styles.cowSection}>
-            <CowReminderAnimated
-              initialPose="sipping"
-              hidePoseSelector={true}
-              hideTapHint={true}
-              size={100}
+          {/* App Logo */}
+          <View style={styles.logoSection}>
+            <Image
+              source={require('../../assets/favicon.png')}
+              style={styles.settingsLogo}
+              resizeMode="contain"
             />
           </View>
 
@@ -374,9 +373,13 @@ const getStyles = (colors: any) => StyleSheet.create({
     marginBottom: Spacing.lg,
   },
 
-  cowSection: {
+  logoSection: {
     alignItems: 'center',
     marginBottom: Spacing.xl,
+  },
+  settingsLogo: {
+    width: 100,
+    height: 100,
   },
 
   // Section Card

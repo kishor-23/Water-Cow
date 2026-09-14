@@ -242,10 +242,11 @@ export function CowReminderAnimated({
       }),
     ]).start();
 
-    // 2. Play cute sound (only if sound on tap is explicitly enabled, e.g. Notification/Reminders screen)
+    // 2. Play cute sound (random moo or bell sound on tap)
     if (enableSoundOnTap) {
       try {
-        const soundFile = pose === 'bell'
+        const isBell = Math.random() < 0.5;
+        const soundFile = isBell
           ? require('../../assets/sounds/cow_bell.mp3')
           : require('../../assets/sounds/cow_moo.mp3');
         const player = createAudioPlayer(soundFile);
@@ -256,17 +257,17 @@ export function CowReminderAnimated({
       }
     }
 
-    // 3. Speech quotes (only if speech bubble is explicitly enabled)
+    // 3. Speech quotes (speech bubble on tap)
     if (enableSpeechBubble) {
       const defaultShortQuotes = [
-        "Hi! 👋",
-        "Moo! 🐄",
-        "Hello! ✨",
-        "Drink up! 💧",
-        "Glug glug! 🥛",
-        "Stay cool! 😎",
-        "Hydrate! 🌊",
-        "Yay! 🎉",
+        "Moo! Stay hydrated! 🐄💧",
+        "Ring ding! Time for water! 🔔",
+        "Glug glug glug! 🥛",
+        "Hydration power-up! ✨",
+        "You're doing great! 💙",
+        "Drink up, friend! 🌊",
+        "Refreshing! 🧊",
+        "Mooo! Happy hydration! 🐄",
       ];
       const defaultLongQuotes = [
         `🔔 Moo! I'll remind you every ${intervalMinutes} min!`,
@@ -284,7 +285,7 @@ export function CowReminderAnimated({
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
       setSpeechText(quote);
       setShowSpeech(true);
-      setTimeout(() => setShowSpeech(false), shortSpeech ? 2000 : 3500);
+      setTimeout(() => setShowSpeech(false), shortSpeech ? 2500 : 3500);
     }
   };
 
