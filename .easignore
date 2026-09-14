@@ -1,6 +1,7 @@
 # .easignore - Files excluded from EAS Build upload archive
 
-# IDE and OS
+# IDE, OS, and Git repository
+.git/
 .idea/
 .vscode/
 .DS_Store
