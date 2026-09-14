@@ -21,6 +21,12 @@ import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import type { ReminderSettings } from '../../utils/storage';
 import { requestNotificationPermissions, sendTestNotification } from '../../utils/notifications';
+import {
+  getNextReminderTime,
+  formatTime,
+  getRelativeTime,
+  getCountdownString,
+} from '../../utils/hydration';
 
 const INTERVALS = [
   { label: '30 min', value: 30 },
@@ -47,6 +53,18 @@ export default function RemindersScreen() {
   const { colors } = useTheme();
   const styles = getStyles(colors);
   const [settings, setSettings] = useState<ReminderSettings>(state.reminderSettings);
+
+  // Live countdown timer state
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextReminder = getNextReminderTime(state.lastDrinkTime, settings.intervalMinutes);
+  const countdownText = getCountdownString(nextReminder);
 
   const presets = [30, 60, 120, 180];
   const isCustom = !presets.includes(settings.intervalMinutes);
@@ -235,6 +253,30 @@ export default function RemindersScreen() {
 
         {settings.enabled && (
           <>
+            {/* Live Countdown Timer & Next Notification Banner */}
+            <Card style={[styles.sectionCard, { backgroundColor: colors.surfaceBlue, borderColor: colors.primaryLight, borderWidth: 1 }]}>
+              <Text style={styles.sectionLabel}>Next Notification & Timer</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontFamily: Typography.fontFamily.semiBold, fontSize: Typography.size.xl, color: colors.textPrimary }}>
+                    {formatTime(nextReminder)}
+                  </Text>
+                  <Text style={{ fontFamily: Typography.fontFamily.medium, fontSize: Typography.size.sm, color: colors.textTertiary, marginTop: 2 }}>
+                    {getRelativeTime(nextReminder)}
+                  </Text>
+                </View>
+
+                <View style={{ alignItems: 'flex-end' }}>
+                  <View style={{ backgroundColor: colors.surface, paddingHorizontal: 12, paddingVertical: 6, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: colors.primaryLight, flexDirection: 'row', alignItems: 'center' }}>
+                    <Feather name="clock" size={14} color={colors.primary} style={{ marginRight: 6 }} />
+                    <Text style={{ fontFamily: Typography.fontFamily.bold, fontSize: Typography.size.md, color: colors.primary }}>
+                      {countdownText}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </Card>
+
             {/* Reminder Interval */}
             <Card style={styles.sectionCard}>
               <Text style={styles.sectionLabel}>Reminder interval</Text>

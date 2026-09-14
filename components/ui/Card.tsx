@@ -2,12 +2,12 @@
  * Card — Frosted glass card with subtle shadow and rounded corners.
  */
 import React, { type ReactNode } from 'react';
-import { View, StyleSheet, type ViewStyle } from 'react-native';
+import { View, StyleSheet, type ViewStyle, type StyleProp } from 'react-native';
 import { useTheme, BorderRadius, Shadows, Spacing } from '../../constants/theme';
 
 interface CardProps {
   children: ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   variant?: 'default' | 'frosted' | 'blue';
 }
 

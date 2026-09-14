@@ -1,7 +1,7 @@
 /**
  * Home Screen — Classic dashboard layout with side-by-side Progress Ring & Cow Mascot.
  */
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -25,6 +25,7 @@ import {
   formatTime,
   getRelativeTime,
   getNextReminderTime,
+  getCountdownString,
 } from '../../utils/hydration';
 
 export default function HomeScreen() {
@@ -36,9 +37,22 @@ export default function HomeScreen() {
   const { profile, totalConsumed, reminderSettings, lastDrinkTime } = state;
   const remaining = Math.max(profile.dailyGoal - totalConsumed, 0);
 
+  // Ticking timer state for live countdown
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const nextReminder = useMemo(() => {
     return getNextReminderTime(lastDrinkTime, reminderSettings.intervalMinutes);
-  }, [lastDrinkTime, reminderSettings.intervalMinutes]);
+  }, [lastDrinkTime, reminderSettings.intervalMinutes, now]);
+
+  const countdownText = useMemo(() => {
+    return getCountdownString(nextReminder);
+  }, [nextReminder, now]);
 
   const greeting = getGreeting();
   const displayName = profile.name && profile.name.trim() ? profile.name : 'Buddy';
@@ -96,10 +110,14 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* HERO ROW: Side-by-side Progress Ring & Animated Cow Mascot (Image 1) */}
+        {/* HERO ROW: Side-by-side Progress Ring & Animated Cow Mascot */}
         <View style={styles.heroRow}>
-          {/* Progress Ring */}
-          <View style={styles.ringContainer}>
+          {/* Progress Ring (Tapping navigates to History) */}
+          <TouchableOpacity
+            style={styles.ringContainer}
+            onPress={() => router.push('/history')}
+            activeOpacity={0.8}
+          >
             <ProgressRing
               progress={progress}
               size={175}
@@ -107,7 +125,7 @@ export default function HomeScreen() {
               consumed={formatLiters(totalConsumed)}
               goal={`${formatLiters(profile.dailyGoal)} L`}
             />
-          </View>
+          </TouchableOpacity>
 
           {/* Cow Mascot */}
           <View style={styles.mascotContainer}>
@@ -124,18 +142,19 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Mood Message Pill Card (Image 1) */}
+        {/* Mood Message Pill Card */}
         <View style={styles.moodPillCard}>
           <Text style={styles.moodPillText}>{moodMessage}</Text>
         </View>
 
-        {/* SECTION 2: Stats Grid */}
+        {/* SECTION 2: Stats Grid with Direct Navigation to History & Reminders */}
         <View style={styles.statsRow}>
           <StatsCard
             icon="droplet"
             value={formatWater(totalConsumed)}
             label="Consumed"
             color={colors.primary}
+            onPress={() => router.push('/history')}
           />
           <View style={{ width: Spacing.xs }} />
           <StatsCard
@@ -143,6 +162,7 @@ export default function HomeScreen() {
             value={formatWater(remaining)}
             label="Remaining"
             color={colors.warning}
+            onPress={() => router.push('/history')}
           />
           <View style={{ width: Spacing.xs }} />
           <StatsCard
@@ -150,24 +170,33 @@ export default function HomeScreen() {
             value={formatTime(nextReminder)}
             label={getRelativeTime(nextReminder)}
             color={colors.accentCyan}
+            onPress={() => router.push('/reminders')}
           />
         </View>
 
-        {/* SECTION 3: Next Drink Reminder Card */}
-        <Card style={styles.nextDrinkCard}>
-          <View style={styles.nextDrinkRow}>
-            <View style={styles.nextDrinkIconContainer}>
-              <Feather name="bell" size={20} color={colors.primary} />
+        {/* SECTION 3: Next Drink Reminder Card with Ticking Countdown Timer */}
+        <TouchableOpacity activeOpacity={0.9} onPress={() => router.push('/reminders')}>
+          <Card style={styles.nextDrinkCard}>
+            <View style={styles.nextDrinkRow}>
+              <View style={styles.nextDrinkIconContainer}>
+                <Feather name="bell" size={20} color={colors.primary} />
+              </View>
+              <View style={styles.nextDrinkInfo}>
+                <Text style={styles.nextDrinkLabel}>Next Notification & Timer</Text>
+                <Text style={styles.nextDrinkTime}>{formatTime(nextReminder)}</Text>
+              </View>
+              <View style={{ alignItems: 'flex-end' }}>
+                <View style={[styles.timerBadge, { backgroundColor: colors.surfaceBlue }]}>
+                  <Feather name="clock" size={12} color={colors.primary} style={{ marginRight: 4 }} />
+                  <Text style={[styles.timerBadgeText, { color: colors.primary }]}>{countdownText}</Text>
+                </View>
+                <Text style={styles.nextDrinkRelative}>
+                  {getRelativeTime(nextReminder)}
+                </Text>
+              </View>
             </View>
-            <View style={styles.nextDrinkInfo}>
-              <Text style={styles.nextDrinkLabel}>Next Drink Reminder</Text>
-              <Text style={styles.nextDrinkTime}>{formatTime(nextReminder)}</Text>
-            </View>
-            <Text style={styles.nextDrinkRelative}>
-              {getRelativeTime(nextReminder)}
-            </Text>
-          </View>
-        </Card>
+          </Card>
+        </TouchableOpacity>
 
         {/* SECTION 4: Quick Add Action Button */}
         <TouchableOpacity
@@ -315,10 +344,23 @@ const getStyles = (colors: any) => StyleSheet.create({
   },
   nextDrinkRelative: {
     fontFamily: Typography.fontFamily.medium,
-    fontSize: Typography.size.sm,
-    color: colors.primary,
+    fontSize: Typography.size.xs,
+    color: colors.textTertiary,
     flexShrink: 0,
     textAlign: 'right',
+    marginTop: 2,
+  },
+  timerBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: BorderRadius.full,
+    marginBottom: 2,
+  },
+  timerBadgeText: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: Typography.size.xs,
   },
 
   // Quick Add Button

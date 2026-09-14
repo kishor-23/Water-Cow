@@ -97,6 +97,24 @@ export function getRelativeTime(futureDate: Date): string {
 }
 
 /**
+ * Format countdown timer as "HH:MM:SS" or "MM:SS".
+ */
+export function getCountdownString(futureDate: Date): string {
+  const diffMs = Math.max(0, futureDate.getTime() - Date.now());
+  const totalSec = Math.floor(diffMs / 1000);
+  const hours = Math.floor(totalSec / 3600);
+  const minutes = Math.floor((totalSec % 3600) / 60);
+  const seconds = totalSec % 60;
+
+  const pad = (num: number) => num.toString().padStart(2, '0');
+
+  if (hours > 0) {
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+  }
+  return `${pad(minutes)}:${pad(seconds)}`;
+}
+
+/**
  * Get today's date key (YYYY-MM-DD) for storage.
  */
 export function getTodayKey(): string {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 
@@ -8,13 +8,14 @@ interface StatsCardProps {
   value: string;
   label: string;
   color?: string;
+  onPress?: () => void;
 }
 
-export function StatsCard({ icon, value, label, color }: StatsCardProps) {
+export function StatsCard({ icon, value, label, color, onPress }: StatsCardProps) {
   const { colors } = useTheme();
   const activeColor = color || colors.primary;
 
-  return (
+  const content = (
     <View style={[styles.card, { backgroundColor: colors.surface }]}>
       <View style={[styles.iconContainer, { backgroundColor: activeColor + '15' }]}>
         <Feather name={icon} size={18} color={activeColor} />
@@ -37,6 +38,20 @@ export function StatsCard({ icon, value, label, color }: StatsCardProps) {
       </Text>
     </View>
   );
+
+  if (onPress) {
+    return (
+      <TouchableOpacity
+        style={{ flex: 1 }}
+        onPress={onPress}
+        activeOpacity={0.75}
+      >
+        {content}
+      </TouchableOpacity>
+    );
+  }
+
+  return <View style={{ flex: 1 }}>{content}</View>;
 }
 
 const styles = StyleSheet.create({

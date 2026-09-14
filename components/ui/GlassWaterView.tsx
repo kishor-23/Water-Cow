@@ -543,7 +543,6 @@ export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewPro
               )}
             </Svg>
           </Animated.View>
-          <Text style={[styles.tapHintText, { color: colors.primary }]}>Tap glass for wave shake 🥛</Text>
         </TouchableOpacity>
       )}
 

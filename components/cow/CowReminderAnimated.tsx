@@ -476,13 +476,6 @@ export function CowReminderAnimated({
           </Svg>
         </Animated.View>
       </TouchableOpacity>
-
-      {/* Tap Hint */}
-      {!hideTapHint && (
-        <Text style={[styles.tapHint, { color: colors.textTertiary }]}>
-          Tap the cow to test moo / reminder audio 🐮
-        </Text>
-      )}
     </View>
   );
 }
