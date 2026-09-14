@@ -198,27 +198,30 @@ export default function HomeScreen() {
           </Card>
         </TouchableOpacity>
 
-        {/* SECTION 4: Quick Add Action Button */}
-        <TouchableOpacity
-          style={styles.quickAddButton}
-          onPress={() => addWater(profile.quickAddAmount || 250)}
-          activeOpacity={0.85}
-        >
-          <View style={styles.quickAddContent}>
-            <Feather name="plus" size={22} color={colors.textOnPrimary} />
-            <Text style={styles.quickAddText}>+ {formatWater(profile.quickAddAmount || 250)} Quick Drink</Text>
-          </View>
-        </TouchableOpacity>
+        {/* SECTION 4: Dual Action Row (Left: Custom Log | Right: Quick Drink) */}
+        <View style={styles.actionRow}>
+          {/* Left: Custom Log */}
+          <TouchableOpacity
+            style={styles.customAddButton}
+            onPress={() => router.push('/add')}
+            activeOpacity={0.8}
+          >
+            <Feather name="edit-3" size={16} color={colors.primary} />
+            <Text style={styles.customAddText}>Custom Log</Text>
+          </TouchableOpacity>
 
-        {/* Custom Log Link */}
-        <TouchableOpacity
-          style={styles.customAddButton}
-          onPress={() => router.push('/add')}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.customAddText}>Log custom amount</Text>
-          <Feather name="chevron-right" size={15} color={colors.primary} />
-        </TouchableOpacity>
+          {/* Right: Quick Add Button */}
+          <TouchableOpacity
+            style={styles.quickAddButton}
+            onPress={() => addWater(profile.quickAddAmount || 250)}
+            activeOpacity={0.85}
+          >
+            <Feather name="plus" size={18} color={colors.textOnPrimary} />
+            <Text style={styles.quickAddText} numberOfLines={1}>
+              + {formatWater(profile.quickAddAmount || 250)} Quick
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -363,38 +366,47 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontSize: Typography.size.xs,
   },
 
-  // Quick Add Button
-  quickAddButton: {
-    backgroundColor: colors.primary,
-    borderRadius: BorderRadius.xl,
-    paddingVertical: Spacing.lg,
-    alignItems: 'center',
-    marginBottom: Spacing.md,
-    ...Shadows.md,
-  },
-  quickAddContent: {
+  // Action Row (Single Row Layout)
+  actionRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
+    gap: Spacing.md,
+    marginBottom: Spacing.md,
   },
-  quickAddText: {
-    fontFamily: Typography.fontFamily.semiBold,
-    fontSize: Typography.size.lg,
-    color: colors.textOnPrimary,
-  },
-
-  // Custom Add
   customAddButton: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    gap: 4,
+    gap: Spacing.xs,
+    backgroundColor: colors.surfaceBlue,
+    borderWidth: 1.5,
+    borderColor: colors.primaryLight,
+    borderRadius: BorderRadius.xl,
+    paddingVertical: 14,
+    paddingHorizontal: Spacing.sm,
+    ...Shadows.sm,
   },
   customAddText: {
-    fontFamily: Typography.fontFamily.medium,
-    fontSize: Typography.size.sm,
+    fontFamily: Typography.fontFamily.semiBold,
+    fontSize: Typography.size.md,
     color: colors.primary,
+  },
+  quickAddButton: {
+    flex: 1.2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: colors.primary,
+    borderRadius: BorderRadius.xl,
+    paddingVertical: 14,
+    paddingHorizontal: Spacing.sm,
+    ...Shadows.md,
+  },
+  quickAddText: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: Typography.size.md,
+    color: colors.textOnPrimary,
   },
 });
