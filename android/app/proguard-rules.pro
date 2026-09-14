@@ -7,7 +7,13 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# react-native-reanimated
+# Optimization directives
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+
+# react-native-reanimated & React Native
 -keep class com.swmansion.reanimated.** { *; }
 -keep class com.facebook.react.** { *; }
 -keep class expo.modules.** { *; }

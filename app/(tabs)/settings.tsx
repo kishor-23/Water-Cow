@@ -100,6 +100,89 @@ export default function SettingsScreen() {
             />
           </View>
 
+          {/* Profile */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="user" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Profile</Text>
+            </View>
+
+            {/* Name */}
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>Name</Text>
+              {editingName ? (
+                <View style={styles.nameEditRow}>
+                  <TextInput
+                    style={styles.nameInput}
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="Enter name"
+                    placeholderTextColor={colors.textTertiary}
+                    cursorColor={colors.primary}
+                    selectionColor={colors.primary}
+                    onSubmitEditing={handleNameSave}
+                    returnKeyType="done"
+                    autoFocus
+                    maxLength={20}
+                  />
+                  <TouchableOpacity onPress={handleNameSave}>
+                    <Feather name="check" size={18} color={colors.primary} />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  style={styles.settingValueRow}
+                  onPress={() => setEditingName(true)}
+                >
+                  <Text style={styles.settingValue}>{profile.name}</Text>
+                  <Feather name="edit-2" size={14} color={colors.textTertiary} />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={styles.settingDivider} />
+
+            {/* Unit */}
+            <View style={styles.settingRow}>
+              <Text style={styles.settingLabel}>Preferred unit</Text>
+              <TouchableOpacity
+                style={styles.unitToggle}
+                onPress={handleUnitToggle}
+              >
+                <View
+                  style={[
+                    styles.unitOption,
+                    profile.unit === 'ml' && styles.unitOptionActive,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.unitText,
+                      profile.unit === 'ml' && styles.unitTextActive,
+                    ]}
+                  >
+                    ml
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.unitOption,
+                    profile.unit === 'oz' && styles.unitOptionActive,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.unitText,
+                      profile.unit === 'oz' && styles.unitTextActive,
+                    ]}
+                  >
+                    oz
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </Card>
+
           {/* Daily Goal */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
@@ -154,89 +237,6 @@ export default function SettingsScreen() {
               ))}
             </View>
           </Card>
-
-          {/* Profile */}
-          <Card style={styles.sectionCard}>
-            <View style={styles.sectionHeader}>
-              <Feather name="user" size={18} color={colors.primary} />
-              <Text style={styles.sectionTitle}>Profile</Text>
-            </View>
-
-            {/* Name */}
-            <View style={styles.settingRow}>
-              <Text style={styles.settingLabel}>Name</Text>
-              {editingName ? (
-                <View style={styles.nameEditRow}>
-                  <TextInput
-                    style={styles.nameInput}
-                    value={name}
-                    onChangeText={setName}
-                    placeholder="Enter name"
-                    placeholderTextColor={colors.textTertiary}
-                    cursorColor={colors.primary}
-                    selectionColor={colors.primary}
-                    onSubmitEditing={handleNameSave}
-                    returnKeyType="done"
-                    autoFocus
-                    maxLength={20}
-                  />
-                  <TouchableOpacity onPress={handleNameSave}>
-                    <Feather name="check" size={18} color={colors.primary} />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-              <TouchableOpacity
-                style={styles.settingValueRow}
-                onPress={() => setEditingName(true)}
-              >
-                <Text style={styles.settingValue}>{profile.name}</Text>
-                <Feather name="edit-2" size={14} color={colors.textTertiary} />
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <View style={styles.settingDivider} />
-
-          {/* Unit */}
-          <View style={styles.settingRow}>
-            <Text style={styles.settingLabel}>Preferred unit</Text>
-            <TouchableOpacity
-              style={styles.unitToggle}
-              onPress={handleUnitToggle}
-            >
-              <View
-                style={[
-                  styles.unitOption,
-                  profile.unit === 'ml' && styles.unitOptionActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.unitText,
-                    profile.unit === 'ml' && styles.unitTextActive,
-                  ]}
-                >
-                  ml
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.unitOption,
-                  profile.unit === 'oz' && styles.unitOptionActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.unitText,
-                    profile.unit === 'oz' && styles.unitTextActive,
-                  ]}
-                >
-                  oz
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </Card>
 
         {/* Appearance / Theme */}
         <Card style={styles.sectionCard}>
