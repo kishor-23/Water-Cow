@@ -17,10 +17,12 @@ import { useHydration } from '../../context/HydrationContext';
 import { Card } from '../../components/ui/Card';
 import { PillButton } from '../../components/ui/PillButton';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
+import { formatWater } from '../../utils/hydration';
 import { exportBackupFile, importBackupFile } from '../../utils/backup';
 import { HomeScreenWidgetModal } from '../../components/ui/HomeScreenWidgetModal';
 
 const GOAL_PRESETS = [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
+const QUICK_ADD_PRESETS = [150, 200, 250, 300, 350, 500];
 
 export default function SettingsScreen() {
   const { state, setGoal, updateProfile, cowMood, reloadAllData } = useHydration();
@@ -120,6 +122,33 @@ export default function SettingsScreen() {
                   label={`${(goal / 1000).toFixed(1)} L`}
                   selected={profile.dailyGoal === goal}
                   onPress={() => setGoal(goal)}
+                  size="md"
+                />
+              ))}
+            </View>
+          </Card>
+
+          {/* Quick Add Default Amount Card */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="plus-circle" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Quick Add Amount</Text>
+            </View>
+
+            <View style={styles.currentGoal}>
+              <Text style={styles.goalValue}>
+                {formatWater(profile.quickAddAmount || 250)}
+              </Text>
+            </View>
+
+            <Text style={styles.sectionLabel}>Choose water logged on Quick Drink tap</Text>
+            <View style={styles.pillRow}>
+              {QUICK_ADD_PRESETS.map((amt) => (
+                <PillButton
+                  key={amt}
+                  label={formatWater(amt)}
+                  selected={(profile.quickAddAmount || 250) === amt}
+                  onPress={() => updateProfile({ quickAddAmount: amt })}
                   size="md"
                 />
               ))}

@@ -1,5 +1,5 @@
 /**
- * Home Screen — Dashboard with greeting, progress ring, cow mascot, and stats.
+ * Home Screen — Classic dashboard layout with side-by-side Progress Ring & Cow Mascot.
  */
 import React, { useMemo } from 'react';
 import {
@@ -8,7 +8,6 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -28,8 +27,6 @@ import {
   getNextReminderTime,
 } from '../../utils/hydration';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
 export default function HomeScreen() {
   const { state, cowMood, progress, addWater } = useHydration();
   const { colors } = useTheme();
@@ -46,6 +43,25 @@ export default function HomeScreen() {
   const greeting = getGreeting();
   const displayName = profile.name && profile.name.trim() ? profile.name : 'Buddy';
 
+  const MASCOT_QUOTES = [
+    "A healthier you makes a happier moo! 💖",
+    "Drink water, stay fresh, feel awesome! 💧",
+    "Glug glug! Every drop counts! 🥛",
+    "Hydration power-up in progress! ✨",
+    "Moo! Small sips lead to big health! 💙",
+  ];
+
+  const [quoteIndex, setQuoteIndex] = React.useState(0);
+  const currentQuote = MASCOT_QUOTES[quoteIndex];
+
+  const moodMessage = useMemo(() => {
+    if (progress >= 1) return "🎉 Amazing! Daily goal complete! Moo!";
+    if (cowMood === 'happy') return "😊 You're doing great! Keep it up!";
+    if (cowMood === 'reminder') return "🥛 Time for a refreshing sip!";
+    if (cowMood === 'tired') return "😴 Getting a bit thirsty here...";
+    return "😢 Please drink some water!";
+  }, [progress, cowMood]);
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView
@@ -55,65 +71,65 @@ export default function HomeScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => router.push('/settings')}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.greeting}>{greeting}, {displayName} 👋</Text>
-            <Text style={styles.date}>
-              {new Date().toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.headerRow}>
+            <View style={{ flex: 1 }}>
+              <View style={styles.greetingTitleRow}>
+                <Text
+                  style={styles.greetingTitle}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.75}
+                >
+                  {greeting}, {displayName}
+                </Text>
+                <Text style={styles.waveEmoji}>👋</Text>
+              </View>
+              <Text style={styles.dateText}>
+                {new Date().toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </Text>
+            </View>
+          </View>
         </View>
 
-        {/* Progress Section */}
-        <View style={styles.progressSection}>
-          <View style={styles.progressRow}>
-            {/* Progress Ring */}
+        {/* HERO ROW: Side-by-side Progress Ring & Animated Cow Mascot (Image 1) */}
+        <View style={styles.heroRow}>
+          {/* Progress Ring */}
+          <View style={styles.ringContainer}>
             <ProgressRing
               progress={progress}
-              size={180}
+              size={175}
               strokeWidth={14}
               consumed={formatLiters(totalConsumed)}
               goal={`${formatLiters(profile.dailyGoal)} L`}
             />
-
-            {/* Cow Mascot (Sipping Water) */}
-            <View style={styles.cowContainer}>
-              <CowReminderAnimated
-                initialPose="sipping"
-                hidePoseSelector={true}
-                hideTapHint={true}
-                size={120}
-                enableSoundOnTap={true}
-                enableSpeechBubble={true}
-                shortSpeech={true}
-              />
-            </View>
           </View>
 
-          {/* Cow message below */}
-          <Card variant="blue" style={styles.moodCard}>
-            <Text style={styles.moodText}>
-              {progress >= 1
-                ? "🎉 Amazing! Daily goal complete! Moo!"
-                : cowMood === 'happy'
-                  ? "😊 You're doing great! Keep it up!"
-                  : cowMood === 'reminder'
-                    ? "🥛 Time for a drink!"
-                    : cowMood === 'tired'
-                      ? "😴 I'm getting a bit tired..."
-                      : "😢 Please drink some water!"
-              }
-            </Text>
-          </Card>
+          {/* Cow Mascot */}
+          <View style={styles.mascotContainer}>
+            <CowReminderAnimated
+              initialPose="sipping"
+              hidePoseSelector={true}
+              hideTapHint={true}
+              size={135}
+              enableSoundOnTap={true}
+              enableSpeechBubble={true}
+              shortSpeech={true}
+              customQuotes={MASCOT_QUOTES}
+            />
+          </View>
         </View>
 
-        {/* Stats Row */}
+        {/* Mood Message Pill Card (Image 1) */}
+        <View style={styles.moodPillCard}>
+          <Text style={styles.moodPillText}>{moodMessage}</Text>
+        </View>
+
+        {/* SECTION 2: Stats Grid */}
         <View style={styles.statsRow}>
           <StatsCard
             icon="droplet"
@@ -137,14 +153,14 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Next Drink Card */}
+        {/* SECTION 3: Next Drink Reminder Card */}
         <Card style={styles.nextDrinkCard}>
           <View style={styles.nextDrinkRow}>
             <View style={styles.nextDrinkIconContainer}>
               <Feather name="bell" size={20} color={colors.primary} />
             </View>
             <View style={styles.nextDrinkInfo}>
-              <Text style={styles.nextDrinkLabel}>Next drink</Text>
+              <Text style={styles.nextDrinkLabel}>Next Drink Reminder</Text>
               <Text style={styles.nextDrinkTime}>{formatTime(nextReminder)}</Text>
             </View>
             <Text style={styles.nextDrinkRelative}>
@@ -153,26 +169,26 @@ export default function HomeScreen() {
           </View>
         </Card>
 
-        {/* Quick Add Button */}
+        {/* SECTION 4: Quick Add Action Button */}
         <TouchableOpacity
           style={styles.quickAddButton}
-          onPress={() => addWater(250)}
+          onPress={() => addWater(profile.quickAddAmount || 250)}
           activeOpacity={0.85}
         >
           <View style={styles.quickAddContent}>
             <Feather name="plus" size={22} color={colors.textOnPrimary} />
-            <Text style={styles.quickAddText}>+ 250 ml</Text>
+            <Text style={styles.quickAddText}>+ {formatWater(profile.quickAddAmount || 250)} Quick Drink</Text>
           </View>
         </TouchableOpacity>
 
-        {/* Secondary Action */}
+        {/* Custom Log Link */}
         <TouchableOpacity
           style={styles.customAddButton}
           onPress={() => router.push('/add')}
           activeOpacity={0.7}
         >
-          <Text style={styles.customAddText}>Log a different amount</Text>
-          <Feather name="chevron-right" size={16} color={colors.primary} />
+          <Text style={styles.customAddText}>Log custom amount</Text>
+          <Feather name="chevron-right" size={15} color={colors.primary} />
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
@@ -189,55 +205,78 @@ const getStyles = (colors: any) => StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: Spacing.xl,
+    paddingTop: Spacing.md,
     paddingBottom: 120,
   },
 
   // Header
   header: {
-    paddingTop: Spacing.lg,
-    marginBottom: Spacing.xxl,
+    marginBottom: Spacing.lg,
   },
-  greeting: {
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  greetingTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  greetingTitle: {
     fontFamily: Typography.fontFamily.bold,
-    fontSize: Typography.size.xxl,
+    fontSize: 26,
     color: colors.textPrimary,
+    flexShrink: 1,
   },
-  date: {
+  waveEmoji: {
+    fontSize: 24,
+    marginLeft: 6,
+  },
+  dateText: {
     fontFamily: Typography.fontFamily.regular,
-    fontSize: Typography.size.sm,
+    fontSize: Typography.size.md,
     color: colors.textTertiary,
     marginTop: 4,
   },
 
-  // Progress
-  progressSection: {
-    alignItems: 'center',
-    marginBottom: Spacing.xxl,
-  },
-  progressRow: {
+  // Hero Row (Side-by-side Progress Ring & Cow Mascot)
+  heroRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Spacing.lg,
+    justifyContent: 'space-around',
+    paddingVertical: Spacing.lg,
+    marginBottom: Spacing.xs,
   },
-  cowContainer: {
-    marginLeft: -10,
-  },
-  moodCard: {
-    alignSelf: 'stretch',
+  ringContainer: {
     alignItems: 'center',
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.lg,
+    justifyContent: 'center',
   },
-  moodText: {
-    fontFamily: Typography.fontFamily.medium,
-    fontSize: Typography.size.sm,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    flexWrap: 'wrap',
+  mascotContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
-  // Stats
+  // Mood Pill Card (Image 1)
+  moodPillCard: {
+    backgroundColor: colors.surfaceBlue,
+    borderRadius: BorderRadius.xxl || 24,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    marginBottom: Spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Shadows.sm,
+  },
+  moodPillText: {
+    fontFamily: Typography.fontFamily.semiBold,
+    fontSize: Typography.size.md,
+    color: colors.textPrimary,
+    textAlign: 'center',
+  },
+
+  // Stats Grid
   statsRow: {
     flexDirection: 'row',
     marginBottom: Spacing.lg,
@@ -282,7 +321,7 @@ const getStyles = (colors: any) => StyleSheet.create({
     textAlign: 'right',
   },
 
-  // Quick Add
+  // Quick Add Button
   quickAddButton: {
     backgroundColor: colors.primary,
     borderRadius: BorderRadius.xl,

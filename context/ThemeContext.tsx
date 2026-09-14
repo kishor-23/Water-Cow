@@ -23,7 +23,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const systemColorScheme = useColorScheme();
-  const [themeMode, setThemeModeState] = useState<ThemeMode>('system');
+  const [themeMode, setThemeModeState] = useState<ThemeMode>('light');
 
   useEffect(() => {
     AsyncStorage.getItem(THEME_STORAGE_KEY).then((saved) => {
@@ -38,8 +38,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     AsyncStorage.setItem(THEME_STORAGE_KEY, mode);
   };
 
-  const isDark = themeMode === 'system' ? systemColorScheme === 'dark' : themeMode === 'dark';
+  const isDark = themeMode === 'dark';
   const colors = isDark ? DarkColors : Colors;
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.backgroundColor = colors.background;
+      document.documentElement.style.backgroundColor = colors.background;
+    }
+  }, [colors.background]);
 
   return (
     <ThemeContext.Provider value={{ themeMode, setThemeMode, colors, isDark }}>
@@ -50,14 +57,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 export function useTheme() {
   const context = useContext(ThemeContext);
-  const systemColorScheme = useColorScheme();
   if (!context) {
-    const isDark = systemColorScheme === 'dark';
     return {
-      themeMode: 'system' as ThemeMode,
+      themeMode: 'light' as ThemeMode,
       setThemeMode: () => {},
-      colors: isDark ? DarkColors : Colors,
-      isDark,
+      colors: Colors,
+      isDark: false,
     };
   }
   return context;

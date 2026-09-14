@@ -11,6 +11,13 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * Android Home Screen AppWidgetProvider for Water Cow.
+ * 
+ * Manages rendering the home screen widget, calculating daily progress percentages,
+ * formatting text views, handling pending intents for app opening and quick-add actions,
+ * and storing/reading persistent state via SharedPreferences.
+ */
 class WaterCowWidgetProvider : AppWidgetProvider() {
 
     companion object {

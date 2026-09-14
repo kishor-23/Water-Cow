@@ -39,7 +39,10 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "clean": "powershell -Command \"Get-ChildItem android -Recurse -Include 'build','.cxx' -Directory -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force\""
+    "clean": "powershell -Command \"Get-ChildItem android -Recurse -Include 'build','.cxx' -Directory -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force\"",
+    "docs": "cd documentation-site && npm start",
+    "docs:build": "cd documentation-site && npm run build",
+    "site": "npx -y serve download-site -p 8080"
   },
   "private": true
 }

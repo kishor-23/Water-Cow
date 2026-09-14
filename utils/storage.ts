@@ -32,6 +32,7 @@ export interface UserProfile {
   name: string;
   unit: 'ml' | 'oz';
   dailyGoal: number;
+  quickAddAmount?: number;
 }
 
 export interface DayData {
@@ -186,6 +187,7 @@ export const DEFAULT_PROFILE: UserProfile = {
   name: 'Buddy',
   unit: 'ml',
   dailyGoal: 2000,
+  quickAddAmount: 250,
 };
 
 export async function saveProfile(profile: UserProfile): Promise<void> {
@@ -200,6 +202,7 @@ export async function loadProfile(): Promise<UserProfile> {
     return {
       ...DEFAULT_PROFILE,
       ...parsed,
+      quickAddAmount: parsed.quickAddAmount || 250,
       name: parsed.name && parsed.name.trim() ? parsed.name.trim() : 'Buddy',
     };
   } catch (e) {

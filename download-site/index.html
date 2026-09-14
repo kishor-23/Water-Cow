@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Cow — Download for Android</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --sky: #EAF6FF;
+      --sky-deep: #D8EFFF;
+      --water: #2F9BFF;
+      --water-dark: #1C7FE0;
+      --deep: #12294D;
+      --deep-soft: #4A6088;
+      --foam: #FFFFFF;
+      --bell: #F0A93F;
+      --mist: #C9E9FF;
+      --line: #DCEEFC;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--sky);
+      color: var(--deep);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    .display {
+      font-family: 'Baloo 2', sans-serif;
+      color: var(--deep);
+      line-height: 1.08;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    @media (max-width: 600px) {
+      .wrap {
+        padding: 0 20px;
+      }
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--water-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--bell);
+      display: inline-block;
+    }
+
+    /* ---------- Navigation ---------- */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(234, 246, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Baloo 2', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      text-decoration: none;
+      color: var(--deep);
+    }
+
+    .nav-brand img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      filter: drop-shadow(0 2px 6px rgba(47, 155, 255, 0.2));
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--water), var(--water-dark));
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 11px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 8px 18px -8px rgba(47, 155, 255, 0.6);
+      transition: transform .2s ease, box-shadow .2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(47, 155, 255, 0.7);
+    }
+
+    /* ---------- Hero Section ---------- */
+    .hero {
+      position: relative;
+      padding: 150px 0 80px;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--sky) 0%, var(--sky-deep) 100%);
+    }
+
+    .hero .wrap {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 5.5vw, 64px);
+      margin: 18px 0 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero h1 .accent {
+      color: var(--water-dark);
+    }
+
+    .hero p.lede {
+      font-size: 18px;
+      color: var(--deep-soft);
+      max-width: 470px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--deep);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 16px 28px;
+      border-radius: 18px;
+      text-decoration: none;
+      box-shadow: 0 14px 28px -10px rgba(18, 41, 77, 0.45);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 36px -10px rgba(18, 41, 77, 0.55);
+      color: #fff;
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      color: var(--deep-soft);
+      font-weight: 600;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-app-icon {
+      width: 290px;
+      height: 290px;
+      object-fit: contain;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      filter: drop-shadow(0 20px 40px rgba(47, 155, 255, 0.35));
+      animation: bob 5s ease-in-out infinite;
+    }
+
+    .mascot-badge {
+      background: #FFFFFF;
+      color: var(--water-dark);
+      font-weight: 800;
+      font-size: 14px;
+      padding: 8px 20px;
+      border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(18, 41, 77, 0.08);
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-1deg);
+      }
+
+      50% {
+        transform: translateY(-12px) rotate(1deg);
+      }
+    }
+
+    .wave-layer {
+      position: absolute;
+      left: -10%;
+      width: 120%;
+      pointer-events: none;
+    }
+
+    .wave-1 {
+      top: 40px;
+      opacity: 0.7;
+    }
+
+    .wave-2 {
+      top: 160px;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        padding: 120px 0 60px;
+      }
+
+      .hero .wrap {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-ctas {
+        justify-content: center;
+      }
+
+      .hero p.lede {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+    }
+
+    /* ---------- Features Section ---------- */
+    .features {
+      background: var(--foam);
+      padding: 96px 0 104px;
+    }
+
+    .section-head {
+      max-width: 640px;
+      margin-bottom: 52px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(32px, 4vw, 44px);
+      margin-top: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-head p {
+      color: var(--deep-soft);
+      font-size: 16px;
+      margin-top: 12px;
+      line-height: 1.55;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: #EBF5FF;
+      border-radius: 24px;
+      padding: 32px 24px 36px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px -12px rgba(47, 155, 255, 0.25);
+    }
+
+    .feature-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(18, 41, 77, 0.05);
+      flex-shrink: 0;
+    }
+
+    .feature-card h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--deep);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--deep-soft);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------- Showcase ---------- */
+    .showcase {
+      padding: 96px 0;
+      background: var(--sky);
+    }
+
+    .showcase-head {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 48px auto;
+    }
+
+    .showcase-img-card {
+      background: #fff;
+      border-radius: 36px;
+      padding: 24px;
+      box-shadow: 0 32px 64px -24px rgba(18, 41, 77, 0.25);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .showcase-img-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 20px;
+    }
+
+    /* ---------- Sound Moment ---------- */
+    .moo {
+      background: linear-gradient(180deg, var(--sky-deep), var(--sky));
+      padding: 64px 0;
+    }
+
+    .moo .wrap-box {
+      background: var(--deep);
+      border-radius: 36px;
+      padding: 56px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      box-shadow: 0 30px 60px -20px rgba(18, 41, 77, 0.4);
+    }
+
+    .moo h2 {
+      color: #fff;
+      font-size: clamp(26px, 3.2vw, 38px);
+      margin-bottom: 12px;
+    }
+
+    .moo p {
+      color: #C6D5EE;
+      margin: 0;
+      font-size: 16px;
+      max-width: 440px;
+      line-height: 1.5;
+    }
+
+    .moo-btn {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: var(--bell);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 16px 30px -10px rgba(240, 169, 63, 0.6);
+      transition: transform 0.2s ease;
+    }
+
+    .moo-btn:hover {
+      transform: scale(1.06);
+    }
+
+    .moo-btn svg {
+      width: 32px;
+      height: 32px;
+      fill: var(--deep);
+    }
+
+    .tone-chips {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    @media (max-width: 800px) {
+      .moo .wrap-box {
+        flex-direction: column;
+        text-align: left;
+        padding: 40px 32px;
+      }
+    }
+
+    /* ---------- Gear Section (Partner Affiliates) ---------- */
+    .gear {
+      background: var(--sky);
+      padding: 96px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .gear-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .gear-card {
+      background: #FFFFFF;
+      border-radius: 28px;
+      padding: 32px 26px;
+      box-shadow: 0 16px 36px -12px rgba(18, 41, 77, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .gear-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 44px -12px rgba(47, 155, 255, 0.2);
+    }
+
+    .gear-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--water-dark);
+      background: var(--sky);
+      padding: 5px 12px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 16px;
+      width: fit-content;
+    }
+
+    .gear-card h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--deep);
+      margin-bottom: 8px;
+    }
+
+    .gear-card p {
+      font-size: 14px;
+      color: var(--deep-soft);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .gear-promo {
+      font-size: 13px;
+      font-weight: 700;
+      color: #D68310;
+      background: rgba(240, 169, 63, 0.15);
+      padding: 6px 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .btn-gear {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--water);
+      color: #FFF;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .btn-gear:hover {
+      background: var(--water-dark);
+    }
+
+    @media (max-width: 900px) {
+      .gear-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------- Download CTA ---------- */
+    .download {
+      text-align: center;
+      padding: 96px 0;
+      background: var(--foam);
+    }
+
+    .download-panel {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      background: var(--sky);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      padding: 36px 44px;
+      margin: 40px auto 0;
+      max-width: 760px;
+      box-shadow: 0 24px 48px -24px rgba(18, 41, 77, 0.2);
+    }
+
+    .qr-box {
+      width: 110px;
+      height: 110px;
+      background: var(--deep);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .download-panel {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 20px;
+      }
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--line);
+      background: var(--sky);
+    }
+
+    footer .wrap-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .foot-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .foot-brand img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border: none;
+      border-radius: 0;
+    }
+
+    .foot-links {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--deep-soft);
+    }
+
+    .foot-links a {
+      text-decoration: none;
+    }
+
+    .foot-links a:hover {
+      color: var(--water-dark);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Fixed Navigation -->
+  <nav class="nav">
+    <div class="wrap">
+      <a class="nav-brand" href="#">
+        <img src="assets/favicon.png" alt="Water Cow Logo">
+        Water Cow
+      </a>
+      <a class="nav-cta" href="#download">Download APK</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <svg class="wave-layer wave-1" id="wave1" viewBox="0 0 1400 200" preserveAspectRatio="none" width="120%"
+      height="140">
+      <path d="M0,100 C 200,180 400,20 700,90 C 1000,160 1200,40 1400,100 L1400,0 L0,0 Z" fill="#D8EFFF" />
+    </svg>
+    <svg class="wave-layer wave-2" id="wave2" viewBox="0 0 1400 200" preserveAspectRatio="none" width="120%"
+      height="160">
+      <path d="M0,120 C 250,60 450,180 750,110 C 1050,40 1250,140 1400,90 L1400,0 L0,0 Z" fill="#C9E9FF" />
+    </svg>
+
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">For Android · Direct APK</span>
+        <h1>Drink water.<br>Get a <span class="accent">moo.</span></h1>
+        <p class="lede">Drink when you need to. Know how much is left. Gentle reminders — just a cow who cares. 🐄💧</p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="#download">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14" />
+            </svg>
+            Download APK
+          </a>
+          <span class="hero-meta">v1.0 · 54.6 MB · Android 8.0+</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <img class="hero-app-icon" src="assets/favicon.png" alt="Water Cow App Icon">
+      </div>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">What It Does</span>
+        <h2>Four things. Nothing else.</h2>
+        <p>Every screen exists to answer one question: have you had enough water today.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F9BFF" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+            </svg>
+          </div>
+          <h3>Track your intake</h3>
+          <p>See what you've had and what's left, at a glance — no math required.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F9BFF" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </div>
+          <h3>Smart reminders</h3>
+          <p>Pick your interval and active hours. The cow moos when it's actually time.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F9BFF" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+              <polyline points="17 6 23 6 23 12" />
+            </svg>
+          </div>
+          <h3>Progress insights</h3>
+          <p>A day, week, or month of drinking, laid out in one honest chart.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F9BFF" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+              <line x1="9" y1="9" x2="9.01" y2="9" />
+              <line x1="15" y1="9" x2="15.01" y2="9" />
+            </svg>
+          </div>
+          <h3>Simple & cute</h3>
+          <p>No gamification — just a friendly companion who wants you hydrated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sound Moment Section -->
+  <section class="moo">
+    <div class="wrap">
+      <div class="wrap-box">
+        <div>
+          <span class="eyebrow" style="color:#F0A93F;">Audio Experience</span>
+          <h2>Hear the App Sounds</h2>
+          <p>Listen to the actual in-app sound effects used for hydration reminders.</p>
+
+          <div class="tone-chips">
+            <span class="chip" onclick="playAudio('moo')">🐮 Classic Moo</span>
+            <span class="chip" onclick="playAudio('bell')">🔔 Cowbell Alert</span>
+          </div>
+
+          <div id="statusTone" style="margin-top: 12px; font-size: 13px; color: #F0A93F; font-weight: 600;">
+            Click play to test actual app sounds 🔊
+          </div>
+        </div>
+
+        <button class="moo-btn" onclick="playAudio('moo')" aria-label="Play Cow Sound">
+          <svg viewBox="0 0 24 24">
+            <polygon points="5,3 19,12 5,21" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommended Hydration Gear Section (Affiliate Partnerships) -->
+  <section class="gear" id="gear">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Partner Offers</span>
+        <h2>Water Cow Approved Gear 💧</h2>
+        <p>Curated insulated bottles, smart LED trackers, and eco-filters to elevate your daily routine.</p>
+      </div>
+
+      <div class="gear-grid">
+        <div class="gear-card">
+          <div>
+            <span class="gear-badge">⚡ Smart Tech</span>
+            <h3>Smart Glow Reminder Bottle</h3>
+            <p>Bluetooth synced insulated bottle with ambient LED glow alerts whenever it's time to drink.</p>
+            <span class="gear-promo">🎁 10% OFF code: WATERCOW</span>
+          </div>
+          <a class="btn-gear" href="https://example.com/smart-bottle?ref=watercow" target="_blank" rel="noopener">
+            Shop Smart Bottle →
+          </a>
+        </div>
+
+        <div class="gear-card">
+          <div>
+            <span class="gear-badge">❄️ 24h Cold</span>
+            <h3>Insulated Straw Tumbler</h3>
+            <p>Double-wall vacuum stainless steel tumbler. Keeps your water ice-cold from morning to night.</p>
+            <span class="gear-promo">🎁 15% OFF code: WATERCOW</span>
+          </div>
+          <a class="btn-gear" href="https://example.com/insulated-tumbler?ref=watercow" target="_blank" rel="noopener">
+            Shop Tumbler →
+          </a>
+        </div>
+
+        <div class="gear-card">
+          <div>
+            <span class="gear-badge">🌿 Micro-Filtered</span>
+            <h3>Eco Water Filter Pitcher</h3>
+            <p>High-speed micro-filtration pitcher for clean, crisp, great-tasting tap water at home.</p>
+            <span class="gear-promo">🎁 10% OFF code: WATERCOW</span>
+          </div>
+          <a class="btn-gear" href="https://example.com/water-filter?ref=watercow" target="_blank" rel="noopener">
+            Shop Eco Filter →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download CTA Section -->
+  <section class="download" id="download">
+    <div class="wrap">
+      <span class="eyebrow">Direct Download</span>
+      <h2 style="font-size: clamp(32px, 4.5vw, 48px); margin: 14px 0;">Get Water Cow for Android</h2>
+      <p style="color: var(--deep-soft); font-size: 17px; max-width: 520px; margin: 0 auto 36px auto;">
+        Direct APK release with zero ad tracking, zero subscription fees, and full offline privacy.
+      </p>
+
+      <div class="download-panel">
+        <div class="qr-box">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="3" height="3" />
+            <rect x="18" y="14" width="3" height="3" />
+            <rect x="14" y="18" width="7" height="3" />
+          </svg>
+        </div>
+
+        <div style="text-align: left; flex: 1;">
+          <h3 style="font-size: 24px; margin-bottom: 6px;">Water Cow v1.0 Release</h3>
+          <p style="color: var(--deep-soft); margin-bottom: 16px; font-size: 14px;">
+            File: <code style="background: #fff; padding: 2px 8px; border-radius: 6px;">water-cow.apk</code> · 54.6 MB ·
+            Android 8.0+
+          </p>
+          <a class="btn-primary" href="water-cow.apk" download style="padding: 14px 24px; font-size: 16px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14" />
+            </svg>
+            Download APK Directly
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="wrap-flex">
+        <div class="foot-brand">
+          <img src="assets/favicon.png" alt="Water Cow Logo">
+          Water Cow
+        </div>
+        <div class="foot-links">
+          <a href="#features">Features</a>
+          <a href="#download">Download APK</a>
+        </div>
+        <div style="font-size: 13px; color: var(--deep-soft);">
+          © 2026 Water Cow · Built for Android
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Parallax background wave animation on scroll
+    const wave1 = document.getElementById('wave1');
+    const wave2 = document.getElementById('wave2');
+
+    function updateScrollEffects() {
+      const winScroll = window.scrollY || document.documentElement.scrollTop;
+      if (wave1 && wave2) {
+        wave1.style.transform = `translateY(${winScroll * 0.12}px)`;
+        wave2.style.transform = `translateY(${winScroll * 0.20}px)`;
+      }
+    }
+
+    window.addEventListener('scroll', updateScrollEffects, { passive: true });
+    updateScrollEffects();
+
+    // Real App Audio Player for cow_moo.mp3 and cow_bell.mp3
+    function playAudio(type) {
+      try {
+        const file = type === 'bell' ? 'assets/sounds/cow_bell.mp3' : 'assets/sounds/cow_moo.mp3';
+        const audio = new Audio(file);
+        const statusLabel = document.getElementById('statusTone');
+        if (statusLabel) {
+          statusLabel.textContent = type === 'bell' ? 'Playing: Cowbell Sound 🔔' : 'Playing: Classic Cow Moo 🐮';
+        }
+        audio.play().catch(e => console.warn('Audio play error:', e));
+      } catch (e) {
+        console.warn('Audio play error:', e);
+      }
+    }
+  </script>
+</body>
+
+</html>

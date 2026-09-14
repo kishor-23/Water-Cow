@@ -189,8 +189,8 @@ export const DarkColors = {
   shadowColor: '#000000',
 
   // Tab bar
-  tabBarBackground: 'rgba(30, 41, 59, 0.95)',
-  tabBarBorder: '#1E293B',
+  tabBarBackground: '#1E293B',
+  tabBarBorder: '#334155',
   tabBarActive: '#4A9FD8',
   tabBarInactive: '#64748B',
 } as const;
