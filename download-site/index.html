@@ -4,13 +4,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Water Cow — Download for Android</title>
+  <title>Water Cow — Free Water Tracker & Drink Reminder App for Android</title>
+  <meta name="description" content="Track your daily water intake with Water Cow, a free Android app with fun cow moo reminders, smart hydration tracking, progress charts, and cute animations. Download the APK now!">
+  <meta name="keywords" content="water tracker, drink water reminder, hydration app, water intake tracker, drink reminder android, water tracking app, daily water goal, hydration reminder, free water app">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Water Cow">
+  <meta name="theme-color" content="#2F9BFF">
   <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Water Cow — Free Water Tracker & Drink Reminder App">
+  <meta property="og:description" content="Stay hydrated with fun cow moo reminders, smart tracking, and cute animations. Free for Android!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/favicon.png">
+  <meta property="og:site_name" content="Water Cow">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Water Cow — Free Water Tracker & Drink Reminder">
+  <meta name="twitter:description" content="Track water intake with fun cow reminders. Free Android app!">
+  <meta name="twitter:image" content="assets/favicon.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Water Cow",
+    "description": "A fun and friendly water tracking and hydration reminder app for Android with cute cow animations and moo sound alerts.",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Android 8.0+",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "softwareVersion": "1.0",
+    "downloadUrl": "https://expo.dev/artifacts/eas/sZp46zLfVpwYs2xZpjIJKmVyhmDDHXHpQnpQrG3Awhs.apk",
+    "image": "assets/favicon.png",
+    "author": {
+      "@type": "Organization",
+      "name": "Water Cow"
+    }
+  }
+  </script>
   <style>
     :root {
       --sky: #EAF6FF;
@@ -128,12 +173,18 @@
       filter: drop-shadow(0 2px 6px rgba(47, 155, 255, 0.2));
     }
 
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .nav-cta {
       background: linear-gradient(135deg, var(--water), var(--water-dark));
       color: #fff;
       font-weight: 700;
       font-size: 14px;
-      padding: 11px 22px;
+      padding: 10px 20px;
       border-radius: 999px;
       text-decoration: none;
       box-shadow: 0 8px 18px -8px rgba(47, 155, 255, 0.6);
@@ -144,6 +195,49 @@
     .nav-cta:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 24px -6px rgba(47, 155, 255, 0.7);
+    }
+
+    .nav-cta-support {
+      background: linear-gradient(135deg, var(--bell), #E8721E);
+      box-shadow: 0 8px 18px -8px rgba(240, 169, 63, 0.6);
+    }
+
+    .nav-cta-support:hover {
+      box-shadow: 0 12px 24px -6px rgba(240, 169, 63, 0.7);
+    }
+
+    @media (max-width: 600px) {
+      .nav .wrap {
+        height: 60px;
+      }
+
+      .nav-brand {
+        font-size: 18px;
+        gap: 8px;
+      }
+
+      .nav-brand img {
+        width: 30px;
+        height: 30px;
+      }
+
+      .nav-actions {
+        gap: 8px;
+      }
+
+      .nav-cta {
+        font-size: 12px;
+        padding: 8px 14px;
+      }
+
+      .nav-cta-support {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .hide-mobile {
+        display: none;
+      }
     }
 
     /* ---------- Hero Section ---------- */
@@ -689,6 +783,284 @@
         transition-duration: 0.001ms !important;
       }
     }
+
+    /* ---------- Support Section ---------- */
+    .support {
+      padding: 80px 0;
+      background: var(--foam);
+    }
+
+    .support-inner {
+      background: linear-gradient(135deg, #0D1F3C 0%, #12294D 40%, #162E58 100%);
+      border-radius: 40px;
+      padding: 72px 64px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      box-shadow:
+        0 40px 80px -24px rgba(12, 20, 40, 0.55),
+        0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+
+    /* Glowing orbs */
+    .support-inner::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: -80px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(47, 155, 255, 0.18) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: orb-drift 8s ease-in-out infinite;
+    }
+
+    .support-inner::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      right: -60px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(240, 169, 63, 0.2) 0%, transparent 65%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: orb-drift 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes orb-drift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(20px, -20px); }
+    }
+
+    /* Left column — text */
+    .support-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    .support-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--bell);
+      margin-bottom: 18px;
+    }
+
+    .support-eyebrow span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--bell);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .support-text h2 {
+      color: #FFFFFF;
+      font-size: clamp(28px, 3vw, 42px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .support-text h2 .heart {
+      display: inline-block;
+      animation: heartbeat 1.8s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.25); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.15); }
+      70% { transform: scale(1); }
+    }
+
+    .support-text p {
+      color: #8AAFD4;
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 380px;
+    }
+
+    .support-badge-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .support-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #B0CCE8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Right column — action cards */
+    .support-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-support {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 28px;
+      border-radius: 22px;
+      text-decoration: none;
+      font-family: 'Baloo 2', sans-serif;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-support::after {
+      content: '→';
+      position: absolute;
+      right: 24px;
+      font-size: 20px;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-support:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .btn-support:hover {
+      transform: translateY(-3px) scale(1.01);
+    }
+
+    .btn-support-icon {
+      font-size: 28px;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.18);
+    }
+
+    .btn-support-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .btn-support-label {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-support-sub {
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.75;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-chai {
+      background: linear-gradient(135deg, #E8721E 0%, #C45A0C 100%);
+      color: #FFFFFF;
+      box-shadow: 0 16px 32px -10px rgba(232, 114, 30, 0.6);
+    }
+
+    .btn-chai:hover {
+      box-shadow: 0 20px 40px -8px rgba(232, 114, 30, 0.75);
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #F07C28 0%, #D46010 100%);
+    }
+
+    .btn-coffee {
+      background: linear-gradient(135deg, #FFDD00 0%, #E8C800 100%);
+      color: #12294D;
+      box-shadow: 0 16px 32px -10px rgba(245, 200, 0, 0.5);
+    }
+
+    .btn-coffee:hover {
+      box-shadow: 0 20px 40px -8px rgba(245, 200, 0, 0.65);
+      color: #12294D;
+      background: linear-gradient(135deg, #FFE520 0%, #F0D000 100%);
+    }
+
+    .btn-coffee .btn-support-icon {
+      background: rgba(18, 41, 77, 0.12);
+    }
+
+
+
+    @media (max-width: 900px) {
+      .support-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 48px 36px;
+        border-radius: 32px;
+      }
+
+      .support-text p {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .support-inner {
+        padding: 36px 24px;
+        border-radius: 28px;
+      }
+
+      .support-text h2 {
+        font-size: 26px;
+      }
+
+      .btn-support {
+        padding: 18px 20px;
+      }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 
@@ -698,12 +1070,17 @@
   <nav class="nav">
     <div class="wrap">
       <a class="nav-brand" href="#">
-        <img src="assets/favicon.png" alt="Water Cow Logo">
+        <img src="assets/favicon.png" alt="Water Cow - Water Tracking App Logo">
         Water Cow
       </a>
-      <a class="nav-cta" href="#download">Download APK</a>
+      <div class="nav-actions">
+        <a class="nav-cta" href="#download" title="Download Water Cow APK - Free Water Tracker for Android">Download APK</a>
+        <a class="nav-cta nav-cta-support" href="#support" aria-label="Support">❤️<span class="hide-mobile"> Support</span></a>
+      </div>
     </div>
   </nav>
+
+  <main>
 
   <!-- Hero Section -->
   <header class="hero">
@@ -718,11 +1095,11 @@
 
     <div class="wrap">
       <div>
-        <span class="eyebrow">For Android · Direct APK</span>
-        <h1>Drink water.<br>Get a <span class="accent">moo.</span></h1>
-        <p class="lede">Drink when you need to. Know how much is left. Gentle reminders — just a cow who cares. 🐄💧</p>
+        <span class="eyebrow">Free Water Tracker · Android APK</span>
+        <h1>Drink water.<br>Get a <span class="accent">moo.</span> <span class="sr-only">— Water Cow: Free Water Tracking & Drink Reminder App for Android</span></h1>
+        <p class="lede">Track your daily water intake effortlessly. Know exactly how much you've had and what's left. Gentle drink reminders — just a friendly cow who cares about your hydration. 🐄💧</p>
         <div class="hero-ctas">
-          <a class="btn-primary" href="#download">
+          <a class="btn-primary" href="#download" title="Download Water Cow Water Tracking App for Android" aria-label="Download Water Cow APK">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14" />
             </svg>
@@ -733,7 +1110,7 @@
       </div>
 
       <div class="hero-visual">
-        <img class="hero-app-icon" src="assets/favicon.png" alt="Water Cow App Icon">
+        <img class="hero-app-icon" src="assets/favicon.png" alt="Water Cow App Icon - Free Water Tracker and Hydration Reminder for Android">
       </div>
     </div>
   </header>
@@ -743,8 +1120,8 @@
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">What It Does</span>
-        <h2>Four things. Nothing else.</h2>
-        <p>Every screen exists to answer one question: have you had enough water today.</p>
+        <h2>Four Features. Designed for Your Hydration.</h2>
+        <p>Every screen answers one question: have you reached your daily water intake goal?</p>
       </div>
 
       <div class="feature-grid">
@@ -828,13 +1205,57 @@
     </div>
   </section>
 
+  <!-- Support Section -->
+  <section class="support" id="support">
+    <div class="wrap">
+      <div class="support-inner">
+
+        <!-- Left: Text -->
+        <div class="support-text">
+          <div class="support-eyebrow">
+            <span></span>
+            🐄💧 Support WaterCow
+          </div>
+          <h2>Keep WaterCow<br><span class="heart">❤️</span> Growing</h2>
+          <p>WaterCow is free and ad-free, built to make staying hydrated simple and stress-free. If you enjoy using it, a small contribution goes a long way in keeping it alive and growing.</p>
+          <div class="support-badge-row">
+            <span class="support-badge">✦ No ads. Ever.</span>
+            <span class="support-badge">✦ 100% Free</span>
+            <span class="support-badge">✦ Offline-first</span>
+          </div>
+        </div>
+
+        <!-- Right: Action buttons -->
+        <div class="support-actions">
+          <a class="btn-support btn-chai" href="https://www.buymeachai.in/kishorL" target="_blank" rel="noopener" aria-label="Buy Me a Chai via UPI India">
+            <span class="btn-support-icon">☕</span>
+            <span class="btn-support-text">
+              <span class="btn-support-label">Buy Me a Chai</span>
+              <span class="btn-support-sub">UPI · India</span>
+            </span>
+          </a>
+          <a class="btn-support btn-coffee" href="https://buymeacoffee.com/kishor_23" target="_blank" rel="noopener" aria-label="Buy Me a Coffee internationally">
+            <span class="btn-support-icon">
+              <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="BMC" style="width: 30px; height: 30px; object-fit: contain;">
+            </span>
+            <span class="btn-support-text">
+              <span class="btn-support-label">Buy Me a Coffee</span>
+              <span class="btn-support-sub">Card · International</span>
+            </span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Download CTA Section -->
   <section class="download" id="download">
     <div class="wrap">
       <span class="eyebrow">Direct Download</span>
-      <h2 style="font-size: clamp(32px, 4.5vw, 48px); margin: 14px 0;">Get Water Cow for Android</h2>
+      <h2 style="font-size: clamp(32px, 4.5vw, 48px); margin: 14px 0;">Download Water Cow — Free Water Tracker for Android</h2>
       <p style="color: var(--deep-soft); font-size: 17px; max-width: 520px; margin: 0 auto 36px auto;">
-        Direct APK release with zero ad tracking, zero subscription fees, and full offline privacy.
+        Free direct APK download with zero ad tracking, zero subscription fees, and full offline privacy. Your perfect hydration companion.
       </p>
 
       <div class="download-panel">
@@ -851,7 +1272,7 @@
             File: <code style="background: #fff; padding: 2px 8px; border-radius: 6px;">water-cow.apk</code> ·
             Android 8.0+
           </p>
-          <a class="btn-primary" href="https://expo.dev/artifacts/eas/sZp46zLfVpwYs2xZpjIJKmVyhmDDHXHpQnpQrG3Awhs.apk" style="padding: 14px 24px; font-size: 16px;">
+          <a class="btn-primary" href="water-cow.apk" download="water-cow.apk" rel="noopener" title="Download Water Cow APK - Free Water Tracking App" style="padding: 14px 24px; font-size: 16px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M12 3v13m0 0-4-4m4 4 4-4M5 21h14" />
             </svg>
@@ -862,24 +1283,31 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Footer -->
   <footer>
     <div class="wrap">
       <div class="wrap-flex">
         <div class="foot-brand">
-          <img src="assets/favicon.png" alt="Water Cow Logo">
+          <img src="assets/favicon.png" alt="Water Cow - Drink Water Reminder App">
           Water Cow
         </div>
         <div class="foot-links">
           <a href="#features">Features</a>
-          <a href="#download">Download APK</a>
+          <a href="#support">❤️ Support</a>
+          <a href="water-cow.apk" download="water-cow.apk" target="_blank" rel="noopener" title="Download Water Cow APK directly">Download APK</a>
         </div>
         <div style="font-size: 13px; color: var(--deep-soft);">
-          © 2026 Water Cow · Built for Android
+          © 2026 Water Cow · Free Water Tracking & Drink Reminder App for Android
         </div>
       </div>
     </div>
   </footer>
+
+  <noscript>
+    <p style="text-align:center; padding:32px; color:#4A6088;">Water Cow is a free water tracking and hydration reminder app for Android. Download the APK to start tracking your daily water intake with fun cow moo reminders.</p>
+  </noscript>
 
   <script>
     // Parallax background wave animation on scroll
