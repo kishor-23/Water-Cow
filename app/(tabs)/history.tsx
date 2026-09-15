@@ -44,6 +44,11 @@ export default function HistoryScreen() {
   const [entryToDelete, setEntryToDelete] = useState<{ entry: WaterEntry; dateKey: string } | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Month & Year Picker State
+  const [showPicker, setShowPicker] = useState(false);
+  const [pickerYear, setPickerYear] = useState(new Date().getFullYear());
+  const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
   const { history, totalConsumed, profile, entries: todayEntries } = state;
 
   // Load entries for selected calendar date if not today
@@ -158,18 +163,28 @@ export default function HistoryScreen() {
   };
 
   const handleNextMonth = () => {
-    const nextMonth = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 1);
-    const now = new Date();
-    if (nextMonth.getFullYear() <= now.getFullYear() && nextMonth.getMonth() <= now.getMonth()) {
-      setCurrentCalendarDate(nextMonth);
+    if (!isNextMonthDisabled) {
+      setCurrentCalendarDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
     }
   };
 
   const isNextMonthDisabled = useMemo(() => {
     const next = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 1);
     const now = new Date();
-    return next > now;
+    if (next.getFullYear() > now.getFullYear()) return true;
+    if (next.getFullYear() === now.getFullYear() && next.getMonth() > now.getMonth()) return true;
+    return false;
   }, [currentCalendarDate]);
+
+  const handleSelectMonthYear = (monthIndex: number) => {
+    const selectedDate = new Date(pickerYear, monthIndex, 1);
+    const now = new Date();
+    if (selectedDate.getFullYear() > now.getFullYear() || (selectedDate.getFullYear() === now.getFullYear() && selectedDate.getMonth() > now.getMonth())) {
+       return;
+    }
+    setCurrentCalendarDate(selectedDate);
+    setShowPicker(false);
+  };
 
   // Month & Year string
   const monthYearTitle = useMemo(() => {
@@ -326,7 +341,12 @@ export default function HistoryScreen() {
                 <Feather name="chevron-left" size={20} color={colors.textPrimary} />
               </TouchableOpacity>
 
-              <Text style={styles.monthYearText}>{monthYearTitle}</Text>
+              <TouchableOpacity onPress={() => { setPickerYear(currentCalendarDate.getFullYear()); setShowPicker(true); }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Text style={styles.monthYearText}>{monthYearTitle}</Text>
+                  <Feather name="chevron-down" size={16} color={colors.textPrimary} />
+                </View>
+              </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handleNextMonth}
@@ -584,6 +604,63 @@ export default function HistoryScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Month Year Picker Modal */}
+      <Modal visible={showPicker} transparent={true} animationType="fade" onRequestClose={() => setShowPicker(false)}>
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: colors.surface }]}>
+            <Text style={[styles.modalTitle, { color: colors.textPrimary }]}>Select Month</Text>
+            
+            {/* Year Selector */}
+            <View style={styles.yearSelectorRow}>
+              <TouchableOpacity onPress={() => setPickerYear(y => y - 1)} style={styles.navArrowBtn}>
+                <Feather name="chevron-left" size={20} color={colors.textPrimary} />
+              </TouchableOpacity>
+              <Text style={[styles.pickerYearText, { color: colors.primary }]}>{pickerYear}</Text>
+              <TouchableOpacity 
+                onPress={() => setPickerYear(y => y + 1)} 
+                style={[styles.navArrowBtn, pickerYear >= new Date().getFullYear() && { opacity: 0.3 }]}
+                disabled={pickerYear >= new Date().getFullYear()}
+              >
+                <Feather name="chevron-right" size={20} color={colors.textPrimary} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Months Grid */}
+            <View style={styles.monthsGrid}>
+              {MONTHS_SHORT.map((m, idx) => {
+                const now = new Date();
+                const isFuture = pickerYear > now.getFullYear() || (pickerYear === now.getFullYear() && idx > now.getMonth());
+                const isSelected = currentCalendarDate.getFullYear() === pickerYear && currentCalendarDate.getMonth() === idx;
+                
+                return (
+                  <TouchableOpacity
+                    key={m}
+                    disabled={isFuture}
+                    onPress={() => handleSelectMonthYear(idx)}
+                    style={[
+                      styles.monthCell,
+                      isSelected && { backgroundColor: colors.primary },
+                      isFuture && { opacity: 0.3 }
+                    ]}
+                  >
+                    <Text style={[
+                      styles.monthCellText,
+                      { color: isSelected ? colors.textOnPrimary : colors.textPrimary }
+                    ]}>
+                      {m}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            
+            <TouchableOpacity onPress={() => setShowPicker(false)} style={[styles.modalCancelBtn, { backgroundColor: colors.surfaceBlue }]}>
+              <Text style={[styles.modalCancelText, { color: colors.primary }]}>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -849,6 +926,64 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontFamily: Typography.fontFamily.regular,
     fontSize: Typography.size.sm,
     color: colors.textTertiary,
+  },
+
+  // Month Picker Modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.xl,
+  },
+  modalContent: {
+    width: '100%',
+    borderRadius: BorderRadius.lg,
+    padding: Spacing.xl,
+    ...Shadows.md,
+  },
+  modalTitle: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: Typography.size.lg,
+    marginBottom: Spacing.lg,
+    textAlign: 'center',
+  },
+  yearSelectorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: Spacing.xl,
+  },
+  pickerYearText: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: Typography.size.xl,
+  },
+  monthsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: Spacing.sm,
+    justifyContent: 'space-between',
+    marginBottom: Spacing.xl,
+  },
+  monthCell: {
+    width: '30%',
+    paddingVertical: Spacing.md,
+    borderRadius: BorderRadius.md,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+  },
+  monthCellText: {
+    fontFamily: Typography.fontFamily.semiBold,
+    fontSize: Typography.size.md,
+  },
+  modalCancelBtn: {
+    paddingVertical: Spacing.md,
+    borderRadius: BorderRadius.md,
+    alignItems: 'center',
+  },
+  modalCancelText: {
+    fontFamily: Typography.fontFamily.semiBold,
+    fontSize: Typography.size.md,
   },
 
   // Confirmation Modal

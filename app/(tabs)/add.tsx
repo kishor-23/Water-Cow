@@ -25,14 +25,17 @@ import Animated, {
 import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { PillButton } from '../../components/ui/PillButton';
 import { Card } from '../../components/ui/Card';
+import { Feather } from '@expo/vector-icons';
 import { useHydration } from '../../context/HydrationContext';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { formatWater } from '../../utils/hydration';
 
 const QUICK_AMOUNTS = [100, 200, 250, 300, 500];
+const QUICK_ADD_PRESETS = [150, 200, 250, 300, 400, 500];
 
 export default function AddWaterScreen() {
-  const { addWater, cowMood, state, hideSuccess } = useHydration();
+  const { addWater, cowMood, state, hideSuccess, updateProfile } = useHydration();
+  const { profile } = state;
   const { colors } = useTheme();
   const styles = getStyles(colors);
   const [selectedAmount, setSelectedAmount] = useState(250);
@@ -171,7 +174,7 @@ export default function AddWaterScreen() {
                   style={styles.customInput}
                   value={customValue}
                   onChangeText={setCustomValue}
-                  placeholder="Enter amount"
+                  placeholder="Enter amount in ml"
                   placeholderTextColor={colors.textTertiary}
                   keyboardType="number-pad"
                   cursorColor={colors.primary}
@@ -181,7 +184,6 @@ export default function AddWaterScreen() {
                   returnKeyType="done"
                   onSubmitEditing={handleAddWater}
                 />
-                <Text style={styles.customUnit}>ml</Text>
               </View>
             )}
           </Card>
@@ -202,6 +204,33 @@ export default function AddWaterScreen() {
               </Text>
             </TouchableOpacity>
           </Animated.View>
+
+          {/* Quick Add Default Amount Card */}
+          <Card style={styles.amountsCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="plus-circle" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Quick Add Amount</Text>
+            </View>
+
+            <View style={styles.currentGoal}>
+              <Text style={styles.goalValue}>
+                {formatWater(profile.quickAddAmount || 250)}
+              </Text>
+            </View>
+
+            <Text style={styles.sectionLabel}>Choose water logged on Quick Drink tap</Text>
+            <View style={styles.pillGrid}>
+              {QUICK_ADD_PRESETS.map((amt) => (
+                <PillButton
+                  key={amt}
+                  label={formatWater(amt)}
+                  selected={(profile.quickAddAmount || 250) === amt}
+                  onPress={() => updateProfile({ quickAddAmount: amt })}
+                  size="md"
+                />
+              ))}
+            </View>
+          </Card>
 
           {/* Today's total */}
           <View style={styles.todayTotal}>
@@ -357,5 +386,29 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontSize: Typography.size.md,
     color: colors.textSecondary,
     marginTop: 4,
+  },
+
+  // Copied from Settings for Quick Add Card
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.lg,
+  },
+  sectionTitle: {
+    fontFamily: Typography.fontFamily.semiBold,
+    fontSize: Typography.size.lg,
+    color: colors.textPrimary,
+    marginLeft: Spacing.sm,
+  },
+  currentGoal: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'center',
+    marginBottom: Spacing.xl,
+  },
+  goalValue: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: 42,
+    color: colors.primary,
   },
 });

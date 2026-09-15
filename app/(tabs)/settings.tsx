@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  Linking,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -21,8 +23,7 @@ import { formatWater } from '../../utils/hydration';
 import { exportBackupFile, importBackupFile } from '../../utils/backup';
 import { HomeScreenWidgetModal } from '../../components/ui/HomeScreenWidgetModal';
 
-const GOAL_PRESETS = [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
-const QUICK_ADD_PRESETS = [150, 200, 250, 300, 350, 500];
+const GOAL_PRESETS = [2000, 3000, 4000, 5000];
 
 export default function SettingsScreen() {
   const { state, setGoal, updateProfile, cowMood, reloadAllData } = useHydration();
@@ -40,6 +41,27 @@ export default function SettingsScreen() {
   // Backup & Import state
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  // Heart Animation
+  const heartAnim = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(heartAnim, {
+          toValue: 1.15,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(heartAnim, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [heartAnim]);
 
   const handleNameSave = () => {
     if (name.trim()) {
@@ -83,13 +105,25 @@ export default function SettingsScreen() {
         style={{ flex: 1 }}
       >
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
           {/* Header */}
-          <Text style={styles.title}>Settings</Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.title}>Settings</Text>
+            <TouchableOpacity 
+              onPress={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+              activeOpacity={0.8}
+              style={styles.headerHeartBtn}
+            >
+              <Animated.View style={{ transform: [{ scale: heartAnim }] }}>
+                <Feather name="heart" size={24} color={colors.primary} />
+              </Animated.View>
+            </TouchableOpacity>
+          </View>
 
           {/* App Logo */}
           <View style={styles.logoSection}>
@@ -211,162 +245,165 @@ export default function SettingsScreen() {
             </View>
           </Card>
 
-          {/* Quick Add Default Amount Card */}
+          {/* Appearance / Theme */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Feather name="plus-circle" size={18} color={colors.primary} />
-              <Text style={styles.sectionTitle}>Quick Add Amount</Text>
+              <Feather name={isDark ? "moon" : "sun"} size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Appearance</Text>
             </View>
 
-            <View style={styles.currentGoal}>
-              <Text style={styles.goalValue}>
-                {formatWater(profile.quickAddAmount || 250)}
-              </Text>
-            </View>
-
-            <Text style={styles.sectionLabel}>Choose water logged on Quick Drink tap</Text>
-            <View style={styles.pillRow}>
-              {QUICK_ADD_PRESETS.map((amt) => (
-                <PillButton
-                  key={amt}
-                  label={formatWater(amt)}
-                  selected={(profile.quickAddAmount || 250) === amt}
-                  onPress={() => updateProfile({ quickAddAmount: amt })}
-                  size="md"
-                />
-              ))}
+            <View style={styles.themeSelector}>
+              {[
+                { label: 'Light', mode: 'light' as const, icon: 'sun' as const },
+                { label: 'Dark', mode: 'dark' as const, icon: 'moon' as const },
+              ].map((item) => {
+                const isSelected = themeMode === item.mode;
+                return (
+                  <TouchableOpacity
+                    key={item.mode}
+                    style={[
+                      styles.themeOption,
+                      isSelected && { backgroundColor: colors.primary },
+                      !isSelected && { backgroundColor: colors.surfaceBlue },
+                    ]}
+                    onPress={() => setThemeMode(item.mode)}
+                    activeOpacity={0.7}
+                  >
+                    <Feather
+                      name={item.icon}
+                      size={16}
+                      color={isSelected ? colors.textOnPrimary : colors.textSecondary}
+                    />
+                    <Text
+                      style={[
+                        styles.themeOptionText,
+                        { color: isSelected ? colors.textOnPrimary : colors.textSecondary }
+                      ]}
+                    >
+                      {item.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
           </Card>
 
-        {/* Appearance / Theme */}
-        <Card style={styles.sectionCard}>
-          <View style={styles.sectionHeader}>
-            <Feather name={isDark ? "moon" : "sun"} size={18} color={colors.primary} />
-            <Text style={styles.sectionTitle}>Appearance</Text>
-          </View>
-
-          <View style={styles.themeSelector}>
-            {[
-              { label: 'Light', mode: 'light' as const, icon: 'sun' as const },
-              { label: 'Dark', mode: 'dark' as const, icon: 'moon' as const },
-              { label: 'System', mode: 'system' as const, icon: 'smartphone' as const },
-            ].map((item) => {
-              const isSelected = themeMode === item.mode;
-              return (
-                <TouchableOpacity
-                  key={item.mode}
-                  style={[
-                    styles.themeOption,
-                    isSelected && { backgroundColor: colors.primary },
-                    !isSelected && { backgroundColor: colors.surfaceBlue },
-                  ]}
-                  onPress={() => setThemeMode(item.mode)}
-                  activeOpacity={0.7}
-                >
-                  <Feather
-                    name={item.icon}
-                    size={16}
-                    color={isSelected ? colors.textOnPrimary : colors.textSecondary}
-                  />
-                  <Text
-                    style={[
-                      styles.themeOptionText,
-                      { color: isSelected ? colors.textOnPrimary : colors.textSecondary }
-                    ]}
-                  >
-                    {item.label}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </Card>
-
-        {/* Android Home Screen Widget */}
-        <Card style={styles.sectionCard}>
-          <View style={styles.sectionHeader}>
-            <Feather name="smartphone" size={18} color={colors.primary} />
-            <Text style={styles.sectionTitle}>Home Screen Widget</Text>
-          </View>
-          <Text style={styles.backupDescription}>
-            Add the Water Cow widget to your Android home screen to track live liters consumed today and log water with one tap.
-          </Text>
-
-          <TouchableOpacity
-            style={[styles.backupButton, { backgroundColor: colors.primary }]}
-            onPress={() => setShowWidgetModal(true)}
-            activeOpacity={0.85}
-          >
-            <Feather name="smartphone" size={18} color={colors.textOnPrimary} />
-            <Text style={[styles.backupButtonText, { color: colors.textOnPrimary }]}>
-              View & Setup Widget
+          {/* Android Home Screen Widget */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="smartphone" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Home Screen Widget</Text>
+            </View>
+            <Text style={styles.backupDescription}>
+              Add the Water Cow widget to your Android home screen to track live liters consumed today and log water with one tap.
             </Text>
-          </TouchableOpacity>
-        </Card>
 
-        {/* Backup & Restore */}
-        <Card style={styles.sectionCard}>
-          <View style={styles.sectionHeader}>
-            <Feather name="hard-drive" size={18} color={colors.primary} />
-            <Text style={styles.sectionTitle}>Backup & Data</Text>
-          </View>
-          <Text style={styles.backupDescription}>
-            Export your hydration history, reminder settings, and profile data to share or save as a backup.
-          </Text>
-
-          <View style={styles.backupActions}>
             <TouchableOpacity
-              style={[
-                styles.backupButton,
-                { backgroundColor: colors.primary, opacity: isExporting ? 0.7 : 1 },
-              ]}
-              onPress={handleExport}
-              disabled={isExporting}
-              activeOpacity={0.8}
+              style={[styles.backupButton, { backgroundColor: colors.primary }]}
+              onPress={() => setShowWidgetModal(true)}
+              activeOpacity={0.85}
             >
-              <Feather name="upload-cloud" size={18} color={colors.textOnPrimary} />
+              <Feather name="smartphone" size={18} color={colors.textOnPrimary} />
               <Text style={[styles.backupButtonText, { color: colors.textOnPrimary }]}>
-                {isExporting ? 'Exporting...' : 'Export File'}
+                View & Setup Widget
               </Text>
             </TouchableOpacity>
+          </Card>
 
-            <TouchableOpacity
-              style={[
-                styles.backupButton,
-                {
-                  backgroundColor: colors.surfaceBlue,
-                  borderColor: colors.border,
-                  borderWidth: 1,
-                  opacity: isImporting ? 0.7 : 1,
-                },
-              ]}
-              onPress={handleImport}
-              disabled={isImporting}
-              activeOpacity={0.8}
-            >
-              <Feather name="download-cloud" size={18} color={colors.primary} />
-              <Text style={[styles.backupButtonText, { color: colors.primary }]}>
-                {isImporting ? 'Importing...' : 'Import File'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-
-        {/* About */}
-        <Card style={styles.sectionCard}>
-          <View style={styles.sectionHeader}>
-            <Feather name="info" size={18} color={colors.primary} />
-            <Text style={styles.sectionTitle}>About</Text>
-          </View>
-
-          <View style={styles.aboutContent}>
-            <Text style={styles.appName}>Water Cow 🐄💧</Text>
-            <Text style={styles.appTagline}>
-              Simple hydration tracking.{'\n'}A little moo to remind you.
+          {/* Backup & Restore */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="hard-drive" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Backup & Data</Text>
+            </View>
+            <Text style={styles.backupDescription}>
+              Export your hydration history, reminder settings, and profile data to share or save as a backup.
             </Text>
+
+            <View style={styles.backupActions}>
+              <TouchableOpacity
+                style={[
+                  styles.backupButton,
+                  { backgroundColor: colors.primary, opacity: isExporting ? 0.7 : 1 },
+                ]}
+                onPress={handleExport}
+                disabled={isExporting}
+                activeOpacity={0.8}
+              >
+                <Feather name="upload-cloud" size={18} color={colors.textOnPrimary} />
+                <Text style={[styles.backupButtonText, { color: colors.textOnPrimary }]}>
+                  {isExporting ? 'Exporting...' : 'Export File'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.backupButton,
+                  {
+                    backgroundColor: colors.surfaceBlue,
+                    borderColor: colors.border,
+                    borderWidth: 1,
+                    opacity: isImporting ? 0.7 : 1,
+                  },
+                ]}
+                onPress={handleImport}
+                disabled={isImporting}
+                activeOpacity={0.8}
+              >
+                <Feather name="download-cloud" size={18} color={colors.primary} />
+                <Text style={[styles.backupButtonText, { color: colors.primary }]}>
+                  {isImporting ? 'Importing...' : 'Import File'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+
+          {/* Support Redesign */}
+          <View style={[styles.sectionCard, styles.supportCardWrapper]}>
+            <View style={styles.supportHeaderRow}>
+              <Animated.View style={[styles.supportIconContainer, { backgroundColor: colors.surfaceBlueDark || '#BAE6FD', transform: [{ scale: heartAnim }] }]}>
+                <Feather name="heart" size={24} color={colors.primary} />
+              </Animated.View>
+              <View style={{ flex: 1, marginLeft: 16 }}>
+                <Text style={styles.supportTitle}>Love WaterCow? 🐄</Text>
+                <Text style={styles.supportDescription}>
+                  WaterCow is 100% free and ad-free. If it helps you stay hydrated, a small contribution keeps it alive and growing!
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.supportButtonsRow}>
+              <TouchableOpacity
+                style={[
+                  styles.supportBtn,
+                  { backgroundColor: colors.primary, borderColor: colors.primary },
+                ]}
+                onPress={() => Linking.openURL('https://water-cow.vercel.app/#support')}
+                activeOpacity={0.8}
+              >
+                <Feather name="heart" size={18} color={colors.textOnPrimary} style={{ marginRight: 8 }} />
+                <Text style={[styles.supportBtnText, { color: colors.textOnPrimary }]}>
+                  Support the Developer
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </Card>
-      </ScrollView>
+
+          {/* About */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.sectionHeader}>
+              <Feather name="info" size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>About</Text>
+            </View>
+
+            <View style={styles.aboutContent}>
+              <Text style={styles.appName}>Water Cow 🐄💧</Text>
+              <Text style={styles.appTagline}>
+                Simple hydration tracking.{'\n'}A little moo to remind you.
+              </Text>
+            </View>
+          </Card>
+        </ScrollView>
       </KeyboardAvoidingView>
 
       {/* Android Home Screen Widget Modal */}
@@ -394,12 +431,21 @@ const getStyles = (colors: any) => StyleSheet.create({
   },
 
   // Header
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: Spacing.xxl,
+    marginBottom: Spacing.lg,
+  },
   title: {
     fontFamily: Typography.fontFamily.bold,
     fontSize: Typography.size.xxl,
     color: colors.textPrimary,
-    paddingTop: Spacing.xxl,
-    marginBottom: Spacing.lg,
+    textAlign: 'left',
+  },
+  headerHeartBtn: {
+    padding: Spacing.sm,
   },
 
   logoSection: {
@@ -588,15 +634,66 @@ const getStyles = (colors: any) => StyleSheet.create({
     fontFamily: Typography.fontFamily.bold,
     fontSize: Typography.size.xl,
     color: colors.textPrimary,
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.xs,
   },
   appTagline: {
-    fontFamily: Typography.fontFamily.regular,
+    fontFamily: Typography.fontFamily.medium,
     fontSize: Typography.size.sm,
-    color: colors.textTertiary,
+    color: colors.textSecondary,
     textAlign: 'center',
     lineHeight: 20,
-    marginBottom: Spacing.md,
+  },
+
+  // Support Redesign
+  supportCardWrapper: {
+    backgroundColor: colors.surface,
+    borderRadius: BorderRadius.xl,
+    padding: Spacing.xl,
+    marginBottom: Spacing.xl,
+    borderWidth: 1,
+    borderColor: colors.border,
+    ...Shadows.md,
+  },
+  supportHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.xl,
+  },
+  supportIconContainer: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  supportTitle: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: Typography.size.lg,
+    color: colors.textPrimary,
+    marginBottom: 4,
+  },
+  supportDescription: {
+    fontFamily: Typography.fontFamily.medium,
+    fontSize: Typography.size.sm,
+    color: colors.textSecondary,
+    lineHeight: 20,
+  },
+  supportButtonsRow: {
+    flexDirection: 'column',
+    gap: Spacing.md,
+  },
+  supportBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    borderRadius: BorderRadius.lg,
+    borderWidth: 1,
+    ...Shadows.sm,
+  },
+  supportBtnText: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: Typography.size.md,
   },
   appVersion: {
     fontFamily: Typography.fontFamily.regular,

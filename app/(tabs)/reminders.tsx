@@ -66,19 +66,9 @@ export default function RemindersScreen() {
   const nextReminder = getNextReminderTime(state.lastDrinkTime, settings.intervalMinutes);
   const countdownText = getCountdownString(nextReminder);
 
-  const presets = [30, 60, 120, 180];
-  const isCustom = !presets.includes(settings.intervalMinutes);
-  const [customText, setCustomText] = useState(isCustom ? settings.intervalMinutes.toString() : '45');
-
   useEffect(() => {
     setSettings(state.reminderSettings);
   }, [state.reminderSettings]);
-
-  useEffect(() => {
-    if (isCustom) {
-      setCustomText(settings.intervalMinutes.toString());
-    }
-  }, [settings.intervalMinutes, isCustom]);
 
   const handleToggle = async (enabled: boolean) => {
     // Instantly update state & context
@@ -107,33 +97,6 @@ export default function RemindersScreen() {
     const updated = { ...settings, intervalMinutes: value };
     setSettings(updated);
     updateReminders(updated);
-  };
-
-  const handleCustomTextChange = (text: string) => {
-    const cleanText = text.replace(/[^0-9]/g, '');
-    setCustomText(cleanText);
-    
-    const parsed = parseInt(cleanText, 10);
-    if (!isNaN(parsed) && parsed > 0) {
-      const updated = { ...settings, intervalMinutes: parsed };
-      setSettings(updated);
-      updateReminders(updated);
-    }
-  };
-
-  const handleCustomBlur = () => {
-    const parsed = parseInt(customText, 10);
-    if (isNaN(parsed) || parsed < 1) {
-      setCustomText('1');
-      const updated = { ...settings, intervalMinutes: 1 };
-      setSettings(updated);
-      updateReminders(updated);
-    } else if (parsed > 1440) {
-      setCustomText('1440');
-      const updated = { ...settings, intervalMinutes: 1440 };
-      setSettings(updated);
-      updateReminders(updated);
-    }
   };
 
   const handleSnoozeChange = (value: number) => {
@@ -290,138 +253,7 @@ export default function RemindersScreen() {
                     size="sm"
                   />
                 ))}
-                <PillButton
-                  label="Custom"
-                  selected={isCustom}
-                  onPress={() => {
-                    const lastVal = parseInt(customText, 10) || 45;
-                    handleIntervalChange(lastVal);
-                  }}
-                  size="sm"
-                />
               </View>
-              {isCustom && (
-                <View style={[styles.customInputContainer, { backgroundColor: colors.surfaceBlue, borderColor: colors.border }]}>
-                  {/* Top Status Header */}
-                  <View style={styles.customHeaderRow}>
-                    <Text style={[styles.customInputLabel, { color: colors.textPrimary }]}>
-                      Custom Duration
-                    </Text>
-                    <View style={[styles.customBadge, { backgroundColor: colors.surface }]}>
-                      <Text style={[styles.customBadgeText, { color: colors.primary }]}>
-                        {settings.intervalMinutes >= 60
-                          ? `${Math.floor(settings.intervalMinutes / 60)}h ${settings.intervalMinutes % 60 > 0 ? `${settings.intervalMinutes % 60}m` : ''}`
-                          : `${settings.intervalMinutes} min`}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* Responsive Stepper Row */}
-                  <View style={styles.customStepperRow}>
-                    {/* -15m Stepper */}
-                    <TouchableOpacity
-                      style={[styles.customStepperBtnSmall, { backgroundColor: colors.surface, borderColor: colors.border }]}
-                      onPress={() => {
-                        const current = parseInt(customText, 10) || 45;
-                        const nextVal = Math.max(5, current - 15);
-                        setCustomText(nextVal.toString());
-                        handleIntervalChange(nextVal);
-                      }}
-                      activeOpacity={0.7}
-                    >
-                      <Text style={[styles.stepperSmallText, { color: colors.primary }]}>-15</Text>
-                    </TouchableOpacity>
-
-                    {/* -5m Stepper */}
-                    <TouchableOpacity
-                      style={[styles.customStepperBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-                      onPress={() => {
-                        const current = parseInt(customText, 10) || 45;
-                        const nextVal = Math.max(5, current - 5);
-                        setCustomText(nextVal.toString());
-                        handleIntervalChange(nextVal);
-                      }}
-                      activeOpacity={0.7}
-                    >
-                      <Feather name="minus" size={18} color={colors.primary} />
-                    </TouchableOpacity>
-
-                    {/* Center Editable Input */}
-                    <View style={[styles.customInputWrapper, { backgroundColor: colors.surface, borderColor: colors.primary }]}>
-                      <TextInput
-                        style={[styles.customInput, { color: colors.primary }]}
-                        value={customText}
-                        onChangeText={handleCustomTextChange}
-                        onBlur={handleCustomBlur}
-                        keyboardType="number-pad"
-                        maxLength={4}
-                        selectTextOnFocus
-                      />
-                      <Text style={[styles.customInputUnit, { color: colors.textTertiary }]}>min</Text>
-                    </View>
-
-                    {/* +5m Stepper */}
-                    <TouchableOpacity
-                      style={[styles.customStepperBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-                      onPress={() => {
-                        const current = parseInt(customText, 10) || 45;
-                        const nextVal = Math.min(1440, current + 5);
-                        setCustomText(nextVal.toString());
-                        handleIntervalChange(nextVal);
-                      }}
-                      activeOpacity={0.7}
-                    >
-                      <Feather name="plus" size={18} color={colors.primary} />
-                    </TouchableOpacity>
-
-                    {/* +15m Stepper */}
-                    <TouchableOpacity
-                      style={[styles.customStepperBtnSmall, { backgroundColor: colors.surface, borderColor: colors.border }]}
-                      onPress={() => {
-                        const current = parseInt(customText, 10) || 45;
-                        const nextVal = Math.min(1440, current + 15);
-                        setCustomText(nextVal.toString());
-                        handleIntervalChange(nextVal);
-                      }}
-                      activeOpacity={0.7}
-                    >
-                      <Text style={[styles.stepperSmallText, { color: colors.primary }]}>+15</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  {/* Quick Custom Interval Chips */}
-                  <View style={styles.quickChipsRow}>
-                    {[15, 45, 75, 90, 150].map((val) => (
-                      <TouchableOpacity
-                        key={val}
-                        style={[
-                          styles.quickChip,
-                          {
-                            backgroundColor: settings.intervalMinutes === val ? colors.primary : colors.surface,
-                            borderColor: settings.intervalMinutes === val ? colors.primary : colors.border,
-                          },
-                        ]}
-                        onPress={() => {
-                          setCustomText(val.toString());
-                          handleIntervalChange(val);
-                        }}
-                        activeOpacity={0.7}
-                      >
-                        <Text
-                          style={[
-                            styles.quickChipText,
-                            {
-                              color: settings.intervalMinutes === val ? colors.textOnPrimary : colors.textSecondary,
-                            },
-                          ]}
-                        >
-                          {val}m
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                </View>
-              )}
             </Card>
 
             {/* Active Hours */}
