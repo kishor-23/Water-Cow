@@ -119,9 +119,7 @@ export default function SettingsScreen() {
               activeOpacity={0.8}
               style={styles.headerHeartBtn}
             >
-              <Animated.View style={{ transform: [{ scale: heartAnim }] }}>
-                <Feather name="heart" size={24} color={colors.primary} />
-              </Animated.View>
+              <Feather name="heart" size={24} color={colors.primary} />
             </TouchableOpacity>
           </View>
 
