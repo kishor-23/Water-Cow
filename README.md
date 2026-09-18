@@ -14,9 +14,7 @@ Water Cow is a feature-packed React Native & Expo mobile application for trackin
 
 ## 📱 App Showcase
 
-| App Features Showcase | Phone Screenshot |
-| :---: | :---: |
-| ![Water Cow App Showcase](documentation-site/static/img/app-showcase.png) | ![Water Cow Phone Screenshot](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png) |
+![Water Cow App Screenshot](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 
 ---
 
