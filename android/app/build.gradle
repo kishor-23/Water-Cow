@@ -96,8 +96,7 @@ android {
     splits {
         abi {
             reset()
-            enable true
-            universalApk true
+            enable false
         }
     }
     signingConfigs {
@@ -113,9 +112,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            // Unsigned by default for F-Droid and release packaging
             def enableShrinkResources = findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false'
             shrinkResources enableShrinkResources.toBoolean()
             minifyEnabled enableMinifyInReleaseBuilds
