@@ -1,78 +1,21 @@
-WATER COW PERSONAL & NON-COMMERCIAL LICENSE
+The MIT License (MIT)
 
-Copyright (c) 2026 Kishor
+Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)
 
-1. GRANT OF RIGHTS
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Permission is granted, free of charge, to any person obtaining a copy
-of this software and associated documentation (the "Software"), to:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-- use the Software for personal and non-commercial purposes;
-- copy the Software;
-- modify the Software for personal and non-commercial purposes; and
-- redistribute the Software for personal and non-commercial purposes,
-
-subject to the terms of this license.
-
-2. COMMERCIAL USE
-
-Commercial use of the Software is not permitted under this license.
-
-Commercial use includes, but is not limited to:
-
-- selling the Software or a modified version of it;
-- publishing the Software as a paid application;
-- monetizing the Software through advertisements;
-- monetizing the Software through subscriptions or in-app purchases;
-- using the Software as part of a commercial product or service; and
-- distributing a modified version of the Software for commercial purposes.
-
-Any commercial use requires a separate written commercial license from
-the copyright holder.
-
-3. COMMERCIAL LICENSE
-
-The copyright holder may grant commercial licenses at their discretion.
-The terms and fees for a commercial license will be agreed upon
-separately between the copyright holder and the commercial user.
-
-4. REDISTRIBUTION
-
-Non-commercial redistribution is permitted provided that:
-
-- this license is included with the Software; and
-- the original copyright notice is retained.
-
-Commercial redistribution requires a separate commercial license.
-
-5. MODIFICATIONS
-
-You may modify the Software for personal and non-commercial purposes.
-
-You may not commercially distribute or commercially use modified
-versions without a separate commercial license.
-
-6. BRANDING
-
-This license does not grant permission to use the "Water Cow" name,
-logo, mascot, artwork, trademarks, or other branding associated with
-Water Cow for commercial purposes.
-
-7. SUPPORT AND SPONSORSHIP
-
-Voluntary donations or sponsorships to support the development of
-Water Cow do not by themselves grant commercial-use rights.
-
-8. DISCLAIMER
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
-NONINFRINGEMENT.
-
-IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
-DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
-
-9. COPYRIGHT
-
-Copyright (c) 2026 Kishor. All rights reserved.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
