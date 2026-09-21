@@ -14,7 +14,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from './FeatherIcon';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
@@ -230,7 +230,7 @@ export function WallpaperWidgetModal({
               </Text>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-              <Feather name="x" size={22} color={colors.textSecondary} />
+              <FeatherIcon name="x" size={22} color={colors.textSecondary} />
             </TouchableOpacity>
           </View>
 
@@ -324,7 +324,7 @@ export function WallpaperWidgetModal({
                       {theme.name}
                     </Text>
                     {isSelected && (
-                      <Feather name="check-circle" size={14} color={theme.accentColor} />
+                      <FeatherIcon name="check-circle" size={14} color={theme.accentColor} />
                     )}
                   </TouchableOpacity>
                 );
@@ -341,7 +341,7 @@ export function WallpaperWidgetModal({
               disabled={isExporting}
               activeOpacity={0.85}
             >
-              <Feather name="download" size={20} color={colors.textOnPrimary} />
+              <FeatherIcon name="download" size={20} color={colors.textOnPrimary} />
               <Text style={[styles.exportBtnText, { color: colors.textOnPrimary }]}>
                 {isExporting ? 'Generating Wallpaper...' : 'Export & Save Wallpaper'}
               </Text>

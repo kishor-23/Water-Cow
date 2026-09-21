@@ -20,7 +20,7 @@ import Svg, {
   Rect,
   Line,
 } from 'react-native-svg';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from '../ui/FeatherIcon';
 import { createAudioPlayer } from 'expo-audio';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 

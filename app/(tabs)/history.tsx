@@ -8,7 +8,7 @@ import {
   Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from '../../components/ui/FeatherIcon';
 import { useHydration } from '../../context/HydrationContext';
 import { SegmentedControl } from '../../components/ui/SegmentedControl';
 import { Card } from '../../components/ui/Card';
@@ -338,13 +338,13 @@ export default function HistoryScreen() {
             {/* Month Nav Header */}
             <View style={styles.monthNavRow}>
               <TouchableOpacity onPress={handlePrevMonth} style={styles.navArrowBtn}>
-                <Feather name="chevron-left" size={20} color={colors.textPrimary} />
+                <FeatherIcon name="chevron-left" size={20} color={colors.textPrimary} />
               </TouchableOpacity>
 
               <TouchableOpacity onPress={() => { setPickerYear(currentCalendarDate.getFullYear()); setShowPicker(true); }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                   <Text style={styles.monthYearText}>{monthYearTitle}</Text>
-                  <Feather name="chevron-down" size={16} color={colors.textPrimary} />
+                  <FeatherIcon name="chevron-down" size={16} color={colors.textPrimary} />
                 </View>
               </TouchableOpacity>
 
@@ -353,7 +353,7 @@ export default function HistoryScreen() {
                 disabled={isNextMonthDisabled}
                 style={[styles.navArrowBtn, isNextMonthDisabled && { opacity: 0.3 }]}
               >
-                <Feather name="chevron-right" size={20} color={colors.textPrimary} />
+                <FeatherIcon name="chevron-right" size={20} color={colors.textPrimary} />
               </TouchableOpacity>
             </View>
 
@@ -514,7 +514,7 @@ export default function HistoryScreen() {
                 >
                   <View style={styles.logRow}>
                     <View style={styles.logIcon}>
-                      <Feather name="droplet" size={16} color={colors.primary} />
+                      <FeatherIcon name="droplet" size={16} color={colors.primary} />
                     </View>
 
                     <View style={styles.logInfo}>
@@ -534,7 +534,7 @@ export default function HistoryScreen() {
                       onPress={() => handleDeleteLog(entry, selectedDayInfo.dateKey)}
                       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
-                      <Feather name="trash-2" size={18} color={colors.error || '#EF4444'} />
+                      <FeatherIcon name="trash-2" size={18} color={colors.error || '#EF4444'} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -542,7 +542,7 @@ export default function HistoryScreen() {
             </ScrollView>
           ) : (
             <View style={styles.emptyLogCard}>
-              <Feather name="coffee" size={24} color={colors.textTertiary} />
+              <FeatherIcon name="coffee" size={24} color={colors.textTertiary} />
               <Text style={styles.emptyLogText}>No water logged for this day</Text>
             </View>
           )}
@@ -559,7 +559,7 @@ export default function HistoryScreen() {
         <View style={styles.confirmOverlay}>
           <View style={[styles.confirmDialog, { backgroundColor: colors.surface }]}>
             <View style={styles.confirmIconContainer}>
-              <Feather name="trash-2" size={26} color="#EF4444" />
+              <FeatherIcon name="trash-2" size={26} color="#EF4444" />
             </View>
 
             <Text style={[styles.confirmTitle, { color: colors.textPrimary }]}>
@@ -598,7 +598,7 @@ export default function HistoryScreen() {
                 disabled={isDeleting}
                 activeOpacity={0.85}
               >
-                <Feather name="trash-2" size={16} color="#FFFFFF" />
+                <FeatherIcon name="trash-2" size={16} color="#FFFFFF" />
                 <Text style={styles.confirmDeleteText}>
                   {isDeleting ? 'Deleting...' : 'Delete'}
                 </Text>
@@ -617,7 +617,7 @@ export default function HistoryScreen() {
             {/* Year Selector */}
             <View style={styles.yearSelectorRow}>
               <TouchableOpacity onPress={() => setPickerYear(y => y - 1)} style={styles.navArrowBtn}>
-                <Feather name="chevron-left" size={20} color={colors.textPrimary} />
+                <FeatherIcon name="chevron-left" size={20} color={colors.textPrimary} />
               </TouchableOpacity>
               <Text style={[styles.pickerYearText, { color: colors.primary }]}>{pickerYear}</Text>
               <TouchableOpacity 
@@ -625,7 +625,7 @@ export default function HistoryScreen() {
                 style={[styles.navArrowBtn, pickerYear >= new Date().getFullYear() && { opacity: 0.3 }]}
                 disabled={pickerYear >= new Date().getFullYear()}
               >
-                <Feather name="chevron-right" size={20} color={colors.textPrimary} />
+                <FeatherIcon name="chevron-right" size={20} color={colors.textPrimary} />
               </TouchableOpacity>
             </View>
 

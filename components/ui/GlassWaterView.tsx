@@ -25,7 +25,7 @@ import Svg, {
   ClipPath,
   Text as SvgText,
 } from 'react-native-svg';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from './FeatherIcon';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { formatWater } from '../../utils/hydration';
 
@@ -642,11 +642,11 @@ export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewPro
                     {/* Status Badge */}
                     {isFull ? (
                       <View style={[styles.glassBadge, { backgroundColor: '#10B981' }]}>
-                        <Feather name="check" size={10} color="#FFFFFF" />
+                        <FeatherIcon name="check" size={10} color="#FFFFFF" />
                       </View>
                     ) : isNext ? (
                       <View style={[styles.glassBadge, { backgroundColor: colors.primary }]}>
-                        <Feather name="plus" size={10} color="#FFFFFF" />
+                        <FeatherIcon name="plus" size={10} color="#FFFFFF" />
                       </View>
                     ) : null}
                   </View>

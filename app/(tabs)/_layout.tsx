@@ -4,7 +4,7 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Platform, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from '../../components/ui/FeatherIcon';
 import { useTheme, Typography } from '../../constants/theme';
 
 export default function TabLayout() {
@@ -34,7 +34,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
-            <Feather name="home" size={24} color={color} />
+            <FeatherIcon name="home" size={24} color={color} />
           ),
         }}
       />
@@ -43,7 +43,7 @@ export default function TabLayout() {
         options={{
           title: 'Add Water',
           tabBarIcon: ({ color }) => (
-            <Feather name="plus-circle" size={24} color={color} />
+            <FeatherIcon name="plus-circle" size={24} color={color} />
           ),
         }}
       />
@@ -52,7 +52,7 @@ export default function TabLayout() {
         options={{
           title: 'History',
           tabBarIcon: ({ color }) => (
-            <Feather name="calendar" size={24} color={color} />
+            <FeatherIcon name="calendar" size={24} color={color} />
           ),
         }}
       />
@@ -61,7 +61,7 @@ export default function TabLayout() {
         options={{
           title: 'Reminders',
           tabBarIcon: ({ color }) => (
-            <Feather name="bell" size={24} color={color} />
+            <FeatherIcon name="bell" size={24} color={color} />
           ),
         }}
       />
@@ -70,7 +70,7 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color }) => (
-            <Feather name="sliders" size={24} color={color} />
+            <FeatherIcon name="sliders" size={24} color={color} />
           ),
         }}
       />

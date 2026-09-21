@@ -10,7 +10,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from '../../components/ui/FeatherIcon';
 import { useRouter } from 'expo-router';
 import { useHydration } from '../../context/HydrationContext';
 import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
@@ -180,7 +180,7 @@ export default function HomeScreen() {
           <Card style={styles.nextDrinkCard}>
             <View style={styles.nextDrinkRow}>
               <View style={styles.nextDrinkIconContainer}>
-                <Feather name="bell" size={20} color={colors.primary} />
+                <FeatherIcon name="bell" size={20} color={colors.primary} />
               </View>
               <View style={styles.nextDrinkInfo}>
                 <Text style={styles.nextDrinkLabel}>Next Notification & Timer</Text>
@@ -188,7 +188,7 @@ export default function HomeScreen() {
               </View>
               <View style={{ alignItems: 'flex-end' }}>
                 <View style={[styles.timerBadge, { backgroundColor: colors.surfaceBlue }]}>
-                  <Feather name="clock" size={12} color={colors.primary} style={{ marginRight: 4 }} />
+                  <FeatherIcon name="clock" size={12} color={colors.primary} style={{ marginRight: 4 }} />
                   <Text style={[styles.timerBadgeText, { color: colors.primary }]}>{countdownText}</Text>
                 </View>
                 <Text style={styles.nextDrinkRelative}>
@@ -207,7 +207,7 @@ export default function HomeScreen() {
             onPress={() => router.push('/add')}
             activeOpacity={0.8}
           >
-            <Feather name="edit-3" size={16} color={colors.primary} />
+            <FeatherIcon name="edit-3" size={16} color={colors.primary} />
             <Text style={styles.customAddText}>Custom Log</Text>
           </TouchableOpacity>
 
@@ -217,7 +217,7 @@ export default function HomeScreen() {
             onPress={() => addWater(profile.quickAddAmount || 250)}
             activeOpacity={0.85}
           >
-            <Feather name="plus" size={18} color={colors.textOnPrimary} />
+            <FeatherIcon name="plus" size={18} color={colors.textOnPrimary} />
             <Text style={styles.quickAddText} numberOfLines={1}>
               + {formatWater(profile.quickAddAmount || 250)} Quick
             </Text>

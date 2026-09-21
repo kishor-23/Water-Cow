@@ -13,7 +13,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from './FeatherIcon';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { updateNativeWidget } from '../../utils/widget';
 import { formatWater } from '../../utils/hydration';
@@ -52,7 +52,7 @@ export function HomeScreenWidgetModal({
               </Text>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
-              <Feather name="x" size={22} color={colors.textSecondary} />
+              <FeatherIcon name="x" size={22} color={colors.textSecondary} />
             </TouchableOpacity>
           </View>
 

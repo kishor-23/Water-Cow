@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from './FeatherIcon';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 
 interface StatsCardProps {
-  icon: keyof typeof Feather.glyphMap;
+  icon: string;
   value: string;
   label: string;
   color?: string;
@@ -18,7 +18,7 @@ export function StatsCard({ icon, value, label, color, onPress }: StatsCardProps
   const content = (
     <View style={[styles.card, { backgroundColor: colors.surface }]}>
       <View style={[styles.iconContainer, { backgroundColor: activeColor + '15' }]}>
-        <Feather name={icon} size={18} color={activeColor} />
+        <FeatherIcon name={icon} size={18} color={activeColor} />
       </View>
       <Text
         style={[styles.value, { color: colors.textPrimary }]}

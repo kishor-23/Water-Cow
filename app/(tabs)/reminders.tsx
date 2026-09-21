@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from '../../components/ui/FeatherIcon';
 import { createAudioPlayer } from 'expo-audio';
 import { useHydration } from '../../context/HydrationContext';
 import { Card } from '../../components/ui/Card';
@@ -231,7 +231,7 @@ export default function RemindersScreen() {
 
                 <View style={{ alignItems: 'flex-end' }}>
                   <View style={{ backgroundColor: colors.surface, paddingHorizontal: 12, paddingVertical: 6, borderRadius: BorderRadius.full, borderWidth: 1, borderColor: colors.primaryLight, flexDirection: 'row', alignItems: 'center' }}>
-                    <Feather name="clock" size={14} color={colors.primary} style={{ marginRight: 6 }} />
+                    <FeatherIcon name="clock" size={14} color={colors.primary} style={{ marginRight: 6 }} />
                     <Text style={{ fontFamily: Typography.fontFamily.bold, fontSize: Typography.size.md, color: colors.primary }}>
                       {countdownText}
                     </Text>
@@ -267,7 +267,7 @@ export default function RemindersScreen() {
                     onPress={() => handleTimeChange('startHour', -1)}
                     style={styles.timeButton}
                   >
-                    <Feather name="minus" size={16} color={colors.textSecondary} />
+                    <FeatherIcon name="minus" size={16} color={colors.textSecondary} />
                   </TouchableOpacity>
                   <Text style={styles.timeValue}>
                     {formatHour(settings.startHour)}
@@ -276,7 +276,7 @@ export default function RemindersScreen() {
                     onPress={() => handleTimeChange('startHour', 1)}
                     style={styles.timeButton}
                   >
-                    <Feather name="plus" size={16} color={colors.textSecondary} />
+                    <FeatherIcon name="plus" size={16} color={colors.textSecondary} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -290,7 +290,7 @@ export default function RemindersScreen() {
                     onPress={() => handleTimeChange('endHour', -1)}
                     style={styles.timeButton}
                   >
-                    <Feather name="minus" size={16} color={colors.textSecondary} />
+                    <FeatherIcon name="minus" size={16} color={colors.textSecondary} />
                   </TouchableOpacity>
                   <Text style={styles.timeValue}>
                     {formatHour(settings.endHour)}
@@ -299,7 +299,7 @@ export default function RemindersScreen() {
                     onPress={() => handleTimeChange('endHour', 1)}
                     style={styles.timeButton}
                   >
-                    <Feather name="plus" size={16} color={colors.textSecondary} />
+                    <FeatherIcon name="plus" size={16} color={colors.textSecondary} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -342,7 +342,7 @@ export default function RemindersScreen() {
                     {sound.label}
                   </Text>
                   {settings.sound === sound.value && (
-                    <Feather name="check" size={18} color={colors.primary} />
+                    <FeatherIcon name="check" size={18} color={colors.primary} />
                   )}
                 </TouchableOpacity>
               ))}
@@ -353,7 +353,7 @@ export default function RemindersScreen() {
                 onPress={() => sendTestNotification(settings.sound)}
                 activeOpacity={0.8}
               >
-                <Feather name="bell" size={16} color={colors.primary} />
+                <FeatherIcon name="bell" size={16} color={colors.primary} />
                 <Text style={styles.testNotifyText}>Test Notification Sound 🔔</Text>
               </TouchableOpacity>
             </Card>

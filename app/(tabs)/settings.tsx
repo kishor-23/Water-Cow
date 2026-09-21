@@ -14,7 +14,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from '../../components/ui/FeatherIcon';
 import { useHydration } from '../../context/HydrationContext';
 import { Card } from '../../components/ui/Card';
 import { PillButton } from '../../components/ui/PillButton';
@@ -119,7 +119,7 @@ export default function SettingsScreen() {
               activeOpacity={0.8}
               style={styles.headerHeartBtn}
             >
-              <Feather name="heart" size={24} color={colors.primary} />
+              <FeatherIcon name="heart" size={24} color={colors.primary} />
             </TouchableOpacity>
           </View>
 
@@ -135,7 +135,7 @@ export default function SettingsScreen() {
           {/* Profile */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Feather name="user" size={18} color={colors.primary} />
+              <FeatherIcon name="user" size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>Profile</Text>
             </View>
 
@@ -158,7 +158,7 @@ export default function SettingsScreen() {
                     maxLength={20}
                   />
                   <TouchableOpacity onPress={handleNameSave}>
-                    <Feather name="check" size={18} color={colors.primary} />
+                    <FeatherIcon name="check" size={18} color={colors.primary} />
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -167,7 +167,7 @@ export default function SettingsScreen() {
                   onPress={() => setEditingName(true)}
                 >
                   <Text style={styles.settingValue}>{profile.name}</Text>
-                  <Feather name="edit-2" size={14} color={colors.textTertiary} />
+                  <FeatherIcon name="edit-2" size={14} color={colors.textTertiary} />
                 </TouchableOpacity>
               )}
             </View>
@@ -218,7 +218,7 @@ export default function SettingsScreen() {
           {/* Daily Goal */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Feather name="target" size={18} color={colors.primary} />
+              <FeatherIcon name="target" size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>Daily Goal</Text>
             </View>
 
@@ -246,7 +246,7 @@ export default function SettingsScreen() {
           {/* Appearance / Theme */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Feather name={isDark ? "moon" : "sun"} size={18} color={colors.primary} />
+              <FeatherIcon name={isDark ? "moon" : "sun"} size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>Appearance</Text>
             </View>
 
@@ -289,7 +289,7 @@ export default function SettingsScreen() {
           {/* Android Home Screen Widget */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Feather name="smartphone" size={18} color={colors.primary} />
+              <FeatherIcon name="smartphone" size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>Home Screen Widget</Text>
             </View>
             <Text style={styles.backupDescription}>
@@ -301,7 +301,7 @@ export default function SettingsScreen() {
               onPress={() => setShowWidgetModal(true)}
               activeOpacity={0.85}
             >
-              <Feather name="smartphone" size={18} color={colors.textOnPrimary} />
+              <FeatherIcon name="smartphone" size={18} color={colors.textOnPrimary} />
               <Text style={[styles.backupButtonText, { color: colors.textOnPrimary }]}>
                 View & Setup Widget
               </Text>
@@ -311,7 +311,7 @@ export default function SettingsScreen() {
           {/* Backup & Restore */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Feather name="hard-drive" size={18} color={colors.primary} />
+              <FeatherIcon name="hard-drive" size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>Backup & Data</Text>
             </View>
             <Text style={styles.backupDescription}>
@@ -328,7 +328,7 @@ export default function SettingsScreen() {
                 disabled={isExporting}
                 activeOpacity={0.8}
               >
-                <Feather name="upload-cloud" size={18} color={colors.textOnPrimary} />
+                <FeatherIcon name="upload-cloud" size={18} color={colors.textOnPrimary} />
                 <Text style={[styles.backupButtonText, { color: colors.textOnPrimary }]}>
                   {isExporting ? 'Exporting...' : 'Export File'}
                 </Text>
@@ -348,7 +348,7 @@ export default function SettingsScreen() {
                 disabled={isImporting}
                 activeOpacity={0.8}
               >
-                <Feather name="download-cloud" size={18} color={colors.primary} />
+                <FeatherIcon name="download-cloud" size={18} color={colors.primary} />
                 <Text style={[styles.backupButtonText, { color: colors.primary }]}>
                   {isImporting ? 'Importing...' : 'Import File'}
                 </Text>
@@ -360,7 +360,7 @@ export default function SettingsScreen() {
           <View style={[styles.sectionCard, styles.supportCardWrapper]}>
             <View style={styles.supportHeaderRow}>
               <Animated.View style={[styles.supportIconContainer, { backgroundColor: colors.surfaceBlueDark || '#BAE6FD', transform: [{ scale: heartAnim }] }]}>
-                <Feather name="heart" size={24} color={colors.primary} />
+                <FeatherIcon name="heart" size={24} color={colors.primary} />
               </Animated.View>
               <View style={{ flex: 1, marginLeft: 16 }}>
                 <Text style={styles.supportTitle}>Love WaterCow? 🐄</Text>
@@ -379,7 +379,7 @@ export default function SettingsScreen() {
                 onPress={() => Linking.openURL('https://water-cow.vercel.app/#support')}
                 activeOpacity={0.8}
               >
-                <Feather name="heart" size={18} color={colors.textOnPrimary} style={{ marginRight: 8 }} />
+                <FeatherIcon name="heart" size={18} color={colors.textOnPrimary} style={{ marginRight: 8 }} />
                 <Text style={[styles.supportBtnText, { color: colors.textOnPrimary }]}>
                   Support the Developer
                 </Text>
@@ -390,7 +390,7 @@ export default function SettingsScreen() {
           {/* About */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <Feather name="info" size={18} color={colors.primary} />
+              <FeatherIcon name="info" size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>About</Text>
             </View>
 

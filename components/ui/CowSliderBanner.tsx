@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from './FeatherIcon';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { CowReminderAnimated, ReminderCowPose } from '../cow/CowReminderAnimated';
 
@@ -139,7 +139,7 @@ export const CowSliderBanner: React.FC<CowSliderBannerProps> = ({
           activeOpacity={0.8}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
-          <Feather name="chevron-left" size={20} color={colors.primary} />
+          <FeatherIcon name="chevron-left" size={20} color={colors.primary} />
         </TouchableOpacity>
 
         {/* Navigation Arrow - Next */}
@@ -149,7 +149,7 @@ export const CowSliderBanner: React.FC<CowSliderBannerProps> = ({
           activeOpacity={0.8}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
-          <Feather name="chevron-right" size={20} color={colors.primary} />
+          <FeatherIcon name="chevron-right" size={20} color={colors.primary} />
         </TouchableOpacity>
       </View>
     </View>

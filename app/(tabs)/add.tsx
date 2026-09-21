@@ -25,7 +25,7 @@ import Animated, {
 import { CowReminderAnimated } from '../../components/cow/CowReminderAnimated';
 import { PillButton } from '../../components/ui/PillButton';
 import { Card } from '../../components/ui/Card';
-import { Feather } from '@expo/vector-icons';
+import { FeatherIcon } from '../../components/ui/FeatherIcon';
 import { useHydration } from '../../context/HydrationContext';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { formatWater } from '../../utils/hydration';
@@ -208,7 +208,7 @@ export default function AddWaterScreen() {
           {/* Quick Add Default Amount Card */}
           <Card style={styles.amountsCard}>
             <View style={styles.sectionHeader}>
-              <Feather name="plus-circle" size={18} color={colors.primary} />
+              <FeatherIcon name="plus-circle" size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>Quick Add Amount</Text>
             </View>
 
