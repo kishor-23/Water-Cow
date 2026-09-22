@@ -215,10 +215,11 @@ interface FeatherIconProps {
   name: string;
   size?: number;
   color?: ColorValue | string;
+  strokeWidth?: number;
   style?: object;
 }
 
-export function FeatherIcon({ name, size = 24, color = '#000', style }: FeatherIconProps) {
+export function FeatherIcon({ name, size = 24, color = '#000', strokeWidth = 2, style }: FeatherIconProps) {
   const icon = ICONS[name];
   if (!icon) {
     console.warn(`FeatherIcon: unknown icon "${name}"`);
@@ -231,7 +232,7 @@ export function FeatherIcon({ name, size = 24, color = '#000', style }: FeatherI
       viewBox="0 0 24 24"
       fill="none"
       stroke={color}
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       style={style}
