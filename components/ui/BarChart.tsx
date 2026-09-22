@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import Svg, { Rect, Line, Text as SvgText, Defs, LinearGradient, Stop } from 'react-native-svg';
 import { useTheme, Typography, Spacing } from '../../constants/theme';
 
@@ -16,19 +16,30 @@ interface BarChartProps {
 
 export function BarChart({ data, height = 200 }: BarChartProps) {
   const { colors } = useTheme();
+  // Use actual screen width minus card padding (xl*2 = 32px) minus card inner padding (lg*2 = 24px)
+  const { width: screenWidth } = useWindowDimensions();
+  const containerWidth = screenWidth - 32 - 24 - 16; // account for scrollView + card padding
+
   if (data.length === 0) return null;
 
   const maxValue = Math.max(...data.map((d) => Math.max(d.value, d.goal)), 1);
-  
-  // Dynamic bar width adjustment based on item count
-  const containerWidth = 320;
-  const spacingBetween = 14;
-  const barWidth = Math.min(28, (containerWidth - (data.length + 1) * spacingBetween) / data.length);
-  const chartWidth = data.length * (barWidth + spacingBetween) + spacingBetween;
-  
-  const chartHeight = height - 30;
-  const topPadding = 22;
-  const usableHeight = chartHeight - topPadding;
+
+  const spacingBetween = 10;
+  const barWidth = Math.floor(
+    (containerWidth - (data.length + 1) * spacingBetween) / data.length
+  );
+  const chartWidth = containerWidth;
+
+  // Layout zones:
+  //  [topPadding]  ← value label space
+  //  [usableHeight] ← bar drawing area (both track and fill)
+  //  [labelHeight]  ← day label space
+  const labelHeight = 20;
+  const topPadding = 20; // room for value labels above bars
+  const usableHeight = height - topPadding - labelHeight;
+
+  // Bottom of the usable bar area in SVG coordinates
+  const barBottom = topPadding + usableHeight;
 
   const getGradientId = (progress: number) => {
     if (progress >= 1) return 'url(#grad_complete)';
@@ -38,9 +49,12 @@ export function BarChart({ data, height = 200 }: BarChartProps) {
     return 'url(#grad_low)';
   };
 
+  // Fix: show ml as "0.25L" instead of raw "250"
   const formatValue = (val: number) => {
     if (val === 0) return '';
-    return val >= 1000 ? `${(val / 1000).toFixed(1)}L` : `${val}`;
+    if (val >= 1000) return `${(val / 1000).toFixed(1)}L`;
+    // Sub-litre: show as decimal litres rounded to 2 sig figs
+    return `${(val / 1000).toFixed(2).replace(/\.?0+$/, '')}L`;
   };
 
   return (
@@ -74,15 +88,15 @@ export function BarChart({ data, height = 200 }: BarChartProps) {
           </LinearGradient>
         </Defs>
 
-        {/* Horizontal grid lines */}
+        {/* Horizontal grid lines inside usable area */}
         {[0.25, 0.5, 0.75, 1.0].map((ratio, index) => {
-          const yPos = chartHeight - (ratio * usableHeight);
+          const yPos = barBottom - ratio * usableHeight;
           return (
             <Line
               key={index}
-              x1={spacingBetween}
+              x1={0}
               y1={yPos}
-              x2={chartWidth - spacingBetween}
+              x2={chartWidth}
               y2={yPos}
               stroke={colors.border}
               strokeWidth={1}
@@ -91,13 +105,13 @@ export function BarChart({ data, height = 200 }: BarChartProps) {
           );
         })}
 
-        {/* Goal line (solid, more subtle) */}
+        {/* Goal line */}
         {data.length > 0 && data[0].goal > 0 && (
           <Line
-            x1={spacingBetween}
-            y1={chartHeight - (data[0].goal / maxValue) * usableHeight}
-            x2={chartWidth - spacingBetween}
-            y2={chartHeight - (data[0].goal / maxValue) * usableHeight}
+            x1={0}
+            y1={barBottom - (data[0].goal / maxValue) * usableHeight}
+            x2={chartWidth}
+            y2={barBottom - (data[0].goal / maxValue) * usableHeight}
             stroke={colors.primary}
             strokeWidth={1.5}
             opacity={0.35}
@@ -105,40 +119,53 @@ export function BarChart({ data, height = 200 }: BarChartProps) {
         )}
 
         {data.map((d, i) => {
-          const barHeight = (d.value / maxValue) * usableHeight;
-          const x = i * (barWidth + spacingBetween) + spacingBetween;
-          const y = chartHeight - barHeight;
+          // Bar fill height — no minimum that overflows; use barWidth as visual min for capsule
+          const rawBarH = (d.value / maxValue) * usableHeight;
+          const barH = d.value > 0 ? Math.max(rawBarH, barWidth) : 0;
+
+          // Bar top Y — clamp so it never goes above topPadding
+          const barY = Math.max(topPadding, barBottom - barH);
+          // Actual rendered height (after clamping)
+          const renderedBarH = barBottom - barY;
+
+          // Goal track always spans the full usable height, anchored at barBottom
+          const trackY = topPadding;
+
+          // Value label: sit above the bar top, clamped to stay inside SVG
+          const labelY = Math.max(topPadding - 4, barY - 5);
+
+          const x = spacingBetween / 2 + i * (barWidth + spacingBetween);
           const progress = d.goal > 0 ? d.value / d.goal : 0;
           const gradientId = getGradientId(progress);
 
           return (
             <React.Fragment key={i}>
-              {/* Bar background (light track) */}
+              {/* Goal track (full height background pill) */}
               <Rect
                 x={x}
-                y={topPadding}
+                y={trackY}
                 width={barWidth}
                 height={usableHeight}
                 rx={barWidth / 2}
-                fill={colors.surfaceBlueDark}
+                fill={colors.surfaceBlueDark || '#BFDBFE'}
                 opacity={0.25}
               />
-              {/* Bar fill */}
+              {/* Value fill bar */}
               {d.value > 0 && (
                 <Rect
                   x={x}
-                  y={y}
+                  y={barY}
                   width={barWidth}
-                  height={Math.max(barHeight, barWidth)} // Ensure some minimum height/capsule shape
+                  height={renderedBarH}
                   rx={barWidth / 2}
                   fill={gradientId}
                 />
               )}
-              {/* Exact Value Text */}
+              {/* Value label — only when bar has data */}
               {d.value > 0 && (
                 <SvgText
                   x={x + barWidth / 2}
-                  y={y - 6}
+                  y={labelY}
                   fontSize={9}
                   fill={colors.textSecondary}
                   textAnchor="middle"
