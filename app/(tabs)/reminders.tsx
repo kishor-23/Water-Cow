@@ -183,7 +183,7 @@ export default function RemindersScreen() {
                     },
                   ]}
                 >
-                  <Feather
+                  <FeatherIcon
                     name={settings.enabled ? 'bell' : 'bell-off'}
                     size={20}
                     color={settings.enabled ? colors.primary : colors.textTertiary}

@@ -267,7 +267,7 @@ export default function SettingsScreen() {
                     onPress={() => setThemeMode(item.mode)}
                     activeOpacity={0.7}
                   >
-                    <Feather
+                    <FeatherIcon
                       name={item.icon}
                       size={16}
                       color={isSelected ? colors.textOnPrimary : colors.textSecondary}

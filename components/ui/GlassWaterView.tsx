@@ -256,7 +256,7 @@ export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewPro
           onPress={() => setViewMode('single')}
           activeOpacity={0.8}
         >
-          <Feather
+          <FeatherIcon
             name="droplet"
             size={14}
             color={viewMode === 'single' ? colors.textOnPrimary : colors.textSecondary}
@@ -279,7 +279,7 @@ export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewPro
           onPress={() => setViewMode('multi')}
           activeOpacity={0.8}
         >
-          <Feather
+          <FeatherIcon
             name="grid"
             size={14}
             color={viewMode === 'multi' ? colors.textOnPrimary : colors.textSecondary}
