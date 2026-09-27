@@ -19,7 +19,7 @@ interface CustomLaunchScreenProps {
 }
 
 export function CustomLaunchScreen({ onFinish }: CustomLaunchScreenProps) {
-  const { colors, isDark } = useTheme();
+  const { colors, isDark, isAmoled } = useTheme();
 
   // Animation values
   const floatY = useSharedValue(0);
@@ -88,7 +88,7 @@ export function CustomLaunchScreen({ onFinish }: CustomLaunchScreenProps) {
       exiting={FadeOut.duration(500)}
       style={[
         styles.container,
-        { backgroundColor: isDark ? '#0A1624' : '#EBF6FF' },
+        { backgroundColor: isAmoled ? '#000000' : isDark ? '#0A1624' : '#EBF6FF' },
       ]}
     >
       {/* Background Soft Ambient Light */}

@@ -20,23 +20,46 @@ import { Card } from '../../components/ui/Card';
 import { PillButton } from '../../components/ui/PillButton';
 import { useTheme, Typography, Spacing, BorderRadius, Shadows } from '../../constants/theme';
 import { formatWater } from '../../utils/hydration';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { exportBackupFile, importBackupFile } from '../../utils/backup';
 import { HomeScreenWidgetModal } from '../../components/ui/HomeScreenWidgetModal';
+import { setNativeWidgetQuickAddAmount } from '../../utils/widget';
 
 const GOAL_PRESETS = [2000, 3000, 4000, 5000];
+const WIDGET_AMOUNT_KEY = '@watercow_widget_quick_add_amount';
+const WIDGET_QUICK_ADD_OPTIONS = [150, 250, 330, 500];
 
 export default function SettingsScreen() {
   const { state, setGoal, updateProfile, cowMood, reloadAllData } = useHydration();
-  const { colors, themeMode, setThemeMode, isDark } = useTheme();
+  const { colors, themeMode, setThemeMode, isDark, isAmoled } = useTheme();
   const styles = getStyles(colors);
   const { profile, totalConsumed } = state;
   const [showWidgetModal, setShowWidgetModal] = useState(false);
   const [name, setName] = useState(profile.name);
   const [editingName, setEditingName] = useState(false);
+  const [widgetQuickAddAmount, setWidgetQuickAddAmount] = useState<number>(250);
 
   useEffect(() => {
     setName(profile.name);
   }, [profile.name]);
+
+  useEffect(() => {
+    AsyncStorage.getItem(WIDGET_AMOUNT_KEY).then((val) => {
+      if (val) {
+        const parsed = parseInt(val, 10);
+        if (!isNaN(parsed) && parsed > 0) {
+          setWidgetQuickAddAmount(parsed);
+          setNativeWidgetQuickAddAmount(parsed);
+        }
+      }
+    });
+  }, []);
+
+  const handleSelectWidgetAmount = (amount: number) => {
+    setWidgetQuickAddAmount(amount);
+    AsyncStorage.setItem(WIDGET_AMOUNT_KEY, String(amount));
+    setNativeWidgetQuickAddAmount(amount);
+  };
 
   // Backup & Import state
   const [isExporting, setIsExporting] = useState(false);
@@ -246,7 +269,7 @@ export default function SettingsScreen() {
           {/* Appearance / Theme */}
           <Card style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
-              <FeatherIcon name={isDark ? "moon" : "sun"} size={18} color={colors.primary} />
+              <FeatherIcon name={themeMode === 'amoled' ? 'zap' : isDark ? 'moon' : 'sun'} size={18} color={colors.primary} />
               <Text style={styles.sectionTitle}>Appearance</Text>
             </View>
 
@@ -254,6 +277,7 @@ export default function SettingsScreen() {
               {[
                 { label: 'Light', mode: 'light' as const, icon: 'sun' as const },
                 { label: 'Dark', mode: 'dark' as const, icon: 'moon' as const },
+                { label: 'AMOLED', mode: 'amoled' as const, icon: 'zap' as const },
               ].map((item) => {
                 const isSelected = themeMode === item.mode;
                 return (
@@ -263,6 +287,7 @@ export default function SettingsScreen() {
                       styles.themeOption,
                       isSelected && { backgroundColor: colors.primary },
                       !isSelected && { backgroundColor: colors.surfaceBlue },
+                      isAmoled && !isSelected && { borderWidth: 1, borderColor: colors.border },
                     ]}
                     onPress={() => setThemeMode(item.mode)}
                     activeOpacity={0.7}
@@ -295,6 +320,44 @@ export default function SettingsScreen() {
             <Text style={styles.backupDescription}>
               Add the Water Cow widget to your Android home screen to track live liters consumed today and log water with one tap.
             </Text>
+
+            <Text
+              style={{
+                fontFamily: Typography.fontFamily.semiBold,
+                fontSize: Typography.size.sm,
+                color: colors.textPrimary,
+                marginBottom: Spacing.sm,
+              }}
+            >
+              Widget Quick-Add Amount
+            </Text>
+            <View style={[styles.themeSelector, { marginBottom: Spacing.md }]}>
+              {WIDGET_QUICK_ADD_OPTIONS.map((amount) => {
+                const isSelected = widgetQuickAddAmount === amount;
+                return (
+                  <TouchableOpacity
+                    key={amount}
+                    style={[
+                      styles.themeOption,
+                      isSelected && { backgroundColor: colors.primary },
+                      !isSelected && { backgroundColor: colors.surfaceBlue },
+                      isAmoled && !isSelected && { borderWidth: 1, borderColor: colors.border },
+                    ]}
+                    onPress={() => handleSelectWidgetAmount(amount)}
+                    activeOpacity={0.7}
+                  >
+                    <Text
+                      style={[
+                        styles.themeOptionText,
+                        { color: isSelected ? colors.textOnPrimary : colors.textSecondary },
+                      ]}
+                    >
+                      +{amount} ml
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
 
             <TouchableOpacity
               style={[styles.backupButton, { backgroundColor: colors.primary }]}
@@ -410,6 +473,7 @@ export default function SettingsScreen() {
         onClose={() => setShowWidgetModal(false)}
         consumed={totalConsumed}
         goal={profile.dailyGoal}
+        quickAddAmount={widgetQuickAddAmount}
       />
     </SafeAreaView>
   );

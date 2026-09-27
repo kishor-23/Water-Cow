@@ -12,11 +12,17 @@ interface StatsCardProps {
 }
 
 export function StatsCard({ icon, value, label, color, onPress }: StatsCardProps) {
-  const { colors } = useTheme();
+  const { colors, isAmoled } = useTheme();
   const activeColor = color || colors.primary;
 
   const content = (
-    <View style={[styles.card, { backgroundColor: colors.surface }]}>
+    <View
+      style={[
+        styles.card,
+        { backgroundColor: colors.surface },
+        isAmoled && { borderWidth: 1, borderColor: colors.border },
+      ]}
+    >
       <View style={[styles.iconContainer, { backgroundColor: activeColor + '15' }]}>
         <FeatherIcon name={icon} size={18} color={activeColor} />
       </View>

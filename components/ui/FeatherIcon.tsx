@@ -8,6 +8,12 @@ import { ColorValue } from 'react-native';
 import { G, Path, Polyline, Line, Circle, Rect, Polygon, Svg } from 'react-native-svg';
 
 const ICONS: Record<string, React.ReactNode> = {
+  'award': (
+    <G>
+      <Circle cx="12" cy="8" r="7" />
+      <Polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+    </G>
+  ),
   'bell': (
     <G>
       <Path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -190,6 +196,18 @@ const ICONS: Record<string, React.ReactNode> = {
       <Line x1="14" y1="11" x2="14" y2="17" />
     </G>
   ),
+  'trending-down': (
+    <G>
+      <Polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+      <Polyline points="17 18 23 18 23 12" />
+    </G>
+  ),
+  'trending-up': (
+    <G>
+      <Polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+      <Polyline points="17 6 23 6 23 12" />
+    </G>
+  ),
   'upload-cloud': (
     <G>
       <Polyline points="16 16 12 12 8 16" />
@@ -208,6 +226,9 @@ const ICONS: Record<string, React.ReactNode> = {
       <Line x1="18" y1="6" x2="6" y2="18" />
       <Line x1="6" y1="6" x2="18" y2="18" />
     </G>
+  ),
+  'zap': (
+    <Polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
   ),
 };
 

@@ -27,15 +27,36 @@ class WaterCowWidgetModule(private val reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun setQuickAddAmount(amountMl: Double) {
+        val prefs = reactContext.getSharedPreferences(
+            WaterCowWidgetProvider.PREFS_NAME,
+            Context.MODE_PRIVATE
+        )
+        prefs.edit()
+            .putInt(WaterCowWidgetProvider.KEY_QUICK_ADD_AMOUNT, amountMl.toInt())
+            .apply()
+
+        WaterCowWidgetProvider.updateAllWidgets(reactContext)
+    }
+
+    @ReactMethod
     fun getPendingQuickAdds(promise: Promise) {
         val prefs = reactContext.getSharedPreferences(
             WaterCowWidgetProvider.PREFS_NAME,
             Context.MODE_PRIVATE
         )
+        val pendingMl = prefs.getInt(WaterCowWidgetProvider.KEY_PENDING_QUICK_ADD_ML, 0)
         val count = prefs.getInt(WaterCowWidgetProvider.KEY_PENDING_QUICK_ADDS, 0)
-        if (count > 0) {
-            prefs.edit().putInt(WaterCowWidgetProvider.KEY_PENDING_QUICK_ADDS, 0).apply()
+        val defaultAmount = prefs.getInt(WaterCowWidgetProvider.KEY_QUICK_ADD_AMOUNT, 250)
+
+        val totalMl = if (pendingMl > 0) pendingMl else (count * defaultAmount)
+
+        if (totalMl > 0 || count > 0) {
+            prefs.edit()
+                .putInt(WaterCowWidgetProvider.KEY_PENDING_QUICK_ADDS, 0)
+                .putInt(WaterCowWidgetProvider.KEY_PENDING_QUICK_ADD_ML, 0)
+                .apply()
         }
-        promise.resolve(count)
+        promise.resolve(totalMl)
     }
 }

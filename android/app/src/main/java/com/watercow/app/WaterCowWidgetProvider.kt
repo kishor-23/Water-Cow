@@ -26,7 +26,10 @@ class WaterCowWidgetProvider : AppWidgetProvider() {
         const val KEY_GOAL_ML = "goal_ml"
         const val KEY_DATE = "date_key"
         const val KEY_PENDING_QUICK_ADDS = "pending_quick_adds"
+        const val KEY_PENDING_QUICK_ADD_ML = "pending_quick_add_ml"
+        const val KEY_QUICK_ADD_AMOUNT = "quick_add_amount"
         const val ACTION_QUICK_ADD_WATER = "com.watercow.app.ACTION_QUICK_ADD_WATER"
+        const val EXTRA_AMOUNT_ML = "extra_amount_ml"
 
         fun getTodayKey(): String {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -53,6 +56,7 @@ class WaterCowWidgetProvider : AppWidgetProvider() {
 
             var consumedMl = prefs.getInt(KEY_CONSUMED_ML, 0)
             val goalMl = prefs.getInt(KEY_GOAL_ML, 2000)
+            val quickAddAmount = prefs.getInt(KEY_QUICK_ADD_AMOUNT, 250)
 
             // If new day, reset consumed
             if (savedDate != todayKey) {
@@ -73,6 +77,9 @@ class WaterCowWidgetProvider : AppWidgetProvider() {
                 String.format(Locale.US, "of %.1f L Goal (%d%%)", litersGoal, percent)
             )
 
+            // Quick Add Button Text
+            views.setTextViewText(R.id.widget_quick_add_text, "+$quickAddAmount ml")
+
             // Date text
             val dateFmt = SimpleDateFormat("EEE, MMM d", Locale.US)
             views.setTextViewText(R.id.widget_date, dateFmt.format(Date()))
@@ -80,7 +87,7 @@ class WaterCowWidgetProvider : AppWidgetProvider() {
             // Progress Bar
             views.setProgressBar(R.id.widget_progress_bar, 100, percent, false)
 
-            // Intent to open Main App
+            // Intent to open Main App (when clicking anywhere on the background)
             val openAppIntent = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
@@ -92,6 +99,18 @@ class WaterCowWidgetProvider : AppWidgetProvider() {
             )
             views.setOnClickPendingIntent(R.id.widget_root, openAppPendingIntent)
 
+            // Intent for Quick-Add Water Button (updates widget instantly)
+            val quickAddIntent = Intent(context, WaterCowWidgetProvider::class.java).apply {
+                action = ACTION_QUICK_ADD_WATER
+                putExtra(EXTRA_AMOUNT_ML, quickAddAmount)
+            }
+            val quickAddPendingIntent = PendingIntent.getBroadcast(
+                context,
+                appWidgetId,
+                quickAddIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.widget_quick_add_btn, quickAddPendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
@@ -116,11 +135,15 @@ class WaterCowWidgetProvider : AppWidgetProvider() {
             if (savedDate != todayKey) {
                 prefs.edit().putString(KEY_DATE, todayKey).putInt(KEY_CONSUMED_ML, 0).apply()
             }
-            val consumed = prefs.getInt(KEY_CONSUMED_ML, 0) + 250
-            val pending = prefs.getInt(KEY_PENDING_QUICK_ADDS, 0) + 1
+            val defaultAmount = prefs.getInt(KEY_QUICK_ADD_AMOUNT, 250)
+            val amountToAdd = intent.getIntExtra(EXTRA_AMOUNT_ML, defaultAmount)
+            val consumed = prefs.getInt(KEY_CONSUMED_ML, 0) + amountToAdd
+            val pendingCount = prefs.getInt(KEY_PENDING_QUICK_ADDS, 0) + 1
+            val pendingMl = prefs.getInt(KEY_PENDING_QUICK_ADD_ML, 0) + amountToAdd
             prefs.edit()
                 .putInt(KEY_CONSUMED_ML, consumed)
-                .putInt(KEY_PENDING_QUICK_ADDS, pending)
+                .putInt(KEY_PENDING_QUICK_ADDS, pendingCount)
+                .putInt(KEY_PENDING_QUICK_ADD_ML, pendingMl)
                 .apply()
             updateAllWidgets(context)
         }

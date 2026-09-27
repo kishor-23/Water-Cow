@@ -68,6 +68,32 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Quick Add Action Button -->
+        <LinearLayout
+            android:id="@+id/widget_quick_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/widget_button_bg"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/widget_quick_add_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+250 ml"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- Progress Bar -->

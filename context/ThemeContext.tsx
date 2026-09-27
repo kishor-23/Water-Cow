@@ -4,17 +4,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Colors, DarkColors } from '../constants/theme';
+import { Colors, DarkColors, AmoledColors } from '../constants/theme';
 
-export type ThemeMode = 'system' | 'light' | 'dark';
+export type ThemeMode = 'system' | 'light' | 'dark' | 'amoled';
 
-export type ThemeColors = typeof Colors | typeof DarkColors;
+export type ThemeColors = typeof Colors | typeof DarkColors | typeof AmoledColors;
 
 interface ThemeContextType {
   themeMode: ThemeMode;
   setThemeMode: (mode: ThemeMode) => void;
   colors: ThemeColors;
   isDark: boolean;
+  isAmoled: boolean;
 }
 
 const THEME_STORAGE_KEY = 'watercow_theme_mode';
@@ -27,7 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     AsyncStorage.getItem(THEME_STORAGE_KEY).then((saved) => {
-      if (saved === 'light' || saved === 'dark' || saved === 'system') {
+      if (saved === 'light' || saved === 'dark' || saved === 'system' || saved === 'amoled') {
         setThemeModeState(saved as ThemeMode);
       }
     });
@@ -38,8 +39,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     AsyncStorage.setItem(THEME_STORAGE_KEY, mode);
   };
 
-  const isDark = themeMode === 'dark';
-  const colors = isDark ? DarkColors : Colors;
+  const isAmoled = themeMode === 'amoled';
+  const isDark = themeMode === 'dark' || isAmoled || (themeMode === 'system' && systemColorScheme === 'dark');
+  const colors = isAmoled ? AmoledColors : isDark ? DarkColors : Colors;
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -49,7 +51,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [colors.background]);
 
   return (
-    <ThemeContext.Provider value={{ themeMode, setThemeMode, colors, isDark }}>
+    <ThemeContext.Provider value={{ themeMode, setThemeMode, colors, isDark, isAmoled }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -63,6 +65,7 @@ export function useTheme() {
       setThemeMode: () => {},
       colors: Colors,
       isDark: false,
+      isAmoled: false,
     };
   }
   return context;

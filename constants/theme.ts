@@ -195,5 +195,56 @@ export const DarkColors = {
   tabBarInactive: '#64748B',
 } as const;
 
-export { useTheme, ThemeProvider, type ThemeMode } from '../context/ThemeContext';
+export const AmoledColors = {
+  // Primary palette (remains signature water blue)
+  primary: '#4A9FD8',
+  primaryLight: '#7BBDE8',
+  primaryDark: '#2B7BB8',
+  primaryGradientStart: '#3A8FC8',
+  primaryGradientEnd: '#2B7BB8',
+
+  // Background & surfaces (true pitch black for OLED power savings)
+  background: '#000000',
+  surface: '#0A0A0A',
+  surfaceFrosted: 'rgba(10, 10, 10, 0.88)',
+  surfaceBlue: '#12161F',
+  surfaceBlueDark: '#1A2332',
+
+  // Text (crisp pure white & zinc tones)
+  textPrimary: '#FFFFFF',
+  textSecondary: '#A1A1AA',
+  textTertiary: '#71717A',
+  textOnPrimary: '#FFFFFF',
+
+  // Accents
+  accent: '#38BDF8',
+  accentCyan: '#00BCD4',
+  success: '#10B981',
+  successLight: 'rgba(16, 185, 129, 0.12)',
+  warning: '#F59E0B',
+  warningLight: 'rgba(245, 158, 11, 0.12)',
+  error: '#EF4444',
+  errorLight: 'rgba(239, 68, 68, 0.12)',
+
+  // Cow-specific (crisp white outline on pitch black)
+  cowWhite: '#1C1C1C',
+  cowBlack: '#FFFFFF',
+  cowPink: '#FFB6C1',
+  cowBell: '#FFD700',
+
+  // Borders & dividers (crisp hairline outlines essential for AMOLED separation)
+  border: '#222222',
+  divider: '#1A1A1A',
+
+  // Shadows
+  shadowColor: '#000000',
+
+  // Tab bar (seamless with bottom bezel)
+  tabBarBackground: '#000000',
+  tabBarBorder: '#1A1A1A',
+  tabBarActive: '#4A9FD8',
+  tabBarInactive: '#71717A',
+} as const;
+
+export { useTheme, ThemeProvider, type ThemeMode, type ThemeColors } from '../context/ThemeContext';
 

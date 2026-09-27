@@ -38,7 +38,7 @@ interface GlassWaterViewProps {
 const GLASS_SIZE_ML = 250; // Standard 250ml per cup
 
 export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewProps) {
-  const { colors, isDark } = useTheme();
+  const { colors, isDark, isAmoled } = useTheme();
 
   // Mode: 'single' (Big Fluid Tumbler) or 'multi' (8 Daily Glasses)
   const [viewMode, setViewMode] = useState<'single' | 'multi'>('single');
@@ -341,8 +341,8 @@ export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewPro
 
                 {/* Glass Inner Tint */}
                 <LinearGradient id="glassBg" x1="0" y1="0" x2="0" y2="1">
-                  <Stop offset="0%" stopColor={isDark ? '#1E293B' : '#E0F2FE'} stopOpacity="0.4" />
-                  <Stop offset="100%" stopColor={isDark ? '#0F172A' : '#BAE6FD'} stopOpacity="0.6" />
+                  <Stop offset="0%" stopColor={isAmoled ? '#121212' : isDark ? '#1E293B' : '#E0F2FE'} stopOpacity="0.4" />
+                  <Stop offset="100%" stopColor={isAmoled ? '#000000' : isDark ? '#0F172A' : '#BAE6FD'} stopOpacity="0.6" />
                 </LinearGradient>
 
                 {/* Clip Path for the interior cavity of the tumbler */}
@@ -573,6 +573,8 @@ export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewPro
                     {
                       backgroundColor: isFull
                         ? colors.surfaceBlue
+                        : isAmoled
+                        ? '#0A0A0A'
                         : isDark
                         ? '#1E293B'
                         : '#F1F5F9',
@@ -603,7 +605,7 @@ export function GlassWaterView({ consumed, goal, onQuickAdd }: GlassWaterViewPro
                       {/* Glass Body */}
                       <Path
                         d="M 4 4 L 32 4 L 28 42 Q 18 45 8 42 Z"
-                        fill={isDark ? '#0F172A' : '#E2E8F0'}
+                        fill={isAmoled ? '#0A0A0A' : isDark ? '#0F172A' : '#E2E8F0'}
                         stroke={isFull ? '#0284C7' : '#94A3B8'}
                         strokeWidth={1.5}
                       />

@@ -23,6 +23,7 @@ interface HomeScreenWidgetModalProps {
   onClose: () => void;
   consumed: number;
   goal: number;
+  quickAddAmount?: number;
 }
 
 export function HomeScreenWidgetModal({
@@ -30,6 +31,7 @@ export function HomeScreenWidgetModal({
   onClose,
   consumed,
   goal,
+  quickAddAmount = 250,
 }: HomeScreenWidgetModalProps) {
   const { colors } = useTheme();
   const progress = goal > 0 ? Math.min(consumed / goal, 1) : 0;
@@ -79,7 +81,7 @@ export function HomeScreenWidgetModal({
 
                 {/* Quick Add Pill */}
                 <View style={styles.widgetQuickBtn}>
-                  <Text style={styles.widgetQuickBtnText}>💧 +250ml</Text>
+                  <Text style={styles.widgetQuickBtnText}>💧 +{quickAddAmount}ml</Text>
                 </View>
               </View>
 

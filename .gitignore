@@ -46,4 +46,6 @@ android/build
 jdk-17/
 jdk-17.zip
 android-sdk/
+*.apk
+*.idsig
 

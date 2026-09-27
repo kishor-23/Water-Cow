@@ -21,6 +21,7 @@ import {
 } from '../utils/storage';
 import { getTodayKey } from '../utils/hydration';
 import { scheduleReminders } from '../utils/notifications';
+import { AppState } from 'react-native';
 import { calculateCowMood, type CowMood } from '../constants/cowMoods';
 import { updateNativeWidget, checkAndSyncWidgetQuickAdds } from '../utils/widget';
 
@@ -210,9 +211,9 @@ export function HydrationProvider({ children }: { children: ReactNode }) {
     scheduleReminders(settings);
 
     // Sync any pending quick adds from Android Widget
-    const pendingCount = await checkAndSyncWidgetQuickAdds();
-    if (pendingCount > 0) {
-      dispatch({ type: 'ADD_WATER', amount: 250 * pendingCount });
+    const pendingMl = await checkAndSyncWidgetQuickAdds();
+    if (pendingMl > 0) {
+      dispatch({ type: 'ADD_WATER', amount: pendingMl });
     }
   }, []);
 
@@ -220,6 +221,22 @@ export function HydrationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     reloadAllData();
   }, [reloadAllData]);
+
+  // Sync widget quick-adds whenever app transitions to foreground / active
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', async (nextAppState) => {
+      if (nextAppState === 'active') {
+        const pendingMl = await checkAndSyncWidgetQuickAdds();
+        if (pendingMl > 0) {
+          dispatch({ type: 'ADD_WATER', amount: pendingMl });
+        }
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   // Persist entries when they change & update Android Widget
   useEffect(() => {

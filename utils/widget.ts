@@ -19,13 +19,25 @@ export function updateNativeWidget(consumedMl: number, goalMl: number): void {
 }
 
 /**
- * Checks if the user tapped quick add on the Android Home Screen Widget and returns count.
+ * Configures the quick-add amount shown and logged on the Android Home Screen Widget.
+ */
+export function setNativeWidgetQuickAddAmount(amountMl: number): void {
+  if (Platform.OS !== 'android' || !WaterCowWidget) return;
+  try {
+    WaterCowWidget.setQuickAddAmount?.(amountMl);
+  } catch (e) {
+    console.warn('Failed to set native widget quick add amount:', e);
+  }
+}
+
+/**
+ * Checks if the user tapped quick add on the Android Home Screen Widget and returns the pending mL logged.
  */
 export async function checkAndSyncWidgetQuickAdds(): Promise<number> {
   if (Platform.OS !== 'android' || !WaterCowWidget) return 0;
   try {
-    const pendingCount: number = await WaterCowWidget.getPendingQuickAdds();
-    return pendingCount || 0;
+    const pendingMl: number = await WaterCowWidget.getPendingQuickAdds();
+    return pendingMl || 0;
   } catch (e) {
     console.warn('Failed to sync widget quick adds:', e);
     return 0;
