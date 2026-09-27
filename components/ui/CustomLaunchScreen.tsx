@@ -166,7 +166,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.25,
     shadowRadius: 20,
-    elevation: 8,
+    boxShadow: '0px 10px 20px rgba(74, 159, 216, 0.25)',
+    elevation: 0,
   },
   mascotImage: {
     width: '100%',

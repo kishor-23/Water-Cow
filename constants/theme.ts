@@ -110,21 +110,24 @@ export const Shadows = {
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.06,
     shadowRadius: 3,
-    elevation: 1,
+    boxShadow: '0px 1px 3px rgba(26, 43, 74, 0.06)',
+    elevation: 0,
   },
   md: {
     shadowColor: Colors.shadowColor,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
-    elevation: 3,
+    boxShadow: '0px 2px 8px rgba(26, 43, 74, 0.08)',
+    elevation: 0,
   },
   lg: {
     shadowColor: Colors.shadowColor,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 16,
-    elevation: 6,
+    boxShadow: '0px 4px 16px rgba(26, 43, 74, 0.10)',
+    elevation: 0,
   },
 } as const;
 

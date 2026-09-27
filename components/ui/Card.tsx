@@ -17,7 +17,8 @@ export function Card({ children, style, variant = 'default' }: CardProps) {
   const variantStyles: Record<string, ViewStyle> = {
     default: {
       backgroundColor: colors.surface,
-      ...(isAmoled ? { borderWidth: 1, borderColor: colors.border } : {}),
+      borderWidth: isAmoled ? 1 : 0,
+      borderColor: isAmoled ? colors.border : 'transparent',
     },
     frosted: {
       backgroundColor: colors.surfaceFrosted,
@@ -26,7 +27,8 @@ export function Card({ children, style, variant = 'default' }: CardProps) {
     },
     blue: {
       backgroundColor: colors.surfaceBlue,
-      ...(isAmoled ? { borderWidth: 1, borderColor: colors.border } : {}),
+      borderWidth: isAmoled ? 1 : 0,
+      borderColor: isAmoled ? colors.border : 'transparent',
     },
   };
 

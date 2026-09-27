@@ -285,9 +285,11 @@ export default function SettingsScreen() {
                     key={item.mode}
                     style={[
                       styles.themeOption,
-                      isSelected && { backgroundColor: colors.primary },
-                      !isSelected && { backgroundColor: colors.surfaceBlue },
-                      isAmoled && !isSelected && { borderWidth: 1, borderColor: colors.border },
+                      isSelected ? { backgroundColor: colors.primary } : { backgroundColor: colors.surfaceBlue },
+                      {
+                        borderWidth: isAmoled && !isSelected ? 1 : 0,
+                        borderColor: isAmoled && !isSelected ? colors.border : 'transparent',
+                      },
                     ]}
                     onPress={() => setThemeMode(item.mode)}
                     activeOpacity={0.7}

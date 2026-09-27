@@ -19,8 +19,11 @@ export function StatsCard({ icon, value, label, color, onPress }: StatsCardProps
     <View
       style={[
         styles.card,
-        { backgroundColor: colors.surface },
-        isAmoled && { borderWidth: 1, borderColor: colors.border },
+        {
+          backgroundColor: colors.surface,
+          borderWidth: isAmoled ? 1 : 0,
+          borderColor: isAmoled ? colors.border : 'transparent',
+        },
       ]}
     >
       <View style={[styles.iconContainer, { backgroundColor: activeColor + '15' }]}>
