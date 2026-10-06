@@ -474,32 +474,185 @@
       }
     }
 
-    /* ---------- Showcase ---------- */
-    .showcase {
-      padding: 96px 0;
-      background: var(--sky);
+    /* ---------- Home Screen Widget Feature Showcase ---------- */
+    .widget-showcase {
+      padding: 80px 0 88px;
+      background: linear-gradient(180deg, var(--foam) 0%, var(--sky) 100%);
+      position: relative;
+      border-top: 1px solid var(--line);
     }
 
-    .showcase-head {
-      text-align: center;
-      max-width: 680px;
-      margin: 0 auto 48px auto;
+    .widget-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 52px;
+      align-items: center;
     }
 
-    .showcase-img-card {
-      background: #fff;
-      border-radius: 36px;
-      padding: 24px;
-      box-shadow: 0 32px 64px -24px rgba(18, 41, 77, 0.25);
+    .widget-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .widget-info h2 {
+      font-size: clamp(30px, 3.8vw, 42px);
+      margin: 14px 0 16px;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+    }
+
+    .widget-info p.lead {
+      font-size: 16px;
+      color: var(--deep-soft);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .widget-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .widget-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--line);
+      color: var(--deep);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 15px;
+      border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(18, 41, 77, 0.04);
+    }
+
+    /* Video Player Mockup Card */
+    .widget-video-card {
+      background: #FFFFFF;
+      border-radius: 28px;
+      padding: 16px;
+      box-shadow: 0 28px 56px -18px rgba(18, 41, 77, 0.18), 0 0 0 1px var(--line);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .widget-video-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 36px 64px -18px rgba(47, 155, 255, 0.22), 0 0 0 1px rgba(47, 155, 255, 0.3);
+    }
+
+    .video-card-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 6px 12px 6px;
+    }
+
+    .video-card-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .video-card-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .video-card-dot.dot-red { background: #FF5F56; }
+    .video-card-dot.dot-yellow { background: #FFBD2E; }
+    .video-card-dot.dot-green { background: #27C93F; }
+
+    .video-card-title {
+      font-family: 'Baloo 2', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--deep);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .video-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(47, 155, 255, 0.1);
+      color: var(--water-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .video-card-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    .widget-video-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #D8EFFF;
+      border-radius: 18px;
       overflow: hidden;
     }
 
-    .showcase-img-card img {
+    .widget-video-embed iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: auto;
+      height: 100%;
+      border: 0;
       display: block;
-      border-radius: 20px;
+    }
+
+    .video-card-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 6px 4px 6px;
+      font-size: 13px;
+      color: var(--deep-soft);
+      font-weight: 500;
+    }
+
+    @media (max-width: 900px) {
+      .widget-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .widget-showcase {
+        padding: 56px 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .widget-video-card {
+        padding: 12px;
+        border-radius: 20px;
+      }
+      .widget-pills {
+        gap: 8px;
+      }
+      .widget-pill {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
     }
 
     /* ---------- Sound Moment ---------- */
@@ -720,6 +873,30 @@
       height: 100%;
       object-fit: contain;
       border-radius: 10px;
+    }
+
+    .download-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .download-sublink {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--water-dark);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .download-sublink:hover {
+      color: var(--deep);
+      transform: translateX(2px);
     }
 
     @media (max-width: 600px) {
@@ -1512,6 +1689,7 @@
       </a>
       <div class="nav-links-desktop">
         <a href="#features">Features</a>
+        <a href="#widget">Widget</a>
         <a href="#opensource">Source Code</a>
         <a href="#support">Support</a>
       </div>
@@ -1568,7 +1746,7 @@
     <div class="wrap">
       <div class="section-head">
         <span class="eyebrow">What It Does</span>
-        <h2>Four Features. Designed for Your Hydration.</h2>
+        <h2>Core Features. Designed for Your Hydration.</h2>
         <p>Every screen answers one question: have you reached your daily water intake goal?</p>
       </div>
 
@@ -1620,6 +1798,61 @@
           </div>
           <h3>Simple & cute</h3>
           <p>No gamification — just a friendly companion who wants you hydrated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Android Home Screen Widget Feature Showcase -->
+  <section class="widget-showcase" id="widget">
+    <div class="wrap">
+      <div class="widget-grid">
+        <div class="widget-info">
+          <span class="eyebrow">Home Screen Widget</span>
+          <h2>Hydration on Your<br>Home Screen.</h2>
+          <p class="lead">
+            Check daily progress and log water in one tap — right from your phone launcher.
+          </p>
+
+          <div class="widget-pills">
+            <span class="widget-pill">⚡ 1-Tap Quick Add (250ml)</span>
+            <span class="widget-pill">📊 Live Progress</span>
+          </div>
+
+          <div>
+            <a class="btn-primary" href="#download" title="Download Water Cow APK" style="font-size: 15px; padding: 13px 24px;">
+              Download APK
+            </a>
+          </div>
+        </div>
+
+        <div class="widget-video-container">
+          <div class="widget-video-card">
+            <div class="video-card-topbar">
+              <div class="video-card-dots">
+                <span class="video-card-dot dot-red"></span>
+                <span class="video-card-dot dot-yellow"></span>
+                <span class="video-card-dot dot-green"></span>
+              </div>
+              <div class="video-card-title">
+                <span>📱</span> Water Cow Widget
+              </div>
+              <div class="video-card-badge">
+                <span class="video-card-badge-dot"></span> Live Demo
+              </div>
+            </div>
+
+            <div class="widget-video-embed">
+              <iframe title="vimeo-player" src="https://player.vimeo.com/video/1233418989?h=fb32a383fa&portrait=0&byline=0&title=0&loop=1" width="640" height="360" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>
+            </div>
+
+            <div class="video-card-caption">
+              <span>Android widget demo</span>
+              <a href="https://vimeo.com/1233418989" target="_blank" rel="noopener" style="color: var(--water-dark); text-decoration: none; font-weight: 600;">
+                Vimeo ↗
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1809,7 +2042,7 @@
               </svg>
               Download APK Directly
             </a>
-            <a href="https://github.com/kishor-23/Water-Cow/releases" target="_blank" rel="noopener" style="font-size: 14px; font-weight: 600; color: var(--water-dark); text-decoration: none;">
+            <a class="download-sublink" href="https://github.com/kishor-23/Water-Cow/releases" target="_blank" rel="noopener">
               All Releases on GitHub ↗
             </a>
           </div>
@@ -1830,6 +2063,7 @@
         </div>
         <div class="foot-links">
           <a href="#features">Features</a>
+          <a href="#widget">Widget</a>
           <a href="#opensource">Source Code</a>
           <a href="#support">❤️ Support</a>
           <a href="https://github.com/kishor-23/Water-Cow/releases/download/v1.0.1/watercow_v1.0.1.apk" download="watercow_v1.0.1.apk" rel="noopener" title="Download Water Cow APK directly">Download APK</a>
