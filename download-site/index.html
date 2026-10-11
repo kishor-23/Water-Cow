@@ -474,7 +474,14 @@
       }
     }
 
-    /* ---------- Home Screen Widget Feature Showcase ---------- */
+    /* ---------- Intro & Widget Feature Showcases ---------- */
+    .intro-showcase {
+      padding: 80px 0 88px;
+      background: var(--foam);
+      position: relative;
+      border-top: 1px solid var(--line);
+    }
+
     .widget-showcase {
       padding: 80px 0 88px;
       background: linear-gradient(180deg, var(--foam) 0%, var(--sky) 100%);
@@ -636,6 +643,7 @@
         grid-template-columns: 1fr;
         gap: 36px;
       }
+      .intro-showcase,
       .widget-showcase {
         padding: 56px 0;
       }
@@ -1689,7 +1697,6 @@
       </a>
       <div class="nav-links-desktop">
         <a href="#features">Features</a>
-        <a href="#widget">Widget</a>
         <a href="#opensource">Source Code</a>
         <a href="#support">Support</a>
       </div>
@@ -1740,6 +1747,62 @@
       </div>
     </div>
   </header>
+
+  <!-- App Intro Video Showcase Section -->
+  <section class="intro-showcase" id="intro">
+    <div class="wrap">
+      <div class="widget-grid">
+        <div class="widget-info">
+          <span class="eyebrow">App Walkthrough</span>
+          <h2>See Water Cow<br>in Action.</h2>
+          <p class="lead">
+            Playful moo reminders, intuitive daily logging, and visual hydration progress. Watch the quick tour to explore everything inside the app.
+          </p>
+
+          <div class="widget-pills">
+            <span class="widget-pill">🐮 Playful Moo Alerts</span>
+            <span class="widget-pill">💧 Visual Glass View</span>
+            <span class="widget-pill">🎨 Light & Dark Themes</span>
+          </div>
+
+          <div>
+            <a class="btn-primary" href="#download" title="Download Water Cow APK" style="font-size: 15px; padding: 13px 24px;">
+              Download APK
+            </a>
+          </div>
+        </div>
+
+        <div class="widget-video-container">
+          <div class="widget-video-card">
+            <div class="video-card-topbar">
+              <div class="video-card-dots">
+                <span class="video-card-dot dot-red"></span>
+                <span class="video-card-dot dot-yellow"></span>
+                <span class="video-card-dot dot-green"></span>
+              </div>
+              <div class="video-card-title">
+                <span>🎬</span> App Overview
+              </div>
+              <div class="video-card-badge">
+                <span class="video-card-badge-dot"></span> Quick Tour
+              </div>
+            </div>
+
+            <div class="widget-video-embed">
+              <iframe title="Water Cow | A Simple Hydration Reminder for Android" src="https://player.vimeo.com/video/1234104357?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;loop=1" width="1920" height="1080" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <div class="video-card-caption">
+              <span>Full app walkthrough demo</span>
+              <a href="https://youtu.be/Xp5Zen48hHk" target="_blank" rel="noopener" style="color: var(--water-dark); text-decoration: none; font-weight: 600;">
+                YouTube ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Features Section -->
   <section class="features" id="features">
@@ -2063,7 +2126,6 @@
         </div>
         <div class="foot-links">
           <a href="#features">Features</a>
-          <a href="#widget">Widget</a>
           <a href="#opensource">Source Code</a>
           <a href="#support">❤️ Support</a>
           <a href="https://github.com/kishor-23/Water-Cow/releases/download/v1.0.1/watercow_v1.0.1.apk" download="watercow_v1.0.1.apk" rel="noopener" title="Download Water Cow APK directly">Download APK</a>
