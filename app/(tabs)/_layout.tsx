@@ -4,11 +4,16 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Platform, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FeatherIcon } from '../../components/ui/FeatherIcon';
-import { useTheme, Typography } from '../../constants/theme';
+import { useTheme } from '../../constants/theme';
 
 export default function TabLayout() {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const bottomInset = insets.bottom > 0 ? insets.bottom : (Platform.OS === 'android' ? 10 : 12);
+  const tabBarHeight = 58 + bottomInset;
 
   return (
     <Tabs
@@ -18,14 +23,21 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.tabBarActive,
         tabBarInactiveTintColor: colors.tabBarInactive,
         sceneStyle: { backgroundColor: colors.background },
-        tabBarStyle: [
-          styles.tabBar, 
-          { 
-            backgroundColor: colors.tabBarBackground, 
-            borderTopColor: colors.tabBarBorder,
-            shadowColor: colors.shadowColor,
-          }
-        ],
+        tabBarStyle: {
+          backgroundColor: colors.tabBarBackground, 
+          borderTopColor: colors.tabBarBorder,
+          borderTopWidth: 1,
+          borderBottomWidth: 0,
+          height: tabBarHeight,
+          paddingBottom: bottomInset,
+          paddingTop: 6,
+          elevation: 0,
+          shadowColor: colors.shadowColor,
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
+          boxShadow: '0px -2px 8px rgba(0, 0, 0, 0.05)',
+        },
         tabBarItemStyle: styles.tabBarItem,
       }}
     >
@@ -79,21 +91,9 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
-    borderTopWidth: 1,
-    borderBottomWidth: 0,
-    height: Platform.OS === 'ios' ? 84 : 64,
-    paddingTop: Platform.OS === 'ios' ? 8 : 0,
-    paddingBottom: Platform.OS === 'ios' ? 24 : 0,
-    elevation: 0,
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    boxShadow: '0px -2px 8px rgba(0, 0, 0, 0.05)',
-  },
   tabBarItem: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
 });

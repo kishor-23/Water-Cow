@@ -22,15 +22,23 @@ class WaterCowNotificationModule(private val reactContext: ReactApplicationConte
     }
 
     init {
-        // Ensure static R.raw references exist so R8 resource shrinker preserves sound files
-        keepSoundResources()
-        // Ensure the channel exists when the module is instantiated
-        createNotificationChannel(getCurrentSound())
+        try {
+            // Ensure static R.raw references exist so R8 resource shrinker preserves sound files
+            keepSoundResources()
+        } catch (_: Throwable) {}
+
+        try {
+            // Ensure the channel exists when the module is instantiated
+            createNotificationChannel(getCurrentSound())
+        } catch (_: Throwable) {}
     }
 
     private fun keepSoundResources(): Int {
-        // Explicitly reference raw resource IDs so AGP/R8 never strips them in release builds
-        return R.raw.cow_moo + R.raw.cow_bell
+        return try {
+            R.raw.cow_moo + R.raw.cow_bell
+        } catch (_: Throwable) {
+            0
+        }
     }
 
     override fun getName(): String = "WaterCowNotification"

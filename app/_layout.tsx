@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   useFonts,
   Inter_300Light,
@@ -55,14 +56,16 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider>
-      <HydrationProvider>
-        <AppContent />
-        {showLaunchScreen && (
-          <CustomLaunchScreen onFinish={() => setShowLaunchScreen(false)} />
-        )}
-      </HydrationProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <HydrationProvider>
+          <AppContent />
+          {showLaunchScreen && (
+            <CustomLaunchScreen onFinish={() => setShowLaunchScreen(false)} />
+          )}
+        </HydrationProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 

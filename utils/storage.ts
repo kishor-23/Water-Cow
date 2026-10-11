@@ -28,11 +28,26 @@ export interface ReminderSettings {
   sound: string;
 }
 
+export interface CupSizes {
+  glass: number;
+  cup: number;
+  mug: number;
+  bottle: number;
+}
+
+export const DEFAULT_CUP_SIZES: CupSizes = {
+  glass: 150,
+  cup: 250,
+  mug: 350,
+  bottle: 500,
+};
+
 export interface UserProfile {
   name: string;
   unit: 'ml' | 'oz';
   dailyGoal: number;
   quickAddAmount?: number;
+  cupSizes?: CupSizes;
 }
 
 export interface DayData {
@@ -188,6 +203,7 @@ export const DEFAULT_PROFILE: UserProfile = {
   unit: 'ml',
   dailyGoal: 2000,
   quickAddAmount: 250,
+  cupSizes: DEFAULT_CUP_SIZES,
 };
 
 export async function saveProfile(profile: UserProfile): Promise<void> {
@@ -203,6 +219,10 @@ export async function loadProfile(): Promise<UserProfile> {
       ...DEFAULT_PROFILE,
       ...parsed,
       quickAddAmount: parsed.quickAddAmount || 250,
+      cupSizes: {
+        ...DEFAULT_CUP_SIZES,
+        ...(parsed.cupSizes || {}),
+      },
       name: parsed.name && parsed.name.trim() ? parsed.name.trim() : 'Buddy',
     };
   } catch (e) {

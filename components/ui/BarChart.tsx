@@ -18,7 +18,8 @@ export function BarChart({ data, height = 200 }: BarChartProps) {
   const { colors } = useTheme();
   // Use actual screen width minus card padding (xl*2 = 32px) minus card inner padding (lg*2 = 24px)
   const { width: screenWidth } = useWindowDimensions();
-  const containerWidth = screenWidth - 32 - 24 - 16; // account for scrollView + card padding
+  const effectiveWidth = Math.min(screenWidth, 640);
+  const containerWidth = effectiveWidth - 32 - 24 - 16; // account for scrollView + card padding
 
   if (data.length === 0) return null;
 

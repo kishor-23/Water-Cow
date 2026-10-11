@@ -364,6 +364,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 28,
     maxHeight: '90%',
     paddingBottom: 30,
+    width: '100%',
+    maxWidth: 640,
+    alignSelf: 'center',
   },
   modalHeader: {
     flexDirection: 'row',
