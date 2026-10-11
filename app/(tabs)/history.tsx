@@ -51,6 +51,38 @@ export default function HistoryScreen() {
 
   const { history, totalConsumed, profile, entries: todayEntries } = state;
 
+  // Streak calculation
+  const streak = useMemo(() => {
+    let count = 0;
+    const isTodayMet = profile.dailyGoal > 0 && totalConsumed >= profile.dailyGoal;
+
+    if (isTodayMet) {
+      count = 1;
+      for (let i = 1; i <= 365; i++) {
+        const key = getDateKey(i);
+        const day = history.find((d) => d.date === key);
+        const goal = day?.goal || profile.dailyGoal;
+        if (day && goal > 0 && day.totalConsumed >= goal) {
+          count++;
+        } else {
+          break;
+        }
+      }
+    } else {
+      for (let i = 1; i <= 365; i++) {
+        const key = getDateKey(i);
+        const day = history.find((d) => d.date === key);
+        const goal = day?.goal || profile.dailyGoal;
+        if (day && goal > 0 && day.totalConsumed >= goal) {
+          count++;
+        } else {
+          break;
+        }
+      }
+    }
+    return count;
+  }, [totalConsumed, profile.dailyGoal, history]);
+
   // Load entries for selected calendar date if not today
   useEffect(() => {
     if (selectedDateKey === todayKey) {
@@ -291,7 +323,28 @@ export default function HistoryScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <Text style={styles.title}>History</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.title}>History</Text>
+          <View
+            style={[
+              styles.streakBadge,
+              {
+                backgroundColor: streak > 0 ? (colors.warningLight || '#FFF3E0') : colors.surfaceBlue,
+                borderColor: streak > 0 ? (colors.warning ? `${colors.warning}40` : '#F59E0B40') : colors.border,
+              },
+            ]}
+          >
+            <Text style={styles.streakEmoji}>{streak > 0 ? '🔥' : '💧'}</Text>
+            <Text
+              style={[
+                styles.streakText,
+                { color: streak > 0 ? (colors.warning || '#D97706') : colors.primary },
+              ]}
+            >
+              {streak} Day Streak
+            </Text>
+          </View>
+        </View>
 
         {/* Period Selector */}
         <View style={styles.segmentContainer}>
@@ -685,12 +738,34 @@ const getStyles = (colors: any) => StyleSheet.create({
   },
 
   // Header
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: Spacing.xxl,
+    marginBottom: Spacing.lg,
+  },
   title: {
     fontFamily: Typography.fontFamily.bold,
     fontSize: Typography.size.xxl,
     color: colors.textPrimary,
-    paddingTop: Spacing.xxl,
-    marginBottom: Spacing.lg,
+  },
+  streakBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: BorderRadius.full,
+    borderWidth: 1,
+    gap: 6,
+    ...Shadows.sm,
+  },
+  streakEmoji: {
+    fontSize: 14,
+  },
+  streakText: {
+    fontFamily: Typography.fontFamily.bold,
+    fontSize: Typography.size.xs,
   },
 
   segmentContainer: {
