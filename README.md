@@ -8,7 +8,16 @@ Water Cow is a feature-packed React Native & Expo mobile application for trackin
 
 - 🌐 **Official Website**: [https://water-cow.vercel.app/](https://water-cow.vercel.app/)
 - 📚 **Documentation**: [https://water-cow-doc.vercel.app/docs/intro](https://water-cow-doc.vercel.app/docs/intro)
-- 📦 **Download APK**: [GitHub Release (v1.0.0)](https://github.com/kishor-23/Water-Cow/releases/download/v1.0.0/watercow.apk)
+- 📦 **Download APK**: [GitHub Release (v1.0.1)](https://github.com/kishor-23/Water-Cow/releases/download/v1.0.1/watercow_v1.0.1.apk)
+- 🎬 **Video Tour**: [YouTube Walkthrough](https://youtu.be/Xp5Zen48hHk)
+
+---
+
+## 🎬 App Intro Video
+
+[![Water Cow App Walkthrough Video](https://img.youtube.com/vi/Xp5Zen48hHk/maxresdefault.jpg)](https://youtu.be/Xp5Zen48hHk)
+
+> 📺 **Watch on YouTube**: [https://youtu.be/Xp5Zen48hHk](https://youtu.be/Xp5Zen48hHk)
 
 ---
 
